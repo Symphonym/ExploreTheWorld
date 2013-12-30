@@ -1,0 +1,13 @@
+## Interface: 50400
+## Title: |cFF00FF00Explore the World|r
+## Notes: Explore the entirety of World of Warcraft|n|cFFFFFB00Created by |r|cFF00FF00Jakob Larsson|r|cFFFFFB00 (Programmer, Defias Brotherhood)
+## Author: Jakob Larsson
+## Version: 0.1
+## SavedVariables: SymphonymConfig
+sha2.lua
+Constants.lua
+LoreRanks.lua
+Questions.lua
+PopupFrame.lua
+OptionFrame.lua
+main.lua
