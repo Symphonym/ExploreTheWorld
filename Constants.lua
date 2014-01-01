@@ -263,7 +263,7 @@ ETW_DEFAULT_BACKDROP = {
 ETW_EXPLORE_CATEGORY = "Interface\\ICONS\\Achievement_Zone_UnGoroCrater_01.blp"
 ETW_INVESTIGATION_CATEGORY = "Interface\\ICONS\\INV_Misc_Spyglass_01.blp"
 ETW_TRACKING_CATEGORY = "Interface\\ICONS\\Ability_Tracking.blp"
-ETW_GROUPQUEST_CATEGORY = "Interface\\ICONS\\inv_mask_01.blp"
+ETW_GROUPQUEST_CATEGORY = "Interface\\ICONS\\INV_Misc_GroupNeedMore.blp"
 
 ETW_DEFAULT_QUESTION_TEXTURE = "Interface\\Glues\\Models\\UI_Worgen\\UI_Worgen_BG05a.blp"
 

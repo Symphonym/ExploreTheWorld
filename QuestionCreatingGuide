@@ -1,0 +1,215 @@
+
+----------------------------------------------------------------------
+
+	Explore the World, question creation guide
+
+----------------------------------------------------------------------
+
+Introduction
+----------------------------------------------------------------------
+The only file you need to modify in order to make questions is the
+"Questions.lua" file located in the addon directory: 
+	WoWdir/Interface/Addons/ExploreTheWorld/Questions.lua
+
+To bring up the Explore The World frame, simply write any of the
+following commands in the chat window.
+
+	/etw
+	/exploretheworld
+
+Lua syntax
+----------------------------------------------------------------------
+First, lets get you started with some basics of the Lua syntax
+
+Case sensitivity:
+	Lua is case-sensitive, which means that if you want to set the
+	"answer" attribute but by misstake write "Answer" then the addon
+	will find that there is no answers and is then likely to give errors.
+
+String:
+	A string is nothing more than sequence of characters encased by
+	double quotation marks.
+
+	"This right here is a string"
+
+Number:
+	A number is simply a literal number, with any quotations or anything
+
+	54
+
+Boolean:
+	Can be either of the following two values:
+
+	true
+	false
+
+Table:
+	Tables be used for many things, but in this case just think of it as
+	a list of items encased by {} brackets. Each item is separated by a
+	comma like so:
+
+	{ "string number 1", "another string", 54, "I just threw in a number"}
+
+	So for example, the answer attribute of a question might look like this:
+
+	{ "answer1","answer2", "answer3"}
+
+Variable assignment:
+	Variable assignment is nothing more than making an arbitrary name and
+	giving a value to it. In our case the variable name specifies which
+	attribute we want to set.
+
+	variableName = "stringValue"
+	variableName = 54
+	variableName = true
+	variableName = {"stuff", "stuff2", "morestuff"}
+
+
+Getting started
+----------------------------------------------------------------------
+Lets start off with a fully functional question and learn from that:
+
+	{
+		ID = 2,
+		name = "Sorrow by Quilboar",
+		category = ETW_TRACKING_CATEGORY,
+		modelId = "Mzg1NQ==",
+		description = "Living a dry barren land this poor orc had his wife killed by the quilboar, bla bla bla..",
+		answer = {"3007b3f7b3762071034b5525693b2be41c01a210b5725669975dabc5be855e4f"},
+		zoneRequirementHash = {"8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1"}
+	},
+
+Notice how each attribute, or variable, is separated by a comma. This is
+because each question is actually a table itself, i.e a list of items,
+but in this case, a list of attributes.
+
+What we do here is simply set a bunch of different attributes that together
+forms data for a question.
+
+Although notice how "answer" and "zoneRequirementHash" are encased by {}
+brackets, this is because they support more than 1 answers/zones even though
+we only use one at this specific question.
+
+modelId and modelPath
+----------------------------------------------------------------------
+As you can see in the above example, the modelId attribute is set to
+a weird looking string. This also applies to the modelPath attribute,
+but the reason that it looks like this is because it is converted to
+base64 format. This is done as one of many extra security things to
+not make it completely obvious what the answer to a question is by
+opening the Questions.lua file.
+
+In order to convert a path of a model within the WoW directory (Use
+WoW Model Viewer to find paths of models) you can either use my
+extra converter addon, or use any online website, just google for
+"convert base 64" or "encode base 64" and you should find some
+alternatives.
+
+The modelId attribute is also converted this way, but instead of
+converting a path it converts a number, a displayId. To find the
+displayId of an NPC, simply find the NPC on WoWhead. As they allow
+you to view the models in 3D you then want to right click and "View
+source" of the webpage. Then do "Ctrl-f" (or local equivalent) to
+search the webpage for "displayId", next to the place where you find
+the text "displayId" should be a number, that's your displayId. Just
+convert the displayId to base64 and pop it into the question.
+
+Answers and hashes
+----------------------------------------------------------------------
+It is not only modelId and modelPath that has their attributes set to
+weird looking strings, the answer attribute and all the attributes with
+the word "hash" in them uses a sha2 hashing function. To convert to sha2
+to have to use my converter addon, it essentially creates a non-reversible
+string of letters that can be used to validate for example an answer.
+
+So say you want one of the answer to your question to be "Stormwind", you
+then write "stormwind" in the input window of the hashing addon and press
+enter. The string in the output window is then copied over to the question:
+
+	answer = {"hashStringForAnswerOneGoesHere", "hashStringForAnswerTwoGoesHere"}
+
+And if you want to make sure you can only answer this question in "Feralas"
+or "Tanaris" then you input "feralas" and "tanaris" accordingly into the input
+box of the hasing addon and press enter. Then you copy over the string from the
+output window to the question:
+
+	zoneRequirementHash = {"hashStringForFeralas", "hashStringForTanaris"}
+
+IMPORTANT: When you hash something, make sure that all letters are LOWERCASE,
+because the program converts and answer it receives to lowercase so "abC" isn't
+any different from "ABC".
+
+IMPORTANT: You don't have to use LOWERCASE letters anymore because I made
+that automatic in the hashing addon, but the paragraph adds a little extra
+knowledge anyway.
+
+IMPORTANT: You CAN'T use an online hashing tool for this because WoW's
+Lua environment forced me to modify the standard sha2 hashing slightly,
+but that means it will yield different results than what online hashing
+tools will. The hashing function I used was designed for Lua 5.2 but WoW
+uses Lua 5.1.
+
+Attributes
+----------------------------------------------------------------------
+For information about all the different attributes that exist, please
+refer to the "Questions.lua" file located in the addon directory. At
+the top of that file is a list of all the attributes that currently
+exist.
+
+NOTE: All the attributes doesn't have to be used as you can see on the
+other questions, as many attributes have default values and doesn't need
+to have their values set.
+
+answer:
+	Tracking:
+		The answer will always be equal to the name of the NPC
+	Investigation:
+		The answer will be whatever the user writes, so you'll usually
+		want more than one answer if it's not something super obvious.
+	Exploration:
+		The answer will always be whatever subzone you're in. Say you're
+		in Stormwind, and instead of displaying Stormwind it might say
+		"The Canals" because we're not interested in the major zones. If
+		no subzone exists it will usually take the name of the general area.
+
+zoneRequirementHash:
+	This will usually just be a hashed string of for example "tanaris" if the
+	question is located in that zone. It ensures the question can only be
+	answered if the player is located in one of the zones mentioned in the
+	zoneRequirementHash table. It will however also work on subzones if your
+	question should require that, like "The Canals" in Stormwind for example.
+
+author:
+	Dont forget to give yourself some credit, set this attribute to any
+	name you identify yourself with, just make sure it fits in the game.
+
+
+Bugs and feedback
+----------------------------------------------------------------------
+If you want to be extra helpful with the addon, take a look at BugSack,
+	
+	http://www.curse.com/addons/wow/bugsack
+
+It will catch any Lua errors and show where they originated from, those
+logs would be useful for feed. Please note however that any errors
+mentioning "CompactRaidFrames" are just bugs in the WoW api and should
+be ignored, as far as I know anyway.
+
+Also remember to send me feedback on things you think are missing, you're
+already part of the development anyway :) Use my new addon e-mail to
+contact me for help, send your realId/battleId if you want to chat
+in realtime:
+
+	etwaddon@gmail.com
+
+
+
+Reporting back with questions
+----------------------------------------------------------------------
+As of now the easiest way to send me questions would be to just mail the
+whole Questions.lua file to me, or just cut out your questions, put them
+in a separate document and mail that to me.
+
+Please note however that your question is not guaranteed to get used in
+the addon, and that I may adjust possible typos and whatnot in your
+question.

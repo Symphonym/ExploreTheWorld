@@ -53,8 +53,6 @@ local groupQuest =
 function ETW_StartGroupQuest(question)
 
 	if(groupQuest.activeQuest == false) then
-		ETW_printToChat("Starting group quest: " .. question.name)
-
 		ETW_GroupFrame:ShowGroupFrame(question)
 		groupQuest.activeQuest = true
 	end
@@ -64,7 +62,6 @@ end
 
 function ETW_CancelGroupQuest()
 
-	ETW_printToChat("Cancelling group quest: ")
 	groupQuest.question = nil
 	groupQuest.activeQuest = false
 	groupQuest.playerReq = 0
@@ -82,8 +79,6 @@ function ETW_CancelGroupQuest()
 end
 
 function ETW_BroadcastGroupQuestData(data)
-
-	ETW_printToChat("BROADCASTING " .. data)
 
 	SendAddonMessage(ETW_ADDONMSG_GROUPQUEST,
 		UnitName("player")..","..
@@ -141,8 +136,6 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 	-- Check our own answer first
 	if(checkAnswer(yourAnswer, GetSubZoneText(), ETW_getCurrentZone()) == false) then
 		correctAnswer = false
-	else
-		ETW_printToChat("YOU ARE RIGHT")
 	end
 
 	-- Check all other answers after
@@ -158,7 +151,6 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 				groupQuest[index].answerBox:SetErrorColor()
 			else
 				groupQuest[index].answerBox:SetSuccessColor()
-				ETW_printToChat("Player "..index.. " is RIGHT")
 			end
 		end
 	end
@@ -181,7 +173,6 @@ function ETW_SaveGroupQuestAnswer(yourAnswer)
 
 	saveAnswer(1, UnitName("player"), GetRealmName(), yourAnswer)
 	for index = 1, groupQuest.playerReq, 1 do
-		ETW_printToChat(index)
 		if(groupQuest[index].isActive == true) then
 			saveAnswer(index+1, groupQuest[index].name, groupQuest[index].realm, groupQuest[index].answerBox:GetText())
 		end
@@ -202,7 +193,7 @@ end
 do
 
 	local groupFrame = CreateFrame("Frame", frameName, UIParent, "BasicFrameTemplate")
-	groupFrame:SetPoint("RIGHT", ETW_Frame, "RIGHT", groupFrame:GetWidth(), 0)
+	groupFrame:SetPoint("CENTER", ETW_Frame, "RIGHT", groupFrame:GetWidth()/2, 0)
 	groupFrame:SetFrameStrata("TOOLTIP")
 
 	groupFrame.title = groupFrame:CreateFontString(nil, "BACKGROUND", "GameFontNormal")

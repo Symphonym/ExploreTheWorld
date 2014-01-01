@@ -25,7 +25,7 @@ local updatePageIndex, updateProgressText, updateScrollbarSize,
 	updateQuestList
 
 -- Utility functions
-local changePageIndex, showUnlockPopup, getLoreRank,
+local changePageIndex, showUnlockPopup, getQuestionRank,
 	displayQuestion, createListButton, addETWQuestion
 
 -- Slash command
@@ -211,8 +211,8 @@ local function showUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObject
 end
 
 -- Retrieves the current lore rank
-local function getLoreRank()
-	return ETW_GetLoreRank((SymphonymConfig.questions.completed / ETW_LoreQuestions.size) * 100)
+local function getQuestionRank()
+	return ETW_GetQuestionRank((SymphonymConfig.questions.completed / ETW_LoreQuestions.size) * 100)
 end
 
 
@@ -514,39 +514,41 @@ end
 
 function addETWQuestion(question)
 
+	local questionList = ETW_Frame.questionList
+
 	-- If questions already exists in the list, abort adding a new one
-	if(ETW_Frame.questionList.items[question.ID] ~= nil) then
+	if(questionList.items[question.ID] ~= nil) then
 		return
 	end
 
+	local function newPage()
+		questionList.pages[questionList.maxPageIndex] = {}
+		questionList.pages[questionList.maxPageIndex].items = {}
+		questionList.pages[questionList.maxPageIndex].totalCount = 0
+		questionList.pages[questionList.maxPageIndex].count = 0
+	end
 
 	-- Create new page if none exists
-	if(ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex] == nil) then
-		ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex] = {}
-		ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].items = {}
-		ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].totalCount = 0
-		ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].count = 0
+	if(questionList.pages[questionList.maxPageIndex] == nil) then
+		newPage()
 	end
 
 	-- Limit page question count
-	if not(ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].totalCount + 1 <= SymphonymConfig.options.pageLimit) then
-		ETW_Frame.questionList.maxPageIndex = ETW_Frame.questionList.maxPageIndex + 1
-		ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex] = {}
-		ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].items = {}
-		ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].totalCount = 0
-		ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].count = 0
+	if not(questionList.pages[questionList.maxPageIndex].totalCount + 1 <= SymphonymConfig.options.pageLimit) then
+		questionList.maxPageIndex = questionList.maxPageIndex + 1
+		newPage()
 	end
 
-	changePageIndex(ETW_Frame.questionList.maxPageIndex)
+	changePageIndex(questionList.maxPageIndex)
 	question.buttonIndex = 0
 
-	ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].items[question.ID] = question
-	ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].totalCount = ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].totalCount + 1
-	ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].count = ETW_Frame.questionList.pages[ETW_Frame.questionList.maxPageIndex].totalCount
+	questionList.pages[questionList.maxPageIndex].items[question.ID] = question
+	questionList.pages[questionList.maxPageIndex].totalCount = questionList.pages[questionList.maxPageIndex].totalCount + 1
+	questionList.pages[questionList.maxPageIndex].count = questionList.pages[questionList.maxPageIndex].totalCount
 
 
 	-- Insert question to question list
-	ETW_Frame.questionList.items[question.ID] = question
+	questionList.items[question.ID] = question
 end
 
 
@@ -587,25 +589,16 @@ end
 
 do
 	-- Create the mainframe containing everything
-	local frame = CreateFrame("Frame", "ETW_Frame", UIParent, "PortraitFrameTemplate");
+
+	local frame = ETW_Templates:CreatePortraitFrame("ETW_MainFrame", UIParent, "|cFF00FF00Explore the World|r   Version " .. GetAddOnMetadata("ExploreTheWorld", "Version"), ETW_ADDONICON)
 	frame:SetWidth(550);
 	frame:SetHeight(500);
 	frame:SetPoint("CENTER")
-	frame:SetFrameStrata("MEDIUM")
-	frame:SetFrameLevel(10)
 
-	-- Create title text
-	local title = frame:CreateFontString(frameName.."Title", "BACKGROUND", "GameFontNormal")
-	title:SetPoint("CENTER", frame, "TOP", 0, -12);
-	title:SetTextHeight(13);
-	title:SetText("|cFF00FF00Explore the World|r   Version " .. GetAddOnMetadata("ExploreTheWorld", "Version"))
-
-	-- Template functions
-	ETW_makeFrameDraggable(frame)
-	ETW_givePortraitFrameIcon(frame)
+	ETW_Templates:MakeFrameDraggable(frame)
 
 	-- Option window button
-	local optionButton = CreateFrame("Button", frameName.."OptionButton", frame, "UIPanelButtonTemplate")
+	local optionButton = CreateFrame("Button", "ETW_OptionMenuButton", frame, "UIPanelButtonTemplate")
 	optionButton:SetSize(60, 18)
 	optionButton:SetPoint("TOPRIGHT", -25, -2)
 	optionButton:SetText("Options")
@@ -615,39 +608,27 @@ do
 		end
 	end)
 
-	-- Highlight for icon, when you hover over it
-	local iconHighlight = frame:CreateTexture(frameName.."IconHighlight")
-	iconHighlight:SetTexture("Interface\\UNITPOWERBARALT\\WowUI_Circular_Frame.blp")
-	iconHighlight:SetSize(100, 100)
-	iconHighlight:SetPoint("TOPLEFT", frame, -25, 27)
-	iconHighlight:SetDrawLayer("BORDER", 6)
-	iconHighlight:SetAlpha(0.5)
-	iconHighlight:Hide()
-	frame.iconHighlight = iconHighlight
-
 	-- Frame for icon, used when targeting it
-	local iconFrame = CreateFrame("Frame", frameName.."IconFrame", frame)
+	local iconFrame = CreateFrame("Frame", nil, frame)
 	iconFrame:SetAllPoints(frame.portraitIcon)
-	iconFrame:SetScript("OnMouseUp", function(self, button)
-		if(frame.iconHighlight:IsMouseOver()) then
-			ETW_Frame.startFrame:showFrame()
-			ETW_Frame.questionFrame:Hide()
-		end
-		frame.iconHighlight:SetAlpha(0.5)
-	end)
 	iconFrame:SetScript("OnMouseDown", function(self, button)
-		frame.iconHighlight:SetAlpha(0.8)
+		frame.portraitIcon:SetVertexColor(0.5,0.5,0.5,1)
+	end)
+	iconFrame:SetScript("OnMouseUp", function(self, button)
+		ETW_Frame.startFrame:showFrame()
+		ETW_Frame.questionFrame:Hide()
+		frame.portraitIcon:SetVertexColor(1,1,1,1)
 		PlaySound("GAMEDIALOGOPEN")
 	end)
 	iconFrame:SetScript("OnEnter", function(self, motion)
-		frame.iconHighlight:Show()
+		frame.portraitIcon:SetVertexColor(0.8,0.99,0.8,1)
 	end)
 	iconFrame:SetScript("OnLeave", function(self, motion)
-		frame.iconHighlight:Hide()
+		frame.portraitIcon:SetVertexColor(1,1,1,1)
 	end)
 
 	-- Quest progress text, showing quests done / maximum quests
-	local progressText = frame:CreateFontString(frameName.."ProgressText", "BACKGROUND", "GameFontNormal")
+	local progressText = frame:CreateFontString("ETW_CompletedQuestText", "ARTWORK", "GameFontNormal")
 	progressText:SetPoint("TOPLEFT", 70, -40)
 	frame.progressText = progressText
 
@@ -663,7 +644,7 @@ end
 
 do
 	-- ScrollFrame for all the unlocked questions, i.e the boundaries of the scroll window 
-	local scrollFrame = CreateFrame("ScrollFrame", frameName.."ScrollFrame", ETW_Frame) 
+	local scrollFrame = CreateFrame("ScrollFrame", "ETW_QuestionScrollFrame", ETW_Frame) 
 	scrollFrame:SetPoint("TOPLEFT", -40, -90) 
 	scrollFrame:SetPoint("BOTTOMRIGHT", -320, 26)
 	scrollFrame.background = scrollFrame:CreateTexture() 
@@ -679,7 +660,7 @@ do
 	end)
 
 	-- Scrollbar for all the unlocked questions
-	local scrollBar = CreateFrame("Slider", frameName.."ScrollBar", scrollFrame, "UIPanelScrollBarTemplate") 
+	local scrollBar = CreateFrame("Slider", "ETW_QuestionScrollbar", scrollFrame, "UIPanelScrollBarTemplate") 
 	scrollBar:SetPoint("TOPLEFT", scrollFrame, "TOPRIGHT", 4, -16) 
 	scrollBar:SetPoint("BOTTOMLEFT", scrollFrame, "BOTTOMRIGHT", 4, 16) 
 	scrollBar:SetWidth(16)
@@ -687,6 +668,7 @@ do
 	scrollBar:SetScript("OnValueChanged", function (self, value) 
 		self:GetParent():SetVerticalScroll(value)
 
+		-- Select arrow displaying
 		if(ETW_Frame.questionList.selectArrow:GetTop()) then
 			if(ETW_Frame.questionList.selectArrow:GetTop() > ETW_Frame.scrollFrame:GetTop()) then
 				ETW_Frame.questionFrame.selectDownArrow:Hide()
@@ -802,12 +784,12 @@ ETW_DropDownMenuOpenButton:Show()
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
---       Search box
+--       Search box for searching questions
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 do
 	-- Answerbox in which you input your answer
-	local searchBox = CreateFrame("EditBox", frameName.."SearchBox", ETW_Frame, "SearchBoxTemplate")
+	local searchBox = CreateFrame("EditBox", "ETW_QuestionSearchBox", ETW_Frame, "SearchBoxTemplate")
 	searchBox:SetPoint("TOPLEFT", 15+ETW_DropDownMenuOpenButton:GetWidth(), -63)
 	searchBox:SetSize(136, 20)
 	searchBox:SetAutoFocus(false)
@@ -847,36 +829,41 @@ do
 	startFrame.icon:SetSize(70, 70)
 	startFrame.icon:SetPoint("CENTER", startFrame, 0, 120)
 
+	-- Rank related frame for addon icon
 	startFrame.iconBorder = startFrame:CreateTexture()
 	startFrame.iconBorder:SetTexture("Interface\\UNITPOWERBARALT\\Mechanical_Circular_Frame.blp")
 	startFrame.iconBorder:SetSize(115, 115)
 	startFrame.iconBorder:SetPoint("CENTER", startFrame, 0, 120)
 	startFrame.iconBorder:SetDrawLayer("OVERLAY", 6)
 
-	startFrame.title = startFrame:CreateFontString(nil, "BACKGROUND", "QuestTitleFontBlackShadow")
+	-- Title in large font displayed at the top
+	startFrame.title = startFrame:CreateFontString(nil, "ARTWORK", "QuestTitleFontBlackShadow")
 	startFrame.title:SetText("Explore the World")
 	startFrame.title:SetTextHeight(25)
 	startFrame.title:SetPoint("TOP", 0, -40)
 
-	startFrame.welcomeText = startFrame:CreateFontString(nil, "BACKGROUND", "QuestTitleFontBlackShadow")
+	-- Text displaying your name in class colors
+	startFrame.welcomeText = startFrame:CreateFontString(nil, "ARTWORK", "QuestTitleFontBlackShadow")
 	startFrame.welcomeText:SetTextHeight(18)
 	startFrame.welcomeText:SetPoint("CENTER", 0, 65)
 
-	startFrame.rankText = startFrame:CreateFontString(nil, "BACKGROUND", "GameFontNormal")
+	-- Text displaying your rank
+	startFrame.rankText = startFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	startFrame.rankText:SetTextHeight(14)
 	startFrame.rankText:SetPoint("CENTER", 0, 45)
 
-	startFrame.authorFrame = CreateFrame("Frame", "startFrame.authorFrame", startFrame, "InsetFrameTemplate3")
+	-- Frame containing author info
+	startFrame.authorFrame = CreateFrame("Frame", "ETW_CreditFrame", startFrame, "InsetFrameTemplate3")
 	startFrame.authorFrame:SetSize(startFrame:GetWidth()-20, 250)
 	startFrame.authorFrame:SetPoint("CENTER", 0, -100)
 
-	startFrame.authorFrame.text = startFrame.authorFrame:CreateFontString(nil, "FOREGROUND", "GameFontNormal")
+	startFrame.authorFrame.text = startFrame.authorFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	startFrame.authorFrame.text:SetText(ETW_CREDIT_STRING)
 	startFrame.authorFrame.text:SetTextHeight(15)
 	startFrame.authorFrame.text:SetJustifyH("LEFT")
 	startFrame.authorFrame.text:SetPoint("TOPLEFT", 15, -20)
 
-	startFrame.authorFrame.thanksText = startFrame.authorFrame:CreateFontString(nil, "FOREGROUND", "GameFontNormal")
+	startFrame.authorFrame.thanksText = startFrame.authorFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	startFrame.authorFrame.thanksText:SetText(ETW_THANKSTO_STRING)
 	startFrame.authorFrame.thanksText:SetTextHeight(12)
 	startFrame.authorFrame.thanksText:SetJustifyH("LEFT")
@@ -888,7 +875,7 @@ do
 		local classR, classG, classB = classColor.r, classColor.g, classColor.b
 
 		self.welcomeText:SetText(ETW_decimalToHex(classR, classG, classB) .. UnitName("player") .. "|r")
-		self.rankText:SetText(getLoreRank())
+		self.rankText:SetText(getQuestionRank())
 
 		ETW_Frame.questionList.selectArrow:Hide()
 		self:Show()
@@ -1080,7 +1067,7 @@ end
 
 do
 	-- Page number display
-	local pageIndexBox = CreateFrame("EditBox", frameName.."PageIndexBox", ETW_Frame, "InputBoxTemplate")
+	local pageIndexBox = CreateFrame("EditBox", "ETW_PageIndexBox", ETW_Frame, "InputBoxTemplate")
 	pageIndexBox:SetPoint("CENTER", ETW_Frame.scrollFrame, "BOTTOMRIGHT", (-ETW_LISTITEM_WIDTH/2), -13)
 	pageIndexBox:SetSize(80, 20)
 	pageIndexBox:SetJustifyH("CENTER")
@@ -1104,7 +1091,7 @@ do
 
 
 	-- Left page end toggling
-	local leftEnd = CreateFrame("Button", frameName.."LeftEndPageButton", ETW_Frame, "UIPanelButtonTemplate")
+	local leftEnd = CreateFrame("Button", "ETW_LeftEndPageButton", ETW_Frame, "UIPanelButtonTemplate")
 	leftEnd:SetPoint("CENTER", ETW_Frame.scrollFrame, "BOTTOMRIGHT", (-ETW_LISTITEM_WIDTH/2)-85, -13)
 	leftEnd:SetSize(25, 20)
 	leftEnd:SetText("<<")
@@ -1115,7 +1102,7 @@ do
 	end)
 
 	-- Left page toggling
-	local left = CreateFrame("Button", frameName.."LeftPageButton", ETW_Frame, "UIPanelButtonTemplate")
+	local left = CreateFrame("Button", "ETW_LeftPageButton", ETW_Frame, "UIPanelButtonTemplate")
 	left:SetPoint("CENTER", ETW_Frame.scrollFrame, "BOTTOMRIGHT", (-ETW_LISTITEM_WIDTH/2)-62, -13)
 	left:SetSize(20, 20)
 	left:SetText("<")
@@ -1129,7 +1116,7 @@ do
 
 
 	-- Right page toggling
-	local rightEnd = CreateFrame("Button", frameName.."RightEndPageButton", ETW_Frame, "UIPanelButtonTemplate")
+	local rightEnd = CreateFrame("Button", "ETW_RightEndPageButton", ETW_Frame, "UIPanelButtonTemplate")
 	rightEnd:SetPoint("CENTER", ETW_Frame.scrollFrame, "BOTTOMRIGHT", (-ETW_LISTITEM_WIDTH/2)+85, -13)
 	rightEnd:SetSize(25, 20)
 	rightEnd:SetText(">>")
@@ -1140,7 +1127,7 @@ do
 	end)
 
 	-- Right page toggling
-	local right = CreateFrame("Button", frameName.."RightPageButton", ETW_Frame, "UIPanelButtonTemplate")
+	local right = CreateFrame("Button", "ETW_RightPageButton", ETW_Frame, "UIPanelButtonTemplate")
 	right:SetPoint("CENTER", ETW_Frame.scrollFrame, "BOTTOMRIGHT", (-ETW_LISTITEM_WIDTH/2)+62, -13)
 	right:SetSize(20, 20)
 	right:SetText(">")
@@ -1164,6 +1151,7 @@ end
 --       QUESTION FRAME
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+-- Function ran when got a link to question
 local function linkToQuestion(questionID)
 
 	local question = ETW_Frame.questionList.items[questionID]
@@ -1207,23 +1195,28 @@ do
 	questionFrame.linkButton:SetSize(15, 15)
 	questionFrame.linkButton:SetPoint("TOPRIGHT", -5, -10)
 
-	questionFrame.linkButton.inputFrame = CreateFrame("Frame", nil, questionFrame.linkButton, "BasicFrameTemplate")
+	questionFrame.linkButton.inputFrame = CreateFrame("Frame", "ETW_LinkInputFrame", questionFrame.linkButton, "BasicFrameTemplate")
 	questionFrame.linkButton.inputFrame:SetSize(150, 50)
 	questionFrame.linkButton.inputFrame:SetPoint("CENTER", 0, 35)
 	questionFrame.linkButton.inputFrame:EnableMouse(true)
 	questionFrame.linkButton.inputFrame:Hide()
 
-	questionFrame.linkButton.inputFrame.text = questionFrame.linkButton.inputFrame:CreateFontString(nil, "BACKGROUND", "GameFontHighlightLeft")
+	questionFrame.linkButton.inputFrame.text = questionFrame.linkButton.inputFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlightLeft")
 	questionFrame.linkButton.inputFrame.text:SetText("Link to:")
 	questionFrame.linkButton.inputFrame.text:SetPoint("TOPLEFT", 5, -4)
 
-	questionFrame.linkButton.inputFrame.input = CreateFrame("EditBox", frameName.."LinkInputBox", questionFrame.linkButton.inputFrame, "InputBoxTemplate")
+	questionFrame.linkButton.inputFrame.input = CreateFrame("EditBox", "ETW_LinkInputBox", questionFrame.linkButton.inputFrame, "InputBoxTemplate")
 	questionFrame.linkButton.inputFrame.input:SetSize(questionFrame.linkButton.inputFrame:GetWidth()-20, 30)
 	questionFrame.linkButton.inputFrame.input:SetPoint("BOTTOM", 0, 2)
 	questionFrame.linkButton.inputFrame.input:SetScript("OnEnterPressed", function(self)
+
 		ETW_printToChat(" Linking question " .. questionFrame.question.name .. "[" .. questionFrame.question.ID .. "] to '" .. self:GetText() .. "'")
-		SendAddonMessage(ETW_ADDONMSG_LINK, tostring(questionFrame.question.ID) .. ","..getLoreRank()..","..GetAddOnMetadata("ExploreTheWorld", "Version"), "WHISPER" , self:GetText())
+		SendAddonMessage(ETW_ADDONMSG_LINK,
+			tostring(questionFrame.question.ID)..","..
+			getQuestionRank()..","..
+			GetAddOnMetadata("ExploreTheWorld", "Version"), "WHISPER" , self:GetText())
 		questionFrame.linkButton.inputFrame:Hide()
+
 	end)
 
 	RegisterAddonMessagePrefix(ETW_ADDONMSG_LINK)
@@ -1271,7 +1264,7 @@ do
 	questionFrame.titleFrame:SetSize(ETW_Frame.contentFrame:GetWidth()-20, 40)
 	questionFrame.titleFrame:SetPoint("TOP", 0, -15)
 	-- Title text of the question frame, used for displaying name of the question
-	questionFrame.titleFrame.title = questionFrame.titleFrame:CreateFontString(nil, "BACKGROUND", "QuestTitleFontBlackShadow")
+	questionFrame.titleFrame.title = questionFrame.titleFrame:CreateFontString(nil, "ARTWORK", "QuestTitleFontBlackShadow")
 	questionFrame.titleFrame.title:SetTextHeight(18)
 	questionFrame.titleFrame.title:SetPoint("LEFT", 44, 0)
 	-- Categoryicon to be displayed alongside the title
@@ -1280,7 +1273,7 @@ do
 	questionFrame.titleFrame.categoryIcon:SetPoint("LEFT", 5, 0)
 
 	-- Author text, i.e the person who created the question
-	questionFrame.authorText = questionFrame:CreateFontString(nil, "BACKGROUND", "GameFontNormal")
+	questionFrame.authorText = questionFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	questionFrame.authorText:SetTextHeight(10)
 	questionFrame.authorText:SetPoint("BOTTOMRIGHT", -20, 4)
 
@@ -1288,7 +1281,6 @@ do
 	questionFrame.descriptionFrame = CreateFrame("Frame", "questionFrame.descriptionFrame", questionFrame, "InsetFrameTemplate2")
 	questionFrame.descriptionFrame:SetSize(ETW_Frame.contentFrame:GetWidth()-20, ETW_Frame.contentFrame:GetHeight()*0.35)
 	questionFrame.descriptionFrame:SetPoint("CENTER", 0, -69)
-	--questionFrame.descriptionFrame:SetBackdrop(ETW_DEFAULT_BACKDROP)
 
 	-- Text of the description frame, i.e the text that describes the question
 	questionFrame.descriptionFrame.text = questionFrame.descriptionFrame:CreateFontString(nil, nil, "QuestFont");
@@ -1299,8 +1291,6 @@ do
 	questionFrame.descriptionFrame.background = questionFrame.descriptionFrame:CreateTexture(nil, "BACKGROUND")
 	questionFrame.descriptionFrame.background:SetTexture(ETW_QUESTLOG_BACKGROUND)
 	questionFrame.descriptionFrame.background:SetTexCoord(0.01, 0.6, 0, 0.68)
-	--questionFrame.descriptionFrame.background:SetSize(questionFrame.descriptionFrame:GetWidth()-7, questionFrame.descriptionFrame:GetHeight()-6)
-	--questionFrame.descriptionFrame.background:SetPoint("TOPLEFT", 7, -7)
 	questionFrame.descriptionFrame.background:SetAllPoints()
 	questionFrame:Hide()
 
@@ -1361,7 +1351,7 @@ do
 	end)
 	-- Allow enter to be pressed when typing in answerbox to check answer
 	questionFrame.answerBox:SetScript("OnEnterPressed", function(self)
-		questionFrame:checkAnswer()
+		questionFrame:validateAnswer()
 	end)
 
 	-- Confirmbutton for answering question by clicking a button instead of pressing enter
@@ -1370,7 +1360,7 @@ do
 	questionFrame.confirmButton:SetPoint("BOTTOMRIGHT", 0, 18)
 	questionFrame.confirmButton:SetScript("PostClick", function(self, button, down)
 		if(button == "LeftButton" and not down) then
-			questionFrame:checkAnswer()
+			questionFrame:validateAnswer()
 		end
 	end)
 
@@ -1387,24 +1377,9 @@ do
 
 
 	-- 3D model viewer for NPC's
-	questionFrame.imageFrame.npcModel = CreateFrame("PlayerModel","questionFrame.imageFrame.npcModel",questionFrame.imageFrame)
+	questionFrame.imageFrame.npcModel = ETW_Templates:CreateRotatingModel("ETW_NpcModelFrame", questionFrame.imageFrame)
 	questionFrame.imageFrame.npcModel:SetAllPoints(questionFrame.imageFrame.image)
-	questionFrame.imageFrame.npcModel.rotation = 0
 	questionFrame.imageFrame.npcModel.zoom = ETW_MODEL_NPC_ZOOM
-	questionFrame.imageFrame.npcModel:SetScript("OnUpdate", function(self, elapsed)
-
-		if(SymphonymConfig.options.rotate3DModel) then
-			if(questionFrame:IsShown() and questionFrame.imageFrame.npcModel:IsShown()) then
-				self.rotation = self.rotation + elapsed
-
-				if(self.rotation >= 2*math.pi) then
-					self.rotation = 0
-				end
-
-				self:SetFacing(self.rotation)
-			end
-		end
-	end)
 	questionFrame.imageFrame.npcModel:SetScript("OnMouseWheel", function(self, delta)
 		self.zoom = self.zoom + delta*(ETW_MODEL_NPC_MAXZOOM*0.05)
 		if(self.zoom < ETW_MODEL_NPC_MINZOOM) then
@@ -1415,11 +1390,7 @@ do
 
 		self:SetPortraitZoom(self.zoom)
 	end)
-	questionFrame.imageFrame.npcModel.resetButton = CreateFrame("Button","questionFrame.imageFrame.npcModel.resetButton",questionFrame.imageFrame.npcModel, "UIPanelButtonTemplate")
-	questionFrame.imageFrame.npcModel.resetButton:SetText("Reset")
-	questionFrame.imageFrame.npcModel.resetButton:SetPoint("BOTTOMRIGHT", questionFrame.imageFrame, "BOTTOMRIGHT")
-	questionFrame.imageFrame.npcModel.resetButton:SetSize(45, 20)
-	questionFrame.imageFrame.npcModel.resetButton:SetScript("PostClick", function(self, button, down)
+	questionFrame.imageFrame.npcModel.resetButton:HookScript("OnClick", function(self, button, down)
 		if(button == "LeftButton" and not down) then
 			questionFrame.imageFrame.npcModel.zoom = ETW_MODEL_NPC_ZOOM
 			questionFrame.imageFrame.npcModel:SetPortraitZoom(ETW_MODEL_NPC_ZOOM)
@@ -1430,22 +1401,10 @@ do
 	questionFrame.imageFrame.npcModel:Hide()
 
 	-- 3D model viewer for model's that are not NPC's with displayid's
-	questionFrame.imageFrame.miscModel = CreateFrame("PlayerModel","questionFrame.imageFrame.miscModel",questionFrame.imageFrame)
+	questionFrame.imageFrame.miscModel = ETW_Templates:CreateRotatingModel("ETW_MiscModelFrame", questionFrame.imageFrame)
 	questionFrame.imageFrame.miscModel:SetAllPoints(questionFrame.imageFrame.image)
-	questionFrame.imageFrame.miscModel.rotation = 0
 	questionFrame.imageFrame.miscModel.zoom = ETW_MODEL_MISC_ZOOM
-	questionFrame.imageFrame.miscModel:SetScript("OnUpdate", function(self, elapsed)
-
-		if(questionFrame:IsShown() and questionFrame.imageFrame.miscModel:IsShown()) then
-			self.rotation = self.rotation + elapsed
-
-			if(self.rotation >= 2*math.pi) then
-				self.rotation = 0
-			end
-
-			self:SetFacing(self.rotation)
-		end
-	end)
+	questionFrame.imageFrame.miscModel.resetButton:Hide()
 	questionFrame.imageFrame.miscModel:Hide()
 
 	-- Modifies functionality of questionframe when a question is completed
@@ -1456,9 +1415,12 @@ do
 
 		self.answerBox:Disable()
 		self.confirmButton:Disable()
+
+		-- Update completed quests after completing this question
+		updateProgressText()
 	end
 
-	function questionFrame:meetsZoneRequirements()
+	function questionFrame:checkZoneRequirement()
 		if(self.question.zoneRequirementHash ~= nil) then
 			for _, zoneHash in pairs(self.question.zoneRequirementHash) do
 
@@ -1475,27 +1437,17 @@ do
 
 	end
 
-	-- Checks if the answer in the answerbox is the correct one, by crosschecking hash values
 	function questionFrame:checkAnswer()
-
-		-- Optional zone required, a zone you have to be in to answer the question
-		local zoneRequirement = self:meetsZoneRequirements()
-		self.answerBox.fade.text:SetText("You're not at the required zone")
-		self.answerBox.fade.fading = true
-		self.answerBox.fade.fadeAlpha = 1
-		self.answerBox.fade.elapsedTime = 0
-
 		local correctAnswer = false
-		local userAnswerHash = ETW_createHash(self.answerBox:GetText())
 
 		-- Check group quest answer
 		if(self.question.category == ETW_GROUPQUEST_CATEGORY and self.question.groupQuest ~= nil) then
 			correctAnswer = ETW_CheckGroupQuestAnswer(self.answerBox:GetText())
 
-			if(correctAnswer == true) then ETW_SaveGroupQuestAnswer(self.answerBox:GetText()) end
-
 		-- Check normal answer
 		else
+
+			local userAnswerHash = ETW_createHash(self.answerBox:GetText())
 
 			-- Multiple answer support :D
 			for _, answer in pairs(self.question.answer) do
@@ -1507,33 +1459,52 @@ do
 			end
 		end
 
-		-- Hash a lowercase version of the text in the answerbox and compare to answer
-		if(zoneRequirement and correctAnswer) then
+		return correctAnswer
+	end
 
-			-- Create config table for question if none exists
-			if not(SymphonymConfig.questions[self.question.ID]) then
-				SymphonymConfig.questions[self.question.ID] = {}
-			end
+	function questionFrame:saveAnswer()
+		-- Create config table for question if none exists
+		if not(SymphonymConfig.questions[self.question.ID]) then
+			SymphonymConfig.questions[self.question.ID] = {}
+		end
+
+		if(self.question.category == ETW_GROUPQUEST_CATEGORY) then
+			ETW_SaveGroupQuestAnswer(self.answerBox:GetText())
+		else
+			SymphonymConfig.questions[self.question.ID].answer = self.answerBox:GetText()
+		end
+	end
+
+	-- Checks if the answer in the answerbox is the correct one, by crosschecking hash values
+	function questionFrame:validateAnswer()
+
+		-- Optional zone required, a zone you have to be in to answer the question
+		local zoneRequirement = self:checkZoneRequirement()
+
+		-- Reset fade variables
+		self.answerBox.fade.text:SetText("You're not at the required zone")
+		self.answerBox.fade.fading = true
+		self.answerBox.fade.fadeAlpha = 1
+		self.answerBox.fade.elapsedTime = 0
+		
+
+		-- Hash a lowercase version of the text in the answerbox and compare to answer
+		if(zoneRequirement and self:checkAnswer()) then
 
 			-- Disable input events for answerbox as answer is already inputted
 			self.answerBox:unregisterInputEvents()
 
-			-- Unlock sound
-			PlaySound("igQuestListComplete")
-			self:completeQuestion()
-
-			-- Store answer in config file, as it is now known anyway
-			if(self.question.category ~= ETW_GROUPQUEST_CATEGORY) then
-				SymphonymConfig.questions[self.question.ID].answer = self.answerBox:GetText()
-			end
+			-- Store plain answer in config file, as it is now known to us anyway
+			self:saveAnswer()
 
 			-- Append completed qs
 			SymphonymConfig.questions.completed = SymphonymConfig.questions.completed + 1
 
-			-- Update completed quests after completing this question
-			updateProgressText()
-
+			-- Unlock sound
+			PlaySound("igQuestListComplete")
+			self:completeQuestion()
 			showUnlockPopup(nil, nil, nil, nil, scanProgress())
+			
 			ETW_Frame.questionList.buttons[self.question.buttonIndex]:highlightGreen()
 		else
 			PlaySound("igPlayerInviteDecline")

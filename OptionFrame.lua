@@ -5,32 +5,14 @@
 ----------------------------------------------------------------------------------
 
 do 
-	local options = CreateFrame("Frame", "ETW_OptionFrame", UIParent, "PortraitFrameTemplate")
-	options:SetFrameStrata("HIGH")
-	options:SetFrameLevel(20)
+	local options = ETW_Templates:CreatePortraitFrame("ETW_OptionFrame", UIParent, "ETW Options", ETW_OPTIONICON)--CreateFrame("Frame", "ETW_OptionFrame", UIParent, "PortraitFrameTemplate")
 	options:SetPoint("CENTER")
 	options:SetSize(250, 300)
 
-	ETW_givePortraitFrameIcon(options, ETW_OPTIONICON)
 	-- Extra tweaking because optionicon not same size
 	options.portraitIcon:SetPoint("TOPLEFT", -2, 5)
 
-	options.title = options:CreateFontString(nil, "BACKGROUND", "GameFontNormal")
-	options.title:SetText("ETW Options")
-	options.title:SetTextHeight(13)
-	options.title:SetPoint("TOP", 20, -5)
-
-	options:RegisterForDrag("LeftButton")
-	options:EnableMouse(true)
-	options:SetMovable(true)
-
-	options:SetScript("OnDragStart", function(self, button)
-		self:StartMoving()
-	end)
-	options:SetScript("OnDragStop", function(self)
-		self:StopMovingOrSizing()
-	end)
-
+	ETW_Templates:MakeFrameDraggable(options)
 	options:Hide()
 
 end
@@ -40,75 +22,69 @@ end
 --       CHECK BUTTONS
 ----------------------------------------------------------------------------------
 
-ETW_OptionFrame.checkModelRotation = CreateFrame("CheckButton", "ETW_OptionFrame.checkModelRotation", ETW_OptionFrame, "UICheckButtonTemplate")
-ETW_OptionFrame.checkModelRotation:SetPoint("LEFT", 10, 30)
-ETW_OptionFrame.checkModelRotation:SetSize(30, 30)
-ETW_OptionFrame.checkModelRotation:SetChecked(SymphonymConfig.options.rotate3DModel)
-ETW_OptionFrame.checkModelRotation.text = _G["ETW_OptionFrame.checkModelRotationText"]
-ETW_OptionFrame.checkModelRotation.text:SetText("Rotate 3D models")
-ETW_OptionFrame.checkModelRotation:SetScript("OnClick", function(self,event,arg1) 
-	SymphonymConfig.options.rotate3DModel = self:GetChecked()
-end)
+-- 3D model rotation
+do
+	local button = ETW_Templates:CreateCheckButton("ETW_Options_ModelRotation", ETW_OptionFrame, "Rotate 3D models")
+	button:SetPoint("TOPLEFT", 10, -70)
+	button:HookScript("OnClick", function(self,event,arg1) 
+		SymphonymConfig.options.rotate3DModel = self:GetChecked()
+	end)
 
-ETW_OptionFrame.checkInCombat = CreateFrame("CheckButton", "ETW_OptionFrame.checkInCombat", ETW_OptionFrame, "UICheckButtonTemplate")
-ETW_OptionFrame.checkInCombat:SetPoint("LEFT", 10, 0)
-ETW_OptionFrame.checkInCombat:SetSize(30, 30)
-ETW_OptionFrame.checkInCombat:SetChecked(SymphonymConfig.options.scanInCombat)
-ETW_OptionFrame.checkInCombat.text = _G["ETW_OptionFrame.checkInCombatText"]
-ETW_OptionFrame.checkInCombat.text:SetText("Scan for question unlocks in combat")
-ETW_OptionFrame.checkInCombat:SetScript("OnClick", function(self,event,arg1)
-	SymphonymConfig.options.scanInCombat = self:GetChecked()
-end)
+	ETW_OptionFrame.checkModelRotation = button
+end
 
-ETW_OptionFrame.checkUnlockPopup = CreateFrame("CheckButton", "ETW_OptionFrame.checkUnlockPopup", ETW_OptionFrame, "UICheckButtonTemplate")
-ETW_OptionFrame.checkUnlockPopup:SetPoint("LEFT", 10, -30)
-ETW_OptionFrame.checkUnlockPopup:SetSize(30, 30)
-ETW_OptionFrame.checkUnlockPopup:SetChecked(SymphonymConfig.options.showUnlockPopups)
-ETW_OptionFrame.checkUnlockPopup.text = _G["ETW_OptionFrame.checkUnlockPopupText"]
-ETW_OptionFrame.checkUnlockPopup.text:SetText("Show unlock popups")
-ETW_OptionFrame.checkUnlockPopup:SetScript("OnClick", function(self,event,arg1) 
-	SymphonymConfig.options.showUnlockPopups = self:GetChecked()
-end)
+-- In combat question scanning
+do
+	local button = ETW_Templates:CreateCheckButton("ETW_Options_InCombatScan", ETW_OptionFrame, "Scan for unlocks in combat")
+	button:SetPoint("TOPLEFT", 10, -100)
+	button:HookScript("OnClick", function(self,event,arg1) 
+		SymphonymConfig.options.scanInCombat = self:GetChecked()
+	end)
 
-ETW_OptionFrame.checkIgnoreLinks = CreateFrame("CheckButton", "ETW_OptionFrame.checkIgnoreLinks", ETW_OptionFrame, "UICheckButtonTemplate")
-ETW_OptionFrame.checkIgnoreLinks:SetPoint("LEFT", 10, -60)
-ETW_OptionFrame.checkIgnoreLinks:SetSize(30, 30)
-ETW_OptionFrame.checkIgnoreLinks:SetChecked(SymphonymConfig.options.ignoreLinks)
-ETW_OptionFrame.checkIgnoreLinks.text = _G["ETW_OptionFrame.checkIgnoreLinksText"]
-ETW_OptionFrame.checkIgnoreLinks.text:SetText("Ignore question links")
-ETW_OptionFrame.checkIgnoreLinks:SetScript("OnClick", function(self,event,arg1) 
-	SymphonymConfig.options.ignoreLinks = self:GetChecked()
-end)
+	ETW_OptionFrame.checkInCombat = button
+end
+
+-- Show unlock popups
+do
+	local button = ETW_Templates:CreateCheckButton("ETW_Options_ShowUnlockPopup", ETW_OptionFrame, "Show unlock popups")
+	button:SetPoint("TOPLEFT", 10, -130)
+	button:HookScript("OnClick", function(self,event,arg1) 
+		SymphonymConfig.options.showUnlockPopups = self:GetChecked()
+	end)
+
+	ETW_OptionFrame.checkUnlockPopup = button
+end
+
+-- Ignore question links
+do
+	local button = ETW_Templates:CreateCheckButton("ETW_Options_IgnoreLinks", ETW_OptionFrame, "Ignore question links")
+	button:SetPoint("TOPLEFT", 10, -160)
+	button:HookScript("OnClick", function(self,event,arg1) 
+		SymphonymConfig.options.ignoreLinks = self:GetChecked()
+	end)
+
+	ETW_OptionFrame.checkIgnoreLinks = button
+end
+
 
 ----------------------------------------------------------------------------------
 --       SLIDERS
 ----------------------------------------------------------------------------------
 
-ETW_OptionFrame.sliderPageLimit = CreateFrame("Slider","ETW_OptionFrame.sliderPageLimit",ETW_OptionFrame,"OptionsSliderTemplate") --frameType, frameName, frameParent, frameTemplate   
-ETW_OptionFrame.sliderPageLimit:SetPoint("CENTER",0,-110)
-ETW_OptionFrame.sliderPageLimit.textLow = _G["ETW_OptionFrame.sliderPageLimitLow"]
-ETW_OptionFrame.sliderPageLimit.textHigh = _G["ETW_OptionFrame.sliderPageLimitHigh"]
-ETW_OptionFrame.sliderPageLimit.text = _G["ETW_OptionFrame.sliderPageLimitText"]
-ETW_OptionFrame.sliderPageLimit:SetMinMaxValues(10, 300)
-ETW_OptionFrame.sliderPageLimit:SetWidth(200)
-ETW_OptionFrame.sliderPageLimit.minValue, ETW_OptionFrame.sliderPageLimit.maxValue = ETW_OptionFrame.sliderPageLimit:GetMinMaxValues() 
-ETW_OptionFrame.sliderPageLimit.textLow:SetText(ETW_OptionFrame.sliderPageLimit.minValue)
-ETW_OptionFrame.sliderPageLimit.textHigh:SetText(ETW_OptionFrame.sliderPageLimit.maxValue)
-ETW_OptionFrame.sliderPageLimit.text:SetText("Question page limit: " .. SymphonymConfig.options.pageLimit)
-ETW_OptionFrame.sliderPageLimit.text:SetJustifyH("LEFT")
-ETW_OptionFrame.sliderPageLimit:SetValue(SymphonymConfig.options.pageLimit)
-ETW_OptionFrame.sliderPageLimit:SetValueStep(1)
+do
+
+	local slider = ETW_Templates:CreateSlider("ETW_Options_PageLimit", ETW_OptionFrame, "Question page limit", 1, 10, 300)
+	slider:SetPoint("CENTER",0,-75)
+	slider.description:SetText("Changing the page limit requires you to reload the UI or else errors might arise.")
 
 
-ETW_OptionFrame.sliderPageLimit:SetScript("OnValueChanged", function(self,event,arg1)
-	self.text:SetText("Question page limit: " .. math.floor(self:GetValue()))
-	SymphonymConfig.options.pageLimit = math.floor(self:GetValue())
-end)
+	slider:HookScript("OnValueChanged", function(self,event,arg1)
+		SymphonymConfig.options.pageLimit = math.floor(self:GetValue())
+	end)
 
-ETW_OptionFrame.sliderPageLimit.infoText = ETW_OptionFrame.sliderPageLimit:CreateFontString(nil, "BACKGROUND", "GameFontNormal")
-ETW_OptionFrame.sliderPageLimit.infoText:SetText("Changing the page limit requires a UI reload")
-ETW_OptionFrame.sliderPageLimit.infoText:SetTextHeight(10)
-ETW_OptionFrame.sliderPageLimit.infoText:SetPoint("CENTER", 0, -24)
+	ETW_OptionFrame.sliderPageLimit = slider
+
+end
 
 ----------------------------------------------------------------------------------
 --       VALUE INITIALIZATION
@@ -120,12 +96,12 @@ ETW_OptionFrame:SetScript("OnEvent", function(self, event, ...)
 	if(event == "PLAYER_LOGIN") then
 
 		-- CheckButtons
-		ETW_OptionFrame.checkModelRotation:SetChecked(SymphonymConfig.options.rotate3DModel)
-		ETW_OptionFrame.checkInCombat:SetChecked(SymphonymConfig.options.scanInCombat)
-		ETW_OptionFrame.checkUnlockPopup:SetChecked(SymphonymConfig.options.showUnlockPopups)
-		ETW_OptionFrame.checkIgnoreLinks:SetChecked(SymphonymConfig.options.ignoreLinks)
+		self.checkModelRotation:SetChecked(SymphonymConfig.options.rotate3DModel)
+		self.checkInCombat:SetChecked(SymphonymConfig.options.scanInCombat)
+		self.checkUnlockPopup:SetChecked(SymphonymConfig.options.showUnlockPopups)
+		self.checkIgnoreLinks:SetChecked(SymphonymConfig.options.ignoreLinks)
 
 		-- Sliders
-		ETW_OptionFrame.sliderPageLimit:SetValue(SymphonymConfig.options.pageLimit)
+		self.sliderPageLimit:SetValue(SymphonymConfig.options.pageLimit)
 	end
 end)

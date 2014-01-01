@@ -1,51 +1,41 @@
 
 local POPUP_ALPHA = 0.9
 
-local function createPopupFrame(name, icon)
+local function createPopupFrame(name, title, icon)
 
-	local popupFrame = CreateFrame("Frame", name, UIParent, "PortraitFrameTemplate")
-	popupFrame:SetFrameStrata("DIALOG")
-	popupFrame:SetFrameLevel(15)
+	local popupFrame = ETW_Templates:CreatePortraitFrame(name, UIParent, title, ETW_ADDONICON)
 	popupFrame:SetSize(250, 140)
 	popupFrame:SetAlpha(POPUP_ALPHA)
-
-	ETW_givePortraitFrameIcon(popupFrame)
-
-	popupFrame.title = popupFrame:CreateFontString(nil, "BACKGROUND", "GameFontNormal")
-	popupFrame.title:SetText("Explore the World")
-	popupFrame.title:SetTextHeight(14)
-	popupFrame.title:SetPoint("TOP", 20, -5)
 
 	popupFrame.icon = popupFrame:CreateTexture()
 	popupFrame.icon:SetTexture(icon)
 	popupFrame.icon:SetSize(50, 50)
 	popupFrame.icon:SetPoint("LEFT", 15, -28)
 
-	ETW_makeFrameDraggable(popupFrame, true)
+	ETW_Templates:MakeFrameDraggable(popupFrame, true)
 
 	return popupFrame
 
 end
-
 
 ----------------------------------------------------------------------------------
 --       POPUP FRAME FOR QUEST UNLOCKS
 ----------------------------------------------------------------------------------
 
 
-local ETW_PopupFrame = createPopupFrame("ETW_PopupFrame", ETW_UNLOCK_POPUP_ICON)
+local ETW_PopupFrame = createPopupFrame("ETW_PopupFrame", "Question unlocked", ETW_UNLOCK_POPUP_ICON)
 ETW_PopupFrame:SetPoint("TOP", 0, -100)
 
-ETW_PopupFrame.text = ETW_PopupFrame:CreateFontString(nil, "BACKGROUND", "GameFontNormal")
+ETW_PopupFrame.text = ETW_PopupFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 ETW_PopupFrame.text:SetTextHeight(14)
 ETW_PopupFrame.text:SetText("Quests unlocked")
 ETW_PopupFrame.text:SetPoint("LEFT", 80, 19)
 
-ETW_PopupFrame.unlockText = ETW_PopupFrame:CreateFontString(nil, "BACKGROUND", "GameFontHighlight")
+ETW_PopupFrame.unlockText = ETW_PopupFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ETW_PopupFrame.unlockText:SetTextHeight(12)
 ETW_PopupFrame.unlockText:SetPoint("LEFT", 80, 5)
 
-ETW_PopupFrame.infoText = ETW_PopupFrame:CreateFontString(nil, "BACKGROUND", "QuestTitleFontBlackShadow")
+ETW_PopupFrame.infoText = ETW_PopupFrame:CreateFontString(nil, "ARTWORK", "QuestTitleFontBlackShadow")
 ETW_PopupFrame.infoText:SetTextHeight(14)
 ETW_PopupFrame.infoText:SetPoint("CENTER", 25, -18)
 
@@ -230,23 +220,23 @@ end
 ----------------------------------------------------------------------------------
 
 
-local ETW_LinkPopupFrame = createPopupFrame("ETW_LinkPopupFrame", ETW_CLASSICONS)
+local ETW_LinkPopupFrame = createPopupFrame("ETW_LinkPopupFrame", "Question link", ETW_CLASSICONS)
 ETW_LinkPopupFrame:SetPoint("TOP", 0, -300)
 ETW_LinkPopupFrame.redirectFunction = function(questionID) end
 
-ETW_LinkPopupFrame.text = ETW_LinkPopupFrame:CreateFontString(nil, "BACKGROUND", "GameFontNormal")
+ETW_LinkPopupFrame.text = ETW_LinkPopupFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 ETW_LinkPopupFrame.text:SetTextHeight(14)
 ETW_LinkPopupFrame.text:SetPoint("LEFT", 80, 19)
 
-ETW_LinkPopupFrame.rankText = ETW_LinkPopupFrame:CreateFontString(nil, "BACKGROUND", "GameFontHighlight")
+ETW_LinkPopupFrame.rankText = ETW_LinkPopupFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ETW_LinkPopupFrame.rankText:SetTextHeight(12)
 ETW_LinkPopupFrame.rankText:SetPoint("LEFT", 80, 7)
 
-ETW_LinkPopupFrame.versionText = ETW_LinkPopupFrame:CreateFontString(nil, "BACKGROUND", "GameFontHighlight")
+ETW_LinkPopupFrame.versionText = ETW_LinkPopupFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ETW_LinkPopupFrame.versionText:SetTextHeight(10)
 ETW_LinkPopupFrame.versionText:SetPoint("TOPLEFT", 62, -24)
 
-ETW_LinkPopupFrame.extraText = ETW_LinkPopupFrame:CreateFontString(nil, "BACKGROUND", "GameFontHighlight")
+ETW_LinkPopupFrame.extraText = ETW_LinkPopupFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ETW_LinkPopupFrame.extraText:SetTextHeight(12)
 ETW_LinkPopupFrame.extraText:SetPoint("CENTER", 10, -18)
 
