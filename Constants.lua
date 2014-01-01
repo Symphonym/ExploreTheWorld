@@ -13,6 +13,7 @@
 				showExplore = true,
 				showInvestigation = true,
 				showTracking = true,
+				showGroupQuest = true,
 				showCompleted = true,
 				showNewQuests = true
 			},
@@ -72,6 +73,8 @@ end
 function ETW_makeFrameDraggable(frame, wholeFrame)
 
 	frame:RegisterForDrag("LeftButton")
+	frame:EnableMouse(true)
+	frame:SetMovable(true)
 
 	-- Drag by title region
 	if(wholeFrame == nil) then
@@ -116,21 +119,74 @@ end
 -- Whether or not the specified question has been answered
 function ETW_isQuestionDone(question)
 
+	local isDone = false
 	if(SymphonymConfig.questions[question.ID] and SymphonymConfig.questions[question.ID].answer) then
-		local storedHash = ETW_createHash(SymphonymConfig.questions[question.ID].answer)
+		
+		if(question.category == ETW_GROUPQUEST_CATEGORY and question.groupQuest ~= nil) then
+			local questAnswers = {}
+			for index = 1, question.groupQuest.limit, 1 do
+				questAnswers[index] = {}
+				questAnswers[index].answer = question.groupQuest[index].answer
+			end
 
-		if(type(question.answer) == "table") then
-			for _, answer in pairs(question.answer) do
-				if(storedHash == answer) then
-					return true
+			local function isCorrectAnswer(answers, answer)
+				for _, value in pairs(answers) do
+					if(ETW_createHash(answer) == value) then
+						return true
+					end
+				end
+				return false
+			end
+
+			local function checkAnswer(answer)
+				for _, value in pairs(questAnswers) do
+					if(value.taken == nil) then
+						if(isCorrectAnswer(value.answer, answer))then
+							value.taken = true
+							return true
+						end
+					end
+				end
+				return false
+			end
+
+			local correctAnswer = true
+
+			-- Check our own answer first
+			if(checkAnswer(SymphonymConfig.questions[question.ID].answer[1].answer) == false) then
+				correctAnswer = false
+				ETW_printToChat("YOU WRONG")
+			end
+
+			-- Check all other answers after
+			for index = 2, question.groupQuest.limit, 1 do
+
+				if(checkAnswer(SymphonymConfig.questions[question.ID].answer[index].answer) == false) then
+					correctAnswer = false
+					ETW_printToChat("PLAYER WRONG")
+					break
 				end
 			end
-		elseif(storedHash == question.answer) then
-			return true
+
+			if(correctAnswer == true) then
+				isDone = true
+				ETW_printToChat("IS TRU")
+			end
+
+		else
+			local storedHash = ETW_createHash(SymphonymConfig.questions[question.ID].answer)
+
+			for _, answer in pairs(question.answer) do
+				if(storedHash == answer) then
+					isDone = true
+					break
+				end
+			end
 		end
+
 	end
 
-	return false
+	return isDone
 end
 
 function ETW_printToChat(msg)
@@ -207,6 +263,7 @@ ETW_DEFAULT_BACKDROP = {
 ETW_EXPLORE_CATEGORY = "Interface\\ICONS\\Achievement_Zone_UnGoroCrater_01.blp"
 ETW_INVESTIGATION_CATEGORY = "Interface\\ICONS\\INV_Misc_Spyglass_01.blp"
 ETW_TRACKING_CATEGORY = "Interface\\ICONS\\Ability_Tracking.blp"
+ETW_GROUPQUEST_CATEGORY = "Interface\\ICONS\\inv_mask_01.blp"
 
 ETW_DEFAULT_QUESTION_TEXTURE = "Interface\\Glues\\Models\\UI_Worgen\\UI_Worgen_BG05a.blp"
 
@@ -214,6 +271,7 @@ ETW_DEFAULT_QUESTION_TEXTURE = "Interface\\Glues\\Models\\UI_Worgen\\UI_Worgen_B
 ETW_EXPLORE_DROPDOWN_NAME = "Explore"
 ETW_INVESTIGATION_DROPDOWN_NAME = "Investigation"
 ETW_TRACKING_DROPDOWN_NAME = "Tracking"
+ETW_GROUPQUEST_DROPDOWN_NAME = "Group question"
 ETW_COMPLETED_DROPDOWN_NAME = "Completed quests"
 ETW_NEWQUEST_DROPDOWN_NAME = "New quests"
 
@@ -242,6 +300,10 @@ ETW_MODEL_NPC_MAXZOOM = 0.8
 
 ETW_MODEL_MISC_ZOOM = 3
 
+-- Group quest constants
+ETW_PLAYERS_MAX = 4
+ETW_PLAYERS_TOTALMAX = 5
+
 -- Popup constants
 ETW_POPUP_SOUND = "Sound\\INTERFACE\\UI_Cutscene_Stinger.ogg"
 ETW_UNLOCK_POPUP_ICON = "Interface\\ICONS\\INV_Misc_Map02.blp"
@@ -249,6 +311,7 @@ ETW_CLASSICONS = "Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes.
 
 -- Custom addon prefix for linking questions
 ETW_ADDONMSG_LINK = "ETW_QuestionLink"
+ETW_ADDONMSG_GROUPQUEST = "ETW_GroupQuest"
 
 -- Button highlighting
 ETW_RED_HIGHLIGHT = {1, 0, 0, 0.3}

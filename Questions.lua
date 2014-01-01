@@ -26,8 +26,19 @@
 		zoneRequirementUnlockHash = "", -- Optional unlock argument, Hashed string of the name of the ZONE that you must be at to unlock the question
 		zoneRequirementUnlockCopy = true, -- If true, the contents of zoneRequirementUnlockHash will be equal to that of zoneRequirementHash
 		zoneRequirementHash = "", -- Table of hashed strings of the name of the ZONE that you must be at to answer the question
-		author = "" -- Name of the person who made the question, defaults to addon author"
-	},
+		author = "", -- Name of the person who made the question, defaults to addon author"
+
+		groupQuest = { -- Table of two or more mini questions consisting of atleast answer
+			{
+				answer = "",
+				zoneRequirementHash = "",
+			},
+			{
+				answer = "",
+				zoneRequirementHash = "",
+			}
+		}
+	},	
 
 ]]
 
@@ -153,6 +164,31 @@ ETW_LoreQuestions = {
 		zoneRequirementHash = {"2a0fd71aa349b3c662105e52d182b2950325ca79f408064b351575b983dfebcb"}
 	},
 	{
+		ID = 14,
+		name = "GROUPQUEST",
+		category = ETW_GROUPQUEST_CATEGORY,
+		modelId = "MTE2NTM=",
+		description = "As one of the few non-hostile Lost Ones he urges for more things to collect, often offering a small reward to adventures who bring something new. Found in a land blasted by magic, crawling with demons and other vile sorcery.",
+		groupQuestCategory = ETW_INVESTIGATION_CATEGORY,
+		groupQuest = 
+		{
+			[1] =
+			{
+				answer = {"99a353fdd08c4334d4217bcdf2697cecf38c300f425c23ea184c9951dabbef6b"},
+			},
+			[2] =
+			{
+				answer = {"b5ac61ae3ba971308405a7912813122b7064e6ec63c7f0067bc926b74b2f54d7"},
+				zoneRequirementHash = {"ddd9c266d963cef20646e162980f1ce63cb93d3a173b6da1cd8a0ce55da1e98b"},
+			},
+			[3] =
+			{
+				answer = {"b5ac61ae3ba971308405a7912813122b7064e6ec63c7f0067bc926b74b2f54d7"},
+				zoneRequirementHash = {"ddd9c266d963cef20646e162980f1ce63cb93d3a173b6da1cd8a0ce55da1e98b"},
+			}
+		}
+	},
+	{
 		ID = 20,
 		name = "Robo-chicken mystery",
 		category = ETW_INVESTIGATION_CATEGORY,
@@ -164,6 +200,7 @@ ETW_LoreQuestions = {
 		zoneRequirementUnlockCopy = true,
 		npcUnlockHash = {"eafcacdb00a30f261075633efd368a23c530de2de46672c379142f583939bb5e","8bee34cab7ae493f2848ff7fb527b0d038152f8e382f924e3a11b70835e1883f","45248be447123432752c81cd0995afab05fc0e5d80d2d622187144f6fa3cfd67"}
 	}
+
 
 
 }

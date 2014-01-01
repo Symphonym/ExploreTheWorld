@@ -122,7 +122,8 @@ function updateQuestList()
 		local passesCategorySort = 
 			(sortingConfig.showExplore and value.category == ETW_EXPLORE_CATEGORY) or
 			(sortingConfig.showInvestigation and value.category == ETW_INVESTIGATION_CATEGORY) or
-			(sortingConfig.showTracking and value.category == ETW_TRACKING_CATEGORY)
+			(sortingConfig.showTracking and value.category == ETW_TRACKING_CATEGORY) or 
+			(sortingConfig.showGroupQuest and value.category == ETW_GROUPQUEST_CATEGORY)
 
 		local passesCompletedQuestCheck = 
 			(sortingConfig.showCompleted == true and ETW_isQuestionDone(value) == true)
@@ -250,19 +251,6 @@ local function displayQuestion(question)
 		ETW_Frame.questionList.buttons[question.buttonIndex]:highlightNone()
 	end
 
-	-- Disable answerBox and button if question is answered already
-	if(ETW_isQuestionDone(question)) then
-		questionFrame:completeQuestion()
-		questionFrame.answerBox:SetText(SymphonymConfig.questions[question.ID].answer)
-	else
-		questionFrame.confirmButton:Enable()
-		questionFrame.answerBox:Enable()
-
-		-- Reset alpha when switching between questions
-		questionFrame.answerBox.fade:SetAlpha(0)
-		questionFrame.answerBox.fade.text:SetAlpha(0)
-	end
-
 	-- Display model, if any
 	if(question.modelId ~= nil or question.modelPath ~= nil) then
 
@@ -307,13 +295,36 @@ local function displayQuestion(question)
 	end
 
 	-- Set custom functionality depending on category
-	if(question.category == ETW_EXPLORE_CATEGORY or question.category == ETW_TRACKING_CATEGORY) then
+	local realCategory = question.category
+
+	-- Use custom group quest category if any
+	if(question.groupQuestCategory ~= nil) then
+		realCategory = question.groupQuestCategory
+		questionFrame.titleFrame.categoryIcon:SetTexture(question.groupQuestCategory)
+	end
+
+	questionFrame.answerBox:HookScript("OnTextChanged", function(self, userInput)
+
+		-- Send info to group quest players if it's a groupquest
+		if(questionFrame.question.category == ETW_GROUPQUEST_CATEGORY and
+			ETW_IsGroupQuestActive(questionFrame.question) and
+			realCategory == ETW_INVESTIGATION_CATEGORY) then
+			ETW_BroadcastGroupQuestData(
+				questionFrame.question.ID..","..
+				questionFrame.answerBox:GetText()..","..
+				GetSubZoneText()..","..
+				ETW_getCurrentZone())
+		end
+
+	end)
+
+	if(realCategory == ETW_EXPLORE_CATEGORY or realCategory == ETW_TRACKING_CATEGORY) then
 		questionFrame.answerBox:Disable()
 
 		if not (ETW_isQuestionDone(question)) then
 
 			-- Text in answerbox on Tracking category will always show name of targeted npc
-			if(question.category == ETW_TRACKING_CATEGORY) then
+			if(realCategory == ETW_TRACKING_CATEGORY) then
 				questionFrame.answerBox:RegisterEvent("PLAYER_TARGET_CHANGED")
 
 				if(UnitName("target") ~= nil) then
@@ -325,15 +336,25 @@ local function displayQuestion(question)
 				questionFrame.answerBox:SetScript("OnEvent", function(self, event, ...)
 					if(event == "PLAYER_TARGET_CHANGED") then
 						if(UnitName("target") ~= nil) then
-							questionFrame.answerBox:SetText(UnitName("target"))
+							self:SetText(UnitName("target"))
 						else
-							questionFrame.answerBox:SetText("No target :[")
+							self:SetText("No target :[")
+						end
+
+						-- Send info to group quest players if it's a groupquest
+						if(questionFrame.question.category == ETW_GROUPQUEST_CATEGORY and
+							ETW_IsGroupQuestActive(questionFrame.question)) then
+							ETW_BroadcastGroupQuestData(
+								questionFrame.question.ID..","..
+								questionFrame.answerBox:GetText()..","..
+								GetSubZoneText()..","..
+								ETW_getCurrentZone())
 						end
 					end
 				end)
 
 			-- Text in answerbox on Explore category will always show name of the current zone
-			elseif(question.category == ETW_EXPLORE_CATEGORY) then
+			elseif(realCategory == ETW_EXPLORE_CATEGORY) then
 				questionFrame.answerBox:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 				questionFrame.answerBox:RegisterEvent("ZONE_CHANGED")
 
@@ -350,6 +371,16 @@ local function displayQuestion(question)
 						if(string.len(self:GetText()) <= 0) then
 							self:SetText(GetRealZoneText())
 						end
+
+						-- Send info to group quest players if it's a groupquest
+						if(questionFrame.question.category == ETW_GROUPQUEST_CATEGORY and
+							ETW_IsGroupQuestActive(questionFrame.question)) then
+							ETW_BroadcastGroupQuestData(
+								questionFrame.question.ID..","..
+								questionFrame.answerBox:GetText()..","..
+								GetSubZoneText()..","..
+								ETW_getCurrentZone())
+						end
 					end
 				end)
 			end
@@ -362,7 +393,38 @@ local function displayQuestion(question)
 		ETW_Frame.questionFrame.answerBox:unregisterInputEvents()
 	end
 
+		-- Disable answerBox and button if question is answered already
+	if(ETW_isQuestionDone(question)) then
+		questionFrame:completeQuestion()
+
+		if(questionFrame.question.category ~= ETW_GROUPQUEST_CATEGORY) then
+			questionFrame.answerBox:SetText(SymphonymConfig.questions[question.ID].answer)
+		else
+			questionFrame.answerBox:SetText(SymphonymConfig.questions[question.ID].answer[1].answer)
+		end
+	else
+		questionFrame.confirmButton:Enable()
+		questionFrame.answerBox:Enable()
+
+		-- Reset alpha when switching between questions
+		questionFrame.answerBox.fade:SetAlpha(0)
+		questionFrame.answerBox.fade.text:SetAlpha(0)
+	end
+
 	PlaySound("igQuestLogOpen")
+
+	-- Show group frame if group quest
+	if(question.category == ETW_GROUPQUEST_CATEGORY) then
+		ETW_StartGroupQuest(question)
+		ETW_BroadcastGroupQuestData(
+			questionFrame.question.ID..","..
+			questionFrame.answerBox:GetText()..","..
+			GetSubZoneText()..","..
+			ETW_getCurrentZone())
+	else
+		ETW_CancelGroupQuest()
+	end
+
 
 	-- Show questionframe, hide startframe
 	questionFrame:Show()
@@ -528,15 +590,12 @@ do
 	local frame = CreateFrame("Frame", "ETW_Frame", UIParent, "PortraitFrameTemplate");
 	frame:SetWidth(550);
 	frame:SetHeight(500);
-	frame:EnableMouse(true)
-	frame:SetMovable(true)
 	frame:SetPoint("CENTER")
-	frame:SetFrameStrata("HIGH")
+	frame:SetFrameStrata("MEDIUM")
 	frame:SetFrameLevel(10)
 
 	-- Create title text
 	local title = frame:CreateFontString(frameName.."Title", "BACKGROUND", "GameFontNormal")
-	title:SetSize(frame:GetWidth(), 220)
 	title:SetPoint("CENTER", frame, "TOP", 0, -12);
 	title:SetTextHeight(13);
 	title:SetText("|cFF00FF00Explore the World|r   Version " .. GetAddOnMetadata("ExploreTheWorld", "Version"))
@@ -672,6 +731,7 @@ local items = {
 	ETW_EXPLORE_DROPDOWN_NAME,
 	ETW_INVESTIGATION_DROPDOWN_NAME,
 	ETW_TRACKING_DROPDOWN_NAME,
+	ETW_GROUPQUEST_DROPDOWN_NAME,
 	ETW_COMPLETED_DROPDOWN_NAME,
 	ETW_NEWQUEST_DROPDOWN_NAME,
 }
@@ -691,6 +751,8 @@ local function ETW_InitDropDownMenu(self, level)
 			info.checked = SymphonymConfig.questions.sorting.showInvestigation
 		elseif(info.text == ETW_TRACKING_DROPDOWN_NAME) then
 			info.checked = SymphonymConfig.questions.sorting.showTracking
+		elseif(info.text == ETW_GROUPQUEST_DROPDOWN_NAME) then
+			info.checked = SymphonymConfig.questions.sorting.showGroupQuest
 		elseif(info.text == ETW_COMPLETED_DROPDOWN_NAME) then
 			info.checked = SymphonymConfig.questions.sorting.showCompleted
 		elseif(info.text == ETW_NEWQUEST_DROPDOWN_NAME) then
@@ -706,6 +768,8 @@ local function ETW_InitDropDownMenu(self, level)
 				SymphonymConfig.questions.sorting.showInvestigation = self.checked
 			elseif(self:GetText() == ETW_TRACKING_DROPDOWN_NAME) then
 				SymphonymConfig.questions.sorting.showTracking = self.checked
+			elseif(self:GetText() == ETW_GROUPQUEST_DROPDOWN_NAME) then
+				SymphonymConfig.questions.sorting.showGroupQuest = self.checked
 			elseif(self:GetText() == ETW_COMPLETED_DROPDOWN_NAME) then
 				SymphonymConfig.questions.sorting.showCompleted = self.checked
 			elseif(self:GetText() == ETW_NEWQUEST_DROPDOWN_NAME) then
@@ -950,6 +1014,22 @@ do
 
 				if(question.zoneRequirementUnlockCopy == true) then
 					question.zoneRequirementUnlockHash = question.zoneRequirementHash
+				end
+
+				-- Count available data for group quest, i.e how many players are needed for the question
+				if(question.groupQuest ~= nil and question.category == ETW_GROUPQUEST_CATEGORY) then
+					question.groupQuest.limit = 0
+					for index = 1, ETW_PLAYERS_TOTALMAX, 1 do
+						if(question.groupQuest[index] == nil) then
+							break
+						else
+							question.groupQuest.limit = question.groupQuest.limit + 1
+						end
+					end
+
+					if(question.groupQuest.limit < 2 or question.groupQuest.limit > 5) then
+						ETW_printErrorToChat("Invalid amount of answers for "..question.name.."["..question.ID.."]: " .. question.groupQuest.limit)
+					end
 				end
 
 				local currentConfig = SymphonymConfig.questions[question.ID]
@@ -1237,7 +1317,6 @@ do
 	-- Fade effect when correct/incorrcect answer are given
 	questionFrame.answerBox.fade = questionFrame.answerBox:CreateTexture()
 	questionFrame.answerBox.fade:SetAllPoints()
-	questionFrame.answerBox.fade:SetPoint("LEFT", -11, 0)
 	questionFrame.answerBox.fade.elapsedTime = 0
 
 	-- Extra popup text fading alongside the normal fade
@@ -1379,25 +1458,29 @@ do
 		self.confirmButton:Disable()
 	end
 
-	-- Checks if the answer in the answerbox is the correct one, by crosschecking hash values
-	function questionFrame:checkAnswer()
-
-		-- Optional zone required, a zone you have to be in to answer the question
-		local zoneRequirement = false
-		self.answerBox.fade.text:SetText("You're not at the required zone")
-
+	function questionFrame:meetsZoneRequirements()
 		if(self.question.zoneRequirementHash ~= nil) then
 			for _, zoneHash in pairs(self.question.zoneRequirementHash) do
 
 				-- Matching zones
 				if(ETW_createHash(GetSubZoneText()) == zoneHash or
 					ETW_createHash(ETW_getCurrentZone()) == zoneHash) then
-					zoneRequirement = true
-					break
+					return true
 				end
 			end
+			return false
+		else
+			return true
 		end
 
+	end
+
+	-- Checks if the answer in the answerbox is the correct one, by crosschecking hash values
+	function questionFrame:checkAnswer()
+
+		-- Optional zone required, a zone you have to be in to answer the question
+		local zoneRequirement = self:meetsZoneRequirements()
+		self.answerBox.fade.text:SetText("You're not at the required zone")
 		self.answerBox.fade.fading = true
 		self.answerBox.fade.fadeAlpha = 1
 		self.answerBox.fade.elapsedTime = 0
@@ -1405,13 +1488,23 @@ do
 		local correctAnswer = false
 		local userAnswerHash = ETW_createHash(self.answerBox:GetText())
 
-		-- Multiple answer support :D
-		for _, answer in pairs(self.question.answer) do
-			if(userAnswerHash == answer) then
-				correctAnswer = true
-				break
+		-- Check group quest answer
+		if(self.question.category == ETW_GROUPQUEST_CATEGORY and self.question.groupQuest ~= nil) then
+			correctAnswer = ETW_CheckGroupQuestAnswer(self.answerBox:GetText())
+
+			if(correctAnswer == true) then ETW_SaveGroupQuestAnswer(self.answerBox:GetText()) end
+
+		-- Check normal answer
+		else
+
+			-- Multiple answer support :D
+			for _, answer in pairs(self.question.answer) do
+				if(userAnswerHash == answer) then
+					correctAnswer = true
+					break
+				end
+				if(correctAnswer == true) then break end
 			end
-			if(correctAnswer == true) then break end
 		end
 
 		-- Hash a lowercase version of the text in the answerbox and compare to answer
@@ -1430,7 +1523,9 @@ do
 			self:completeQuestion()
 
 			-- Store answer in config file, as it is now known anyway
-			SymphonymConfig.questions[self.question.ID].answer = self.answerBox:GetText()
+			if(self.question.category ~= ETW_GROUPQUEST_CATEGORY) then
+				SymphonymConfig.questions[self.question.ID].answer = self.answerBox:GetText()
+			end
 
 			-- Append completed qs
 			SymphonymConfig.questions.completed = SymphonymConfig.questions.completed + 1
@@ -1452,6 +1547,8 @@ do
 
 	ETW_Frame.questionFrame = questionFrame
 end
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --       UNLOCK SCANNER

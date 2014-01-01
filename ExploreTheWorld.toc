@@ -10,4 +10,5 @@ LoreRanks.lua
 Questions.lua
 PopupFrame.lua
 OptionFrame.lua
+GroupFrame.lua
 main.lua

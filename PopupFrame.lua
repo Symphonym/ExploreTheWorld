@@ -21,16 +21,7 @@ local function createPopupFrame(name, icon)
 	popupFrame.icon:SetSize(50, 50)
 	popupFrame.icon:SetPoint("LEFT", 15, -28)
 
-	popupFrame:RegisterForDrag("LeftButton")
-	popupFrame:EnableMouse(true)
-	popupFrame:SetMovable(true)
-
-	popupFrame:SetScript("OnDragStart", function(self, button)
-		self:StartMoving()
-	end)
-	popupFrame:SetScript("OnDragStop", function(self)
-		self:StopMovingOrSizing()
-	end)
+	ETW_makeFrameDraggable(popupFrame, true)
 
 	return popupFrame
 

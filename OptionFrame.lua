@@ -7,7 +7,7 @@
 do 
 	local options = CreateFrame("Frame", "ETW_OptionFrame", UIParent, "PortraitFrameTemplate")
 	options:SetFrameStrata("HIGH")
-	options:SetFrameLevel(15)
+	options:SetFrameLevel(20)
 	options:SetPoint("CENTER")
 	options:SetSize(250, 300)
 
