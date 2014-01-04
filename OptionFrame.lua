@@ -5,7 +5,7 @@
 ----------------------------------------------------------------------------------
 
 do 
-	local options = ETW_Templates:CreatePortraitFrame("ETW_OptionFrame", UIParent, "ETW Options", ETW_OPTIONICON)--CreateFrame("Frame", "ETW_OptionFrame", UIParent, "PortraitFrameTemplate")
+	local options = ETW_Templates:CreatePortraitFrame("ETW_OptionFrame", UIParent, "ETW Options", ETW_OPTIONICON)
 	options:SetPoint("CENTER")
 	options:SetSize(250, 300)
 
@@ -83,6 +83,47 @@ do
 	end)
 
 	ETW_OptionFrame.sliderPageLimit = slider
+
+end
+
+
+----------------------------------------------------------------------------------
+--       Reset button
+----------------------------------------------------------------------------------
+
+do
+
+
+	local button = CreateFrame("Button", "ETW_Options_ResetData", ETW_OptionFrame, "UIPanelButtonTemplate")
+	button:SetSize(150, 30)
+	button:SetPoint("TOP", 25, -40)
+	button:SetText("Reset saved data")
+
+	StaticPopupDialogs["ETW_ResetSavedData"] = {
+		text = "Are you sure you wish to reset all question related data saved for \"Explore the World\"?|n|nDoing so requires you to reload the UI.",
+		showAlert = true,
+		button1 = "Yes",
+		button2 = "No",
+		OnAccept = function()
+			SymphonymConfig.questions = SymphonymConfig_Default.questions
+			ETW_Utility:PrintToChat("Deleted saved data.")
+		end,
+		OnCancel = function (_,reason)
+
+		end,
+		sound = "GAMEDIALOGOPEN",
+		timeout = 30,
+		whileDead = true,
+		hideOnEscape = true,
+	}
+
+	button:HookScript("OnClick", function(self,button,down)
+		if(button == "LeftButton" and not down) then
+			StaticPopup_Show ("ETW_ResetSavedData")
+		end
+	end)
+
+	ETW_OptionFrame.buttonResetData = button
 
 end
 

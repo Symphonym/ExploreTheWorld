@@ -106,7 +106,7 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 			return true
 		end
 		for _, value in pairs(zoneReq) do
-			if(ETW_createHash(subZone) == value or ETW_createHash(realZone) == value) then
+			if(ETW_Utility:CreateSha2Hash(subZone) == value or ETW_Utility:CreateSha2Hash(realZone) == value) then
 				return true
 			end
 		end
@@ -115,7 +115,7 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 
 	local function isCorrectAnswer(answers, answer)
 		for _, value in pairs(answers) do
-			if(ETW_createHash(answer) == value) then
+			if(ETW_Utility:CreateSha2Hash(answer) == value) then
 				return true
 			end
 		end
@@ -134,8 +134,16 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 		return false
 	end
 	-- Check our own answer first
-	if(checkAnswer(yourAnswer, GetSubZoneText(), ETW_getCurrentZone()) == false) then
+	if(checkAnswer(yourAnswer, GetSubZoneText(), ETW_Utility:GetCurrentZone()) == false) then
 		correctAnswer = false
+	end
+
+	-- For "Not the required zone" text to display semi-correctly
+	local inTheRequiredZone = false
+	for _, value in pairs(questsAnswers) do
+		if(meetsZoneReq(value.zoneReq, GetSubZoneText(), ETW_Utility:GetCurrentZone()) == true) then
+			inTheRequiredZone = true
+		end
 	end
 
 	-- Check all other answers after
@@ -155,7 +163,7 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 		end
 	end
 
-	return correctAnswer
+	return correctAnswer, inTheRequiredZone
 end
 
 
@@ -193,8 +201,9 @@ end
 do
 
 	local groupFrame = CreateFrame("Frame", frameName, UIParent, "BasicFrameTemplate")
-	groupFrame:SetPoint("CENTER", ETW_Frame, "RIGHT", groupFrame:GetWidth()/2, 0)
 	groupFrame:SetFrameStrata("TOOLTIP")
+	groupFrame:SetToplevel(true)
+	ETW_Templates:MakeFrameDraggable(groupFrame, 1)
 
 	groupFrame.title = groupFrame:CreateFontString(nil, "BACKGROUND", "GameFontNormal")
 	groupFrame.title:SetPoint("CENTER", groupFrame, "TOP", 0, -12);
@@ -289,8 +298,7 @@ do
 		-- Show group frame
 		if(groupQuest.playerReq >= 1) then
 			self:SetSize(250, 55*groupQuest.playerReq + (ETW_PLAYERS_MAX/groupQuest.playerReq)*8)
-			ETW_makeFrameDraggable(self, 1)
-			self:SetPoint("CENTER")
+			self:SetPoint("CENTER", ETW_Frame, "RIGHT", groupFrame:GetWidth()/2, 0)
 			self:Show()
 		else
 			self:Hide()
@@ -304,7 +312,7 @@ do
 		if(event == "CHAT_MSG_ADDON") then
 
 			local prefix, sentMessage, channel, sender = ...
-			local messageList = ETW_csplit(sentMessage, ",")
+			local messageList = ETW_Utility:SplitString(sentMessage, ",")
 
 			if(prefix == ETW_ADDONMSG_GROUPQUEST and sender ~= UnitName("player")) then
 
@@ -362,7 +370,7 @@ do
 											questionID..","..
 											ETW_Frame.questionFrame.answerBox:GetText()..","..
 											GetSubZoneText()..","..
-											ETW_getCurrentZone(),
+											ETW_Utility:GetCurrentZone(),
 										"WHISPER",
 										senderName.."-"..senderRealm)
 

@@ -9,6 +9,14 @@
 
 
 ]]
+
+-- TODO: Zone text works for group quest, if no zone req was met, say ur in wrong zone
+-- TODO: Reset button for all saved progress, makes bugtesting easier as well because u dont
+-- have to restart client all the time
+-- TODO default config save, make copytable function
+-- TODO cleanup, make zoneRequirementHash mandatory, print to chat when it's missing and such
+-- consider making zonereq mandatory, might have followup questions n shit
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --       DECLARE VARIABLES
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -259,7 +267,7 @@ local function displayQuestion(question)
 
 		-- Set model
 		if(question.modelId ~= nil) then
-			questionFrame.imageFrame.npcModel:SetDisplayInfo(tonumber(ETW_convertBase64(question.modelId)))
+			questionFrame.imageFrame.npcModel:SetDisplayInfo(tonumber(ETW_Utility:ConvertBase64(question.modelId)))
 			questionFrame.imageFrame.npcModel:SetPortraitZoom(questionFrame.imageFrame.npcModel.zoom)
 			questionFrame.imageFrame.npcModel:Show()
 
@@ -267,7 +275,7 @@ local function displayQuestion(question)
 		elseif(question.modelPath ~= nil) then
 
 			-- When it is in encrypted form, escaping backslashes is not required and actually invalidates the path
-			local modelPath = string.gsub(tostring(ETW_convertBase64(question.modelPath)), "\\\\", "\\")
+			local modelPath = string.gsub(tostring(ETW_Utility:ConvertBase64(question.modelPath)), "\\\\", "\\")
 
 			questionFrame.imageFrame.miscModel:SetModel(modelPath)
 			questionFrame.imageFrame.miscModel:SetCamDistanceScale(questionFrame.imageFrame.miscModel.zoom)
@@ -313,7 +321,7 @@ local function displayQuestion(question)
 				questionFrame.question.ID..","..
 				questionFrame.answerBox:GetText()..","..
 				GetSubZoneText()..","..
-				ETW_getCurrentZone())
+				ETW_Utility:GetCurrentZone())
 		end
 
 	end)
@@ -348,7 +356,7 @@ local function displayQuestion(question)
 								questionFrame.question.ID..","..
 								questionFrame.answerBox:GetText()..","..
 								GetSubZoneText()..","..
-								ETW_getCurrentZone())
+								ETW_Utility:GetCurrentZone())
 						end
 					end
 				end)
@@ -379,7 +387,7 @@ local function displayQuestion(question)
 								questionFrame.question.ID..","..
 								questionFrame.answerBox:GetText()..","..
 								GetSubZoneText()..","..
-								ETW_getCurrentZone())
+								ETW_Utility:GetCurrentZone())
 						end
 					end
 				end)
@@ -420,7 +428,7 @@ local function displayQuestion(question)
 			questionFrame.question.ID..","..
 			questionFrame.answerBox:GetText()..","..
 			GetSubZoneText()..","..
-			ETW_getCurrentZone())
+			ETW_Utility:GetCurrentZone())
 	else
 		ETW_CancelGroupQuest()
 	end
@@ -874,7 +882,7 @@ do
 		local classColor = RAID_CLASS_COLORS[classFileName]
 		local classR, classG, classB = classColor.r, classColor.g, classColor.b
 
-		self.welcomeText:SetText(ETW_decimalToHex(classR, classG, classB) .. UnitName("player") .. "|r")
+		self.welcomeText:SetText(ETW_Utility:RGBToStringColor(classR, classG, classB) .. UnitName("player") .. "|r")
 		self.rankText:SetText(getQuestionRank())
 
 		ETW_Frame.questionList.selectArrow:Hide()
@@ -1015,7 +1023,7 @@ do
 					end
 
 					if(question.groupQuest.limit < 2 or question.groupQuest.limit > 5) then
-						ETW_printErrorToChat("Invalid amount of answers for "..question.name.."["..question.ID.."]: " .. question.groupQuest.limit)
+						ETW_Utility:PrintErrorToChat("Invalid amount of answers for "..question.name.."["..question.ID.."]: " .. question.groupQuest.limit)
 					end
 				end
 
@@ -1033,7 +1041,7 @@ do
 					-- , these values are set when a question is unlocked
 					-- Actually is just user specific now, I scrapped battle.net tag usage because I don't want it
 					-- to be dependent on battle.net and a stable connection with it n stuff. :I
-					if (ETW_createHash(SymphonymConfig.uniqueHash .. question.ID) == uniqueHash) then 
+					if (ETW_Utility:CreateSha2Hash(SymphonymConfig.uniqueHash .. question.ID) == uniqueHash) then 
 						addETWQuestion(question)
 					end
 				end
@@ -1051,7 +1059,7 @@ do
 			updateProgressText() -- Update the completed quest text
 
 			ETW_Frame.startFrame:showFrame()
-			ETW_printToChat(" Successfully initialized addon. Welcome " .. UnitName("player"))
+			ETW_Utility:PrintToChat(" Successfully initialized addon. Welcome " .. UnitName("player"))
 		end
 	end)
 
@@ -1156,7 +1164,7 @@ local function linkToQuestion(questionID)
 
 	local question = ETW_Frame.questionList.items[questionID]
 	if(question == nil) then
-		ETW_printErrorToChat("Could not open question link, question not unlocked")
+		ETW_Utility:PrintErrorToChat("Could not open question link, question not unlocked")
 		return
 	end
 
@@ -1210,7 +1218,7 @@ do
 	questionFrame.linkButton.inputFrame.input:SetPoint("BOTTOM", 0, 2)
 	questionFrame.linkButton.inputFrame.input:SetScript("OnEnterPressed", function(self)
 
-		ETW_printToChat(" Linking question " .. questionFrame.question.name .. "[" .. questionFrame.question.ID .. "] to '" .. self:GetText() .. "'")
+		ETW_Utility:PrintToChat(" Linking question " .. questionFrame.question.name .. "[" .. questionFrame.question.ID .. "] to '" .. self:GetText() .. "'")
 		SendAddonMessage(ETW_ADDONMSG_LINK,
 			tostring(questionFrame.question.ID)..","..
 			getQuestionRank()..","..
@@ -1231,7 +1239,7 @@ do
 			local senderVersion = "Unknown"
 
 			local splitIndex = 0
-			for _, splitString in pairs(ETW_csplit(sentMessage, ",")) do
+			for _, splitString in pairs(ETW_Utility:SplitString(sentMessage, ",")) do
 				if(splitIndex == 0) then
 					questionID = tonumber(splitString)
 				elseif(splitIndex == 1) then
@@ -1425,8 +1433,8 @@ do
 			for _, zoneHash in pairs(self.question.zoneRequirementHash) do
 
 				-- Matching zones
-				if(ETW_createHash(GetSubZoneText()) == zoneHash or
-					ETW_createHash(ETW_getCurrentZone()) == zoneHash) then
+				if(ETW_Utility:CreateSha2Hash(GetSubZoneText()) == zoneHash or
+					ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone()) == zoneHash) then
 					return true
 				end
 			end
@@ -1441,13 +1449,14 @@ do
 		local correctAnswer = false
 
 		-- Check group quest answer
+		-- Group quests answer check answer and zonereq in same function, so this function just returns false
 		if(self.question.category == ETW_GROUPQUEST_CATEGORY and self.question.groupQuest ~= nil) then
-			correctAnswer = ETW_CheckGroupQuestAnswer(self.answerBox:GetText())
+			return false
 
 		-- Check normal answer
 		else
 
-			local userAnswerHash = ETW_createHash(self.answerBox:GetText())
+			local userAnswerHash = ETW_Utility:CreateSha2Hash(self.answerBox:GetText())
 
 			-- Multiple answer support :D
 			for _, answer in pairs(self.question.answer) do
@@ -1480,16 +1489,20 @@ do
 
 		-- Optional zone required, a zone you have to be in to answer the question
 		local zoneRequirement = self:checkZoneRequirement()
+		local correctAnswer = self:checkAnswer()
 
 		-- Reset fade variables
 		self.answerBox.fade.text:SetText("You're not at the required zone")
 		self.answerBox.fade.fading = true
 		self.answerBox.fade.fadeAlpha = 1
 		self.answerBox.fade.elapsedTime = 0
-		
+
+		if(self.question.category == ETW_GROUPQUEST_CATEGORY and self.question.groupQuest ~= nil) then
+			correctAnswer, zoneRequirement = ETW_CheckGroupQuestAnswer(self.answerBox:GetText())
+		end
 
 		-- Hash a lowercase version of the text in the answerbox and compare to answer
-		if(zoneRequirement and self:checkAnswer()) then
+		if(zoneRequirement and correctAnswer) then
 
 			-- Disable input events for answerbox as answer is already inputted
 			self.answerBox:unregisterInputEvents()
@@ -1528,7 +1541,7 @@ end
 local function unlockQuestion(question)
 
 	SymphonymConfig.questions[question.ID] = {}
-	SymphonymConfig.questions[question.ID].uniqueHash = ETW_createHash(SymphonymConfig.uniqueHash .. question.ID)
+	SymphonymConfig.questions[question.ID].uniqueHash = ETW_Utility:CreateSha2Hash(SymphonymConfig.uniqueHash .. question.ID)
 	SymphonymConfig.questions[question.ID].newQuest = true
 
 	addETWQuestion(question)
@@ -1540,8 +1553,8 @@ local function meetsZoneUnlockRequirement(question)
 
 	if(question.zoneRequirementUnlockHash ~= nil) then
 		for _, zoneHash in pairs(question.zoneRequirementUnlockHash) do
-			if(ETW_createHash(GetSubZoneText()) == zoneHash or
-				ETW_createHash(ETW_getCurrentZone()) == zoneHash) then
+			if(ETW_Utility:CreateSha2Hash(GetSubZoneText()) == zoneHash or
+				ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone()) == zoneHash) then
 				return true
 			end
 		end
@@ -1566,7 +1579,7 @@ scanInventory = function(bagID)
 			local itemID = GetContainerItemID(bagID, bagSlot)
 			if(itemID) then
 
-				local itemHash = ETW_createHash(tostring(itemID))
+				local itemHash = ETW_Utility:CreateSha2Hash(tostring(itemID))
 				local itemList = ETW_UnlockTable.items[itemHash]
 
 				if(itemList and duplicateHash[itemHash] == nil) then
@@ -1592,8 +1605,8 @@ end
 
 scanZone = function()
 	local zonesUnlocked = 0
-	local subzoneHash = ETW_createHash(GetSubZoneText())
-	local zoneHash = ETW_createHash(ETW_getCurrentZone())
+	local subzoneHash = ETW_Utility:CreateSha2Hash(GetSubZoneText())
+	local zoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone())
 
 	local zoneList = ETW_UnlockTable.zones[zoneHash]
 
@@ -1621,7 +1634,7 @@ scanNpc = function()
 	local npcName = UnitName("target")
 
 	if(npcName) then
-		local npcHash = ETW_createHash(npcName)
+		local npcHash = ETW_Utility:CreateSha2Hash(npcName)
 
 		local npcList = ETW_UnlockTable.npcs[npcHash]
 
@@ -1646,7 +1659,7 @@ scanWorldObjects = function()
 	local worldObjectName = ItemTextGetItem()
 
 	if(worldObjectName) then
-		local worldObjectHash = ETW_createHash(worldObjectName)
+		local worldObjectHash = ETW_Utility:CreateSha2Hash(worldObjectName)
 
 		local worldObjectList = ETW_UnlockTable.worldObjects[worldObjectHash]
 
@@ -1669,7 +1682,7 @@ end
 scanProgress = function()
 	local progressUnlocked = 0
 	local progress = SymphonymConfig.questions.completed
-	local progressHash = ETW_createHash(tostring(progress))
+	local progressHash = ETW_Utility:CreateSha2Hash(tostring(progress))
 
 	local progressList = ETW_UnlockTable.progress[progressHash]
 

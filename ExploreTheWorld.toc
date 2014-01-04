@@ -5,6 +5,7 @@
 ## Version: 0.1
 ## SavedVariables: SymphonymConfig
 sha2.lua
+Utility.lua
 UITemplates.lua
 Constants.lua
 LoreRanks.lua

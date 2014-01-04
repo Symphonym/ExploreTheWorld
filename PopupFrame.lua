@@ -145,27 +145,27 @@ function ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUn
 		if (itemUnlocks and itemUnlocks > 0) then
 			ETW_PopupFrame.itemUnlock.display = true
 			questsUnlocked = questsUnlocked + itemUnlocks
-			ETW_printToChat(" You unlocked " .. itemUnlocks .. " quest(s) from " .. ETW_PopupFrame.itemUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. itemUnlocks .. " quest(s) from " .. ETW_PopupFrame.itemUnlock.name)
 		end
 		if (zoneUnlocks and zoneUnlocks > 0) then
 			ETW_PopupFrame.zoneUnlock.display = true
 			questsUnlocked = questsUnlocked + zoneUnlocks
-			ETW_printToChat(" You unlocked " .. zoneUnlocks .. " quest(s) from " .. ETW_PopupFrame.zoneUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. zoneUnlocks .. " quest(s) from " .. ETW_PopupFrame.zoneUnlock.name)
 		end
 		if (npcUnlocks and npcUnlocks > 0) then
 			ETW_PopupFrame.npcUnlock.display = true
 			questsUnlocked = questsUnlocked + npcUnlocks
-			ETW_printToChat(" You unlocked " .. npcUnlocks .. " quest(s) from " .. ETW_PopupFrame.npcUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. npcUnlocks .. " quest(s) from " .. ETW_PopupFrame.npcUnlock.name)
 		end
 		if (worldObjectUnlocks and worldObjectUnlocks > 0) then
 			ETW_PopupFrame.worldObjectUnlock.display = true
 			questsUnlocked = questsUnlocked + worldObjectUnlocks
-			ETW_printToChat(" You unlocked " .. worldObjectUnlocks .. " quest(s) from " .. ETW_PopupFrame.worldObjectUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. worldObjectUnlocks .. " quest(s) from " .. ETW_PopupFrame.worldObjectUnlock.name)
 		end
 		if (progressUnlocks and progressUnlocks > 0) then
 			ETW_PopupFrame.progressUnlock.display = true
 			questsUnlocked = questsUnlocked + progressUnlocks
-			ETW_printToChat(" You unlocked " .. progressUnlocks .. " quest(s) from " .. ETW_PopupFrame.progressUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. progressUnlocks .. " quest(s) from " .. ETW_PopupFrame.progressUnlock.name)
 		end
 
 

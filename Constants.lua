@@ -37,79 +37,9 @@
 
 	}
 
-
-----------------------------------------------------------------------------------
---       SHA2 HASHING and BASE64 converting
-----------------------------------------------------------------------------------
+	SymphonymConfig_Default = ETW_Utility:CopyTable(SymphonymConfig)
 
 
--- Creates a sha2 hash of the parameter
-function ETW_createHash(msg)
-	return sha2.hash256(string.lower(msg))
-end
--- Converts base64 to base10 data
-function ETW_convertBase64(data)
-	-- Lua 5.1+ base64 v3.0 (c) 2009 by Alex Kloss <alexthkloss@web.de>
-	-- licensed under the terms of the LGPL2
-	local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-	data = string.gsub(data, '[^'..b..'=]', '')
-    return (data:gsub('.', function(x)
-        if (x == '=') then return '' end
-        local r,f='',(b:find(x)-1)
-        for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0') end
-        return r;
-    end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x)
-        if (#x ~= 8) then return '' end
-        local c=0
-        for i=1,8 do c=c+(x:sub(i,i)=='1' and 2^(8-i) or 0) end
-        return string.char(c)
-    end))
-end
-
-----------------------------------------------------------------------------------
---      Template functions
-----------------------------------------------------------------------------------
-
-function ETW_makeFrameDraggable(frame, wholeFrame)
-
-	frame:RegisterForDrag("LeftButton")
-	frame:EnableMouse(true)
-	frame:SetMovable(true)
-
-	-- Drag by title region
-	if(wholeFrame == nil) then
-		frame:CreateTitleRegion():SetSize(frame:GetWidth(), 20)
-		frame:GetTitleRegion():SetPoint("TOPLEFT", frame)
-		frame:SetScript("OnDragStart", function(self, button)
-			if self:GetTitleRegion():IsMouseOver() then
-				self:StartMoving()
-			end
-		end)
-
-	-- Drag by whole frame
-	else
-		frame:SetScript("OnDragStart", function(self, button)
-				self:StartMoving()
-		end)
-	end
-
-	frame:SetScript("OnDragStop", function(self)
-		self:StopMovingOrSizing()
-	end)
-end
-
-function ETW_givePortraitFrameIcon(frame, icon)
-	frame.portraitIcon = frame:CreateTexture()
-
-	if(icon == nil) then
-		frame.portraitIcon:SetTexture(ETW_ADDONICON)
-	else
-		frame.portraitIcon:SetTexture(icon)
-	end
-	frame.portraitIcon:SetSize(59, 59)
-	frame.portraitIcon:SetPoint("TOPLEFT", frame, -5, 7)
-	frame.portraitIcon:SetDrawLayer("BORDER", 5)
-end
 
 ----------------------------------------------------------------------------------
 --      USEFULL FUNCTIONS
@@ -131,7 +61,7 @@ function ETW_isQuestionDone(question)
 
 			local function isCorrectAnswer(answers, answer)
 				for _, value in pairs(answers) do
-					if(ETW_createHash(answer) == value) then
+					if(ETW_Utility:CreateSha2Hash(answer) == value) then
 						return true
 					end
 				end
@@ -155,7 +85,7 @@ function ETW_isQuestionDone(question)
 			-- Check our own answer first
 			if(checkAnswer(SymphonymConfig.questions[question.ID].answer[1].answer) == false) then
 				correctAnswer = false
-				ETW_printToChat("YOU WRONG")
+				ETW_Utility:PrintToChat("YOU WRONG")
 			end
 
 			-- Check all other answers after
@@ -163,18 +93,18 @@ function ETW_isQuestionDone(question)
 
 				if(checkAnswer(SymphonymConfig.questions[question.ID].answer[index].answer) == false) then
 					correctAnswer = false
-					ETW_printToChat("PLAYER WRONG")
+					ETW_Utility:PrintToChat("PLAYER WRONG")
 					break
 				end
 			end
 
 			if(correctAnswer == true) then
 				isDone = true
-				ETW_printToChat("IS TRU")
+				ETW_Utility:PrintToChat("IS TRU")
 			end
 
 		else
-			local storedHash = ETW_createHash(SymphonymConfig.questions[question.ID].answer)
+			local storedHash = ETW_Utility:CreateSha2Hash(SymphonymConfig.questions[question.ID].answer)
 
 			for _, answer in pairs(question.answer) do
 				if(storedHash == answer) then
@@ -187,43 +117,6 @@ function ETW_isQuestionDone(question)
 	end
 
 	return isDone
-end
-
-function ETW_printToChat(msg)
-	ChatFrame1:AddMessage("|cFF00FF00[Explore the World]|r|cFFFFFB00:" .. msg)
-end 
-function ETW_printErrorToChat(msg)
-	ChatFrame1:AddMessage("|cFF00FF00[Explore the World]|r|cFFFFFB00:|cFFFF3F40" .. msg)
-end
-
-function ETW_decimalToHex(r,g,b)
-	-- http://wowprogramming.com/snippets/Convert_decimal_classcolor_into_hex_27
-    return string.format("|cff%02x%02x%02x", r*255, g*255, b*255)
-end
--- Get name of current zone, custom function and not semi-reliable WoW zone functions
-function ETW_getCurrentZone()
-	local zones = { GetMapZones(GetCurrentMapContinent()) }
-	local zone = zones[GetCurrentMapZone()]
-	if(zone == nil) then
-		return GetRealZoneText()
-	else
-		return zone
-	end
-end
-
-
--- single char string splitter, sep *must* be a single char pattern
--- *probably* escaped with % if it has any special pattern meaning, eg "%." not "."
--- so good for splitting paths on "/" or "%." which is a common need
---http://lua-users.org/wiki/SplitJoin
-function ETW_csplit(str,sep)
-	local ret={}
-	local n=1
-	for w in str:gmatch("([^"..sep.."]*)") do
-		ret[n]=ret[n] or w -- only set once (so the blank after a string is ignored)
-		if w=="" then n=n+1 end -- step forwards on a blank but not a string
-	end
-	return ret
 end
 
 
