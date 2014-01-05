@@ -85,7 +85,6 @@ function ETW_isQuestionDone(question)
 			-- Check our own answer first
 			if(checkAnswer(SymphonymConfig.questions[question.ID].answer[1].answer) == false) then
 				correctAnswer = false
-				ETW_Utility:PrintToChat("YOU WRONG")
 			end
 
 			-- Check all other answers after
@@ -93,14 +92,12 @@ function ETW_isQuestionDone(question)
 
 				if(checkAnswer(SymphonymConfig.questions[question.ID].answer[index].answer) == false) then
 					correctAnswer = false
-					ETW_Utility:PrintToChat("PLAYER WRONG")
 					break
 				end
 			end
 
 			if(correctAnswer == true) then
 				isDone = true
-				ETW_Utility:PrintToChat("IS TRU")
 			end
 
 		else

@@ -936,7 +936,7 @@ do
 	questionList:SetScript("OnEvent", function(self, event, ...)
 
 		if (event == "PLAYER_LOGIN") then
-			
+
 			-- Pre allocate buttons for list
 			for buttonIndex = 0, SymphonymConfig.options.pageLimit, 1 do
 				ETW_Frame.questionList.buttons[buttonIndex] = createListButton()

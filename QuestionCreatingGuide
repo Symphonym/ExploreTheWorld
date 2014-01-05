@@ -17,6 +17,16 @@ following commands in the chat window.
 	/etw
 	/exploretheworld
 
+IMPORTANT: Make sure all the files are located in a folder named
+	ExploreTheWorld
+So that for example Questions.lua is located at
+	WoWdir/Interface/Addons/ExploreTheWorld/Questions.lua
+
+Because if you get the files from github then they will come in
+a zip folder instead, and then you'll have to create the folder
+yourself.
+
+
 Lua syntax
 ----------------------------------------------------------------------
 First, lets get you started with some basics of the Lua syntax
@@ -33,7 +43,7 @@ String:
 	"This right here is a string"
 
 Number:
-	A number is simply a literal number, with any quotations or anything
+	A number is simply a literal number, without any quotations or anything
 
 	54
 
@@ -74,7 +84,7 @@ Lets start off with a fully functional question and learn from that:
 		name = "Sorrow by Quilboar",
 		category = ETW_TRACKING_CATEGORY,
 		modelId = "Mzg1NQ==",
-		description = "Living a dry barren land this poor orc had his wife killed by the quilboar, bla bla bla..",
+		description = "Living a dry barren land this poor bla bla bla..",
 		answer = {"3007b3f7b3762071034b5525693b2be41c01a210b5725669975dabc5be855e4f"},
 		zoneRequirementHash = {"8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1"}
 	},
@@ -114,34 +124,29 @@ search the webpage for "displayId", next to the place where you find
 the text "displayId" should be a number, that's your displayId. Just
 convert the displayId to base64 and pop it into the question.
 
+Don't forget to encase the base64 value in double quotations "" to make
+it into a string.
+
 Answers and hashes
 ----------------------------------------------------------------------
 It is not only modelId and modelPath that has their attributes set to
 weird looking strings, the answer attribute and all the attributes with
 the word "hash" in them uses a sha2 hashing function. To convert to sha2
-to have to use my converter addon, it essentially creates a non-reversible
-string of letters that can be used to validate for example an answer.
+you have to use my converter addon, it essentially creates a non-reversible
+string of letters that can be used to cross checked against.
 
 So say you want one of the answer to your question to be "Stormwind", you
-then write "stormwind" in the input window of the hashing addon and press
+then write "Stormwind" in the input window of the hashing addon and press
 enter. The string in the output window is then copied over to the question:
 
 	answer = {"hashStringForAnswerOneGoesHere", "hashStringForAnswerTwoGoesHere"}
 
 And if you want to make sure you can only answer this question in "Feralas"
-or "Tanaris" then you input "feralas" and "tanaris" accordingly into the input
+or "Tanaris" then you input "Feralas" and "Tanaris" accordingly into the input
 box of the hasing addon and press enter. Then you copy over the string from the
 output window to the question:
 
 	zoneRequirementHash = {"hashStringForFeralas", "hashStringForTanaris"}
-
-IMPORTANT: When you hash something, make sure that all letters are LOWERCASE,
-because the program converts and answer it receives to lowercase so "abC" isn't
-any different from "ABC".
-
-IMPORTANT: You don't have to use LOWERCASE letters anymore because I made
-that automatic in the hashing addon, but the paragraph adds a little extra
-knowledge anyway.
 
 IMPORTANT: You CAN'T use an online hashing tool for this because WoW's
 Lua environment forced me to modify the standard sha2 hashing slightly,
@@ -186,12 +191,12 @@ author:
 
 Bugs and feedback
 ----------------------------------------------------------------------
-If you want to be extra helpful with the addon, take a look at BugSack,
+If you want to be extra helpful with the addon, take a look at BugSack:
 	
 	http://www.curse.com/addons/wow/bugsack
 
 It will catch any Lua errors and show where they originated from, those
-logs would be useful for feed. Please note however that any errors
+logs would be useful for feedback. Please note however that any errors
 mentioning "CompactRaidFrames" are just bugs in the WoW api and should
 be ignored, as far as I know anyway.
 
@@ -212,4 +217,4 @@ in a separate document and mail that to me.
 
 Please note however that your question is not guaranteed to get used in
 the addon, and that I may adjust possible typos and whatnot in your
-question.
+question. Although the "author" attribute will not be modified by me.

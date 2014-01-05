@@ -278,7 +278,7 @@ ETW_LoreQuestions = {
 			modelPath = "V29ybGRcXEV4cGFuc2lvbjAzXFxkb29kYWRzXFx3b3JnZW5cXGl0ZW1zXFx3b3JnZW5fc3RhZ2Vjb2FjaF8wMS5tZHg=",
 			description = "Standing strong throughout the effects of the cataclysm as its surrounding areas begin to crumble down the cliffside into the water. At the top of the hill we find this manor owned by those who transform at fullmoon.",
 			answer = {"157f113b8b3695becf1f1f4462c79f2adb8e095ab5151f1d022f027e93e89f24"},
-			zoneRequirementHash = {"fdb767ca3ec0d0d14f9c6ab095559d20aff15776b8c6e36170612966c83fc0af"}
+			zoneRequirementHash = {"ea08da2bd30e28a83f573f469b595a816cec54a34e971252d2f6ca2d8e6fd0af", "fdb767ca3ec0d0d14f9c6ab095559d20aff15776b8c6e36170612966c83fc0af"}
 		},
 		{
 			ID = 13,
@@ -325,6 +325,7 @@ ETW_LoreQuestions = {
 			answer = {"4869f908f491b6f5c9c6eb3f0eab004f54137fc7e36fe9800de5f14486fed4e9", "4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53", "d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b", "539df6fa9856df0ed841122d035951e55517580932eb38cf934a1716570d8436", "331358067956b956143d4a8b207df3121f0f97dcd0ed8aa26d2e3bdbd2b8716b"},
 			zoneRequirementHash = {"e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda","d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b", "4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"},
 			zoneRequirementUnlockCopy = true,
+			npcUnlockHash = {"eafcacdb00a30f261075633efd368a23c530de2de46672c379142f583939bb5e","8bee34cab7ae493f2848ff7fb527b0d038152f8e382f924e3a11b70835e1883f","45248be447123432752c81cd0995afab05fc0e5d80d2d622187144f6fa3cfd67"}
 		}
 
 	}

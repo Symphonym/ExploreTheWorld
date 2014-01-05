@@ -49,8 +49,7 @@ end
 
 -- Get name of current zone, custom function and not semi-reliable WoW zone functions
 function ETW_Utility:GetCurrentZone()
-	local zones = { GetMapZones(GetCurrentMapContinent()) }
-	local zone = zones[GetCurrentMapZone()]
+	local zone = GetMapNameByID(GetCurrentMapAreaID())
 	if(zone == nil) then
 		return GetRealZoneText()
 	else
