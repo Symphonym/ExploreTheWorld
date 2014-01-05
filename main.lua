@@ -56,7 +56,6 @@ end
 
 
 
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --       Updating functions
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -227,18 +226,29 @@ end
 local function displayQuestion(question)
 
 	local questionFrame = ETW_Frame.questionFrame
+	local defaultQuestion = ETW_LoreQuestions.defaultQuestion
 
 	-- Set questionFrame info to the corresponding data
 	questionFrame.question = question
 	questionFrame.titleFrame.title:SetText(question.name)
 	questionFrame.titleFrame.categoryIcon:SetTexture(question.category)
 	questionFrame.descriptionFrame.text:SetText(question.description)
-	questionFrame.imageFrame.image:SetTexture(question.texturepath) -- Texture data
-	questionFrame.imageFrame.image:SetSize(question.texturewidth, question.textureheight-5)
-	questionFrame.imageFrame.image:SetTexCoord(question.textureCropLeft, question.textureCropRight, question.textureCropTop, question.textureCropBottom)
-	questionFrame.imageFrame:SetSize(question.texturewidth, question.textureheight)
+	questionFrame.imageFrame.image:SetTexture(question.texturepath and question.texturepath or defaultQuestion.texturepath) -- Texture data
 	questionFrame.answerBox:SetText("") -- Clear text of answerbox
 	questionFrame.answerBox.fade.text:SetText("") -- Clear fading text
+
+	-- Attributes with default data
+	questionFrame.imageFrame.image:SetSize(
+		question.texturewidth and question.texturewidth or defaultQuestion.texturewidth,
+		question.textureheight and question.textureheight or defaultQuestion.textureheight)
+	questionFrame.imageFrame:SetSize(
+		question.texturewidth and question.texturewidth or defaultQuestion.texturewidth,
+		question.textureheight and question.textureheight or defaultQuestion.textureheight)
+	questionFrame.imageFrame.image:SetTexCoord(
+		question.textureCropLeft and question.textureCropLeft or defaultQuestion.textureCropLeft,
+		question.textureCropRight and question.textureCropRight or defaultQuestion.textureCropRight,
+		question.textureCropTop and question.textureCropTop or defaultQuestion.textureCropTop,
+		question.textureCropBottom and question.textureCropBottom or defaultQuestion.textureCropBottom)
 
 	-- Display author text
 	if(question.author == nil) then
@@ -446,6 +456,7 @@ local function createListButton()
 	local listButton = CreateFrame("Button", nil, ETW_Frame.questionList, "UIPanelButtonTemplate")
 	listButton:SetSize(ETW_LISTITEM_WIDTH, ETW_LISTITEM_HEIGHT)
 	listButton:SetPoint(ETW_LISTITEM_ALIGN) -- Align it to the top by default
+	listButton:SetToplevel(true)
 
 	-- Listitem text, displayed on top of it 
 	local textFormat = listButton:CreateFontString(nil, nil, "GameFontNormal")
@@ -602,6 +613,7 @@ do
 	frame:SetWidth(550);
 	frame:SetHeight(500);
 	frame:SetPoint("CENTER")
+	-- TODO _G["ETW_MainFrameBg"]:SetTexture("Interface\\LFGFRAME\\UI-LFG-BACKGROUND-HYJALPAST.BLP")
 
 	ETW_Templates:MakeFrameDraggable(frame)
 
@@ -832,33 +844,36 @@ do
 	startFrame:SetAllPoints()
 	startFrame:SetPoint("CENTER")
 
-	startFrame.icon = startFrame:CreateTexture()
-	startFrame.icon:SetTexture(ETW_ADDONICON)
-	startFrame.icon:SetSize(70, 70)
-	startFrame.icon:SetPoint("CENTER", startFrame, 0, 120)
+	-- Icon frame
+	startFrame.titleFrame = CreateFrame("Frame", "ETW_StartTitleFrame", startFrame, "InsetFrameTemplate3")
+	startFrame.titleFrame:SetSize(startFrame:GetWidth()-20, 140)
+	startFrame.titleFrame.Bg:SetTexture("Interface\\LFGFRAME\\UI-LFG-BACKGROUND-HYJALPAST.BLP")
+	startFrame.titleFrame.Bg:SetSize(startFrame.titleFrame:GetWidth(), startFrame.titleFrame:GetHeight())
+	startFrame.titleFrame.Bg:SetTexCoord(0, 1, 0, 1)
+	startFrame.titleFrame:SetPoint("TOP", 0, -15)
 
-	-- Rank related frame for addon icon
-	startFrame.iconBorder = startFrame:CreateTexture()
-	startFrame.iconBorder:SetTexture("Interface\\UNITPOWERBARALT\\Mechanical_Circular_Frame.blp")
-	startFrame.iconBorder:SetSize(115, 115)
-	startFrame.iconBorder:SetPoint("CENTER", startFrame, 0, 120)
-	startFrame.iconBorder:SetDrawLayer("OVERLAY", 6)
 
 	-- Title in large font displayed at the top
-	startFrame.title = startFrame:CreateFontString(nil, "ARTWORK", "QuestTitleFontBlackShadow")
+	startFrame.title = startFrame.titleFrame:CreateFontString(nil, "ARTWORK", "QuestTitleFontBlackShadow")
 	startFrame.title:SetText("Explore the World")
 	startFrame.title:SetTextHeight(25)
-	startFrame.title:SetPoint("TOP", 0, -40)
+	startFrame.title:SetPoint("TOP", 0, -25)
+
+
+	-- Welcome frame
+	startFrame.welcomeFrame = CreateFrame("Frame", "ETW_WelcomeFrame", startFrame, "InsetFrameTemplate3")
+	startFrame.welcomeFrame:SetSize(startFrame:GetWidth()-20, 50)
+	startFrame.welcomeFrame:SetPoint("CENTER", 0, 53)
 
 	-- Text displaying your name in class colors
-	startFrame.welcomeText = startFrame:CreateFontString(nil, "ARTWORK", "QuestTitleFontBlackShadow")
+	startFrame.welcomeText = startFrame.welcomeFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	startFrame.welcomeText:SetTextHeight(18)
-	startFrame.welcomeText:SetPoint("CENTER", 0, 65)
+	startFrame.welcomeText:SetPoint("TOPLEFT", 10, -7)
 
 	-- Text displaying your rank
-	startFrame.rankText = startFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+	startFrame.rankText = startFrame.welcomeFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	startFrame.rankText:SetTextHeight(14)
-	startFrame.rankText:SetPoint("CENTER", 0, 45)
+	startFrame.rankText:SetPoint("TOPLEFT", 10, -27)
 
 	-- Frame containing author info
 	startFrame.authorFrame = CreateFrame("Frame", "ETW_CreditFrame", startFrame, "InsetFrameTemplate3")
@@ -882,8 +897,8 @@ do
 		local classColor = RAID_CLASS_COLORS[classFileName]
 		local classR, classG, classB = classColor.r, classColor.g, classColor.b
 
-		self.welcomeText:SetText(ETW_Utility:RGBToStringColor(classR, classG, classB) .. UnitName("player") .. "|r")
-		self.rankText:SetText(getQuestionRank())
+		self.welcomeText:SetText("Name: "..ETW_Utility:RGBToStringColor(classR, classG, classB) .. UnitName("player") .. "|r")
+		self.rankText:SetText("Rank: ".. ETW_Utility:RGBToStringColor(0.6, (SymphonymConfig.questions.completed / ETW_LoreQuestions.size), 0) ..getQuestionRank())
 
 		ETW_Frame.questionList.selectArrow:Hide()
 		self:Show()
@@ -898,6 +913,11 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 do
+
+	local function printAttributeMissing(questionIdentifier, attributeName)
+		ETW_Utility:PrintErrorToChat("Invalid question: " .. questionIdentifier)
+		ETW_Utility:PrintErrorToChat("Attribute missing: |cFFFFFB00" .. attributeName)
+	end
 
 	-- Content frame inside the ScrollFrame containing all the unlocked questions
 	local questionList = CreateFrame("Frame", nil, ETW_Frame.scrollFrame) 
@@ -927,9 +947,36 @@ do
 			local questionCount = 0
 
 			-- Iterate all questions and load the unlocked ones into the list
-			for _, question in pairs(ETW_LoreQuestions) do
+			for _, question in pairs(ETW_LoreQuestions.questions) do
 
 				questionCount = questionCount + 1
+
+				-- Check for invalid question formats
+				if(question.ID == nil) then printAttributeMissing("Index ".. questionCount, "ID") end
+				if(question.name == nil) then printAttributeMissing("ID " .. question.ID, "name") end
+				if(question.description == nil) then printAttributeMissing("ID " .. question.ID, "description") end
+				if(question.category == nil) then printAttributeMissing("ID " .. question.ID, "category") end
+				if(question.category == ETW_GROUPQUEST_CATEGORY and question.groupQuest == nil) then
+					printAttributeMissing("ID " .. question.ID, "groupQuest")
+				end
+				if(question.category == ETW_GROUPQUEST_CATEGORY and question.groupQuestCategory == nil) then
+					printAttributeMissing("ID " .. question.ID, "groupQuestCategory")
+				end
+				if(question.category ~= ETW_GROUPQUEST_CATEGORY and question.answer == nil) then
+					printAttributeMissing("ID " .. question.ID, "answer")
+				end
+				if(question.category ~= ETW_GROUPQUEST_CATEGORY and question.zoneRequirementHash == nil) then
+					printAttributeMissing("ID " .. question.ID, "zoneRequirementHash")
+				end
+				if(question.ID > ETW_DEFAULT_QUESTION_ID) then
+					if(question.zoneUnlockHash == nil and
+						question.itemUnlockHash == nil and
+						question.npcUnlockHash == nil and
+						question.worldObjectHash == nil and
+						question.progressUnlockHash == nil) then
+						printAttributeMissing("ID " .. question.ID, "any unlock attribute")
+					end
+				end
 
 				-- Don't allow for duplicate ID's
 				if(loadedIDs[question.ID] ~= nil) then
@@ -982,37 +1029,12 @@ do
 					ETW_UnlockTable.progress[question.progressUnlockHash][question.ID] = question
 				end
 
-				-- Set default values for question
-				if(question.texturewidth == nil) then
-					question.texturewidth = ETW_Frame.contentFrame:GetWidth()-60
-				end
-				if(question.textureheight == nil) then
-					question.textureheight = ETW_Frame.contentFrame:GetHeight()*0.3
-				end
-
-				if(question.texturepath == nil) then
-					question.texturepath = ETW_DEFAULT_QUESTION_TEXTURE
-				end
-
-				if(question.textureCropLeft == nil) then
-					question.textureCropLeft = 0
-				end
-				if(question.textureCropRight == nil) then
-					question.textureCropRight = 1
-				end
-				if(question.textureCropTop == nil) then
-					question.textureCropTop = 0
-				end
-				if(question.textureCropBottom == nil) then
-					question.textureCropBottom = 1
-				end
-
 				if(question.zoneRequirementUnlockCopy == true) then
 					question.zoneRequirementUnlockHash = question.zoneRequirementHash
 				end
 
 				-- Count available data for group quest, i.e how many players are needed for the question
-				if(question.groupQuest ~= nil and question.category == ETW_GROUPQUEST_CATEGORY) then
+				if(question.category == ETW_GROUPQUEST_CATEGORY) then
 					question.groupQuest.limit = 0
 					for index = 1, ETW_PLAYERS_TOTALMAX, 1 do
 						if(question.groupQuest[index] == nil) then
@@ -1023,21 +1045,22 @@ do
 					end
 
 					if(question.groupQuest.limit < 2 or question.groupQuest.limit > 5) then
-						ETW_Utility:PrintErrorToChat("Invalid amount of answers for "..question.name.."["..question.ID.."]: " .. question.groupQuest.limit)
+						ETW_Utility:PrintErrorToChat("Invalid question: ID" .. question.ID)
+						ETW_Utility:PrintErrorToChat("Group questions can't have " .. question.groupQuest.limit .. " answers")
 					end
 				end
 
 				local currentConfig = SymphonymConfig.questions[question.ID]
 
-				-- First 20 ID's are unlocked by default
-				if question.ID < 20 then
+				-- First ETW_DEFAULT_QUESTION_ID ID's are unlocked by default
+				if question.ID <= ETW_DEFAULT_QUESTION_ID then
 					addETWQuestion(question)
 
 				-- Other ID's must be unlocked
 				elseif (currentConfig) then
 					local uniqueHash = currentConfig.uniqueHash
 
-					-- Unlocking is determined if a account and question specific hash is stored in the config file
+					-- Unlocking is determined if an account and question specific hash is stored in the config file
 					-- , these values are set when a question is unlocked
 					-- Actually is just user specific now, I scrapped battle.net tag usage because I don't want it
 					-- to be dependent on battle.net and a stable connection with it n stuff. :I
@@ -1379,7 +1402,7 @@ do
 
 	-- Image frame for display images alongside the question
 	questionFrame.imageFrame = CreateFrame("Frame", "questionFrame.imageFrame", questionFrame, "GlowBoxTemplate")
-	questionFrame.imageFrame:SetPoint("CENTER", 0, 100)
+	questionFrame.imageFrame:SetPoint("CENTER", 0, 97)
 	questionFrame.imageFrame.image = questionFrame.imageFrame:CreateTexture(nil, "BACKGROUND")
 	questionFrame.imageFrame.image:SetAllPoints(questionFrame.imageFrame)
 

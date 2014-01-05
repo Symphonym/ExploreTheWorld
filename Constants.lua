@@ -152,6 +152,9 @@ ETW_DEFAULT_BACKDROP = {
   }
 }
 
+-- All ID's below or equal to this constant are unlocked by default
+ETW_DEFAULT_QUESTION_ID = 20
+
 -- Used as a hybrid for category icon and category identifier
 ETW_EXPLORE_CATEGORY = "Interface\\ICONS\\Achievement_Zone_UnGoroCrater_01.blp"
 ETW_INVESTIGATION_CATEGORY = "Interface\\ICONS\\INV_Misc_Spyglass_01.blp"
