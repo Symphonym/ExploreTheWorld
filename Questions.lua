@@ -305,7 +305,7 @@ ETW_LoreQuestions = {
 			modelId = "MzEwMjE=",
 			description = "Bells are ringing and people are cheering, all waiting for his return. That is until he reveals his new self to the king, his father. An historical event that can be relived as you enter ruined city that is is now home to the Forsaken. What is it that happens during this event?",
 			answer = {"a4747cd5b2f0d657aa56908bd42867f5c14ff352d041537fdea802ede7017273", "11afb9c11b0031ce00ba96700bf2a50c3628f99160e9b58c765030e499e4b3e2", "8b858ec5e5bc99b154f4c37d169a621de03e7ab2e5d4a6663281f1c8e7f37887", "25776fa0bf641799e025e40c29a31e95a7eae5b3677e01b0e6e4b6f8fc612272"},
-			zoneRequirementHash = {"2cfa5f86f8caecee1e714c86b20f026d664ecae5714e01b586583766a1773eee"}
+			zoneRequirementHash = {"eefe6c1f89fa12da231d98e109f68d8ddbbdfa18bcab74be67c5f73868f95084"}
 		},
 		{
 			ID = 16,
@@ -318,29 +318,41 @@ ETW_LoreQuestions = {
 		},
 		{
 			ID = 17,
-			name = "Group quest test",
+			name = "Chickens on the run",
 			category = ETW_GROUPQUEST_CATEGORY,
-			modelId = "MTE2NTM=",
-			description = "One player has to be at Warsong Lumber Camp in Ashenvale, and target a Wildthorn Venomspitter. The other two players has to be at Kezan and target a Training Dummy, just make a new lvl 1 goblin char.",
+			modelId = "NzkyMA==",
+			modelYOffset = 0.1,
+			description = "Mechanical critters spread across Azeroth after being lost by their goblin owner in Booty Bay. Found surrounded by yetis in a jungle not too far from Dire Maul, crashed on a lake island in the land of gryphons or in the mountains south of the cave that moves time itself.",
 			groupQuestCategory = ETW_TRACKING_CATEGORY,
 			groupQuest = 
 			{
 				[1] =
 				{
-					answer = {"99a353fdd08c4334d4217bcdf2697cecf38c300f425c23ea184c9951dabbef6b"},
-					zoneRequirementHash = {"69815a272759a197a8338f79db7168119d7e0825e32390411199483ec1be8d52"},
+					answer = {"8bee34cab7ae493f2848ff7fb527b0d038152f8e382f924e3a11b70835e1883f"},
+					zoneRequirementHash = {"4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"},
 				},
 				[2] =
 				{
-					answer = {"b5ac61ae3ba971308405a7912813122b7064e6ec63c7f0067bc926b74b2f54d7"},
-					zoneRequirementHash = {"ddd9c266d963cef20646e162980f1ce63cb93d3a173b6da1cd8a0ce55da1e98b"},
+					answer = {"eafcacdb00a30f261075633efd368a23c530de2de46672c379142f583939bb5e"},
+					zoneRequirementHash = {"e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda"},
 				},
 				[3] =
 				{
-					answer = {"b5ac61ae3ba971308405a7912813122b7064e6ec63c7f0067bc926b74b2f54d7"},
-					zoneRequirementHash = {"ddd9c266d963cef20646e162980f1ce63cb93d3a173b6da1cd8a0ce55da1e98b"},
+					answer = {"45248be447123432752c81cd0995afab05fc0e5d80d2d622187144f6fa3cfd67"},
+					zoneRequirementHash = {"d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b"},
 				}
 			}
+
+		},
+		{
+			ID = 18,
+			name = "Opening the gates",
+			category = ETW_EXPLORE_CATEGORY,
+			modelPath = "V29ybGRcXEthbGltZG9yXFxzaWxpdGh1c1xccGFzc2l2ZWRvb2RhZHNcZ29uZ1xzaWxpdGhpZGdvbmcubWR4",
+			modelYOffset = 1.4,
+			description = "The place where the infamous gong is located, that once struck, completes the quest of opening the gates and forever after made you a legend. Rewarding you with a mount and title that will never again be obtainable. And amongst the insects that dwell nearby, you shall be forever known as lord.",
+			answer = {"6b560f8b1b328bdbda98117216f7a86ce503c1b8759ac3b38cbfdd2e81daf1bd"},
+			zoneRequirementHash = {"32d172b5e7fbdc37857a7d1425b10e339c0b338aee2478ae27016e8a37c7e99c"}
 		},
 		{
 			ID = 21,

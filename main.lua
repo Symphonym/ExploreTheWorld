@@ -549,19 +549,13 @@ function addETWQuestion(question)
 
 	-- Create new page if none exists
 	if(questionList.pages[questionList.maxPageIndex] == nil) then
-		questionList.pages[questionList.maxPageIndex] = {}
-		questionList.pages[questionList.maxPageIndex].items = {}
-		questionList.pages[questionList.maxPageIndex].totalCount = 0
-		questionList.pages[questionList.maxPageIndex].count = 0
+		newPage()
 	end
 
 	-- Limit page question count
 	if not(questionList.pages[questionList.maxPageIndex].totalCount + 1 <= SymphonymConfig.options.pageLimit) then
 		questionList.maxPageIndex = questionList.maxPageIndex + 1
-		questionList.pages[questionList.maxPageIndex] = {}
-		questionList.pages[questionList.maxPageIndex].items = {}
-		questionList.pages[questionList.maxPageIndex].totalCount = 0
-		questionList.pages[questionList.maxPageIndex].count = 0
+		newPage()
 	end
 
 	changePageIndex(questionList.maxPageIndex)
