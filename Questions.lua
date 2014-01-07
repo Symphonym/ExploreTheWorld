@@ -291,6 +291,33 @@ ETW_LoreQuestions = {
 		},
 		{
 			ID = 14,
+			name = "MK Memorial",
+			category = ETW_INVESTIGATION_CATEGORY,
+			modelId = "NTIzMw==",
+			description = "In the hills south of a forgotten oasis lies the memorial of an illustrator who died during the development of World of Warcraft. His initials \"MK\" are carved into the shrine beneath his orc character, but what does the \"K\" stand for?",
+			answer = {"7131851b0091461f260f3440c4b8fe71d9d81925a660878cad2bb7d9e50ab89d"},
+			zoneRequirementHash = {"8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1"}
+		},
+		{
+			ID = 15,
+			name = "Voices of Lordaeron",
+			category = ETW_INVESTIGATION_CATEGORY,
+			modelId = "MzEwMjE=",
+			description = "Bells are ringing and people are cheering, all waiting for his return. That is until he reveals his new self to the king, his father. An historical event that can be relived as you enter ruined city that is is now home to the Forsaken. What is it that happens during this event?",
+			answer = {"a4747cd5b2f0d657aa56908bd42867f5c14ff352d041537fdea802ede7017273", "11afb9c11b0031ce00ba96700bf2a50c3628f99160e9b58c765030e499e4b3e2", "8b858ec5e5bc99b154f4c37d169a621de03e7ab2e5d4a6663281f1c8e7f37887", "25776fa0bf641799e025e40c29a31e95a7eae5b3677e01b0e6e4b6f8fc612272"},
+			zoneRequirementHash = {"2cfa5f86f8caecee1e714c86b20f026d664ecae5714e01b586583766a1773eee"}
+		},
+		{
+			ID = 16,
+			name = "In loving memory",
+			category = ETW_TRACKING_CATEGORY,
+			modelId = "MTU5OTM=",
+			description = "He is found kneeling and saluting the memorial grave dedicated towards a close friend of one of the WoW developers, the person whos main character he was. Located to the east in the lands below the league of rogues, overlooking the sea.",
+			answer = {"32eaa3ea7fcf0b4f7f38e7dbd2188cb6d33dadc3dd6fd3a259f765c382cc8913"},
+			zoneRequirementHash = {"50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61"}
+		},
+		{
+			ID = 17,
 			name = "Group quest test",
 			category = ETW_GROUPQUEST_CATEGORY,
 			modelId = "MTE2NTM=",
@@ -326,6 +353,16 @@ ETW_LoreQuestions = {
 			zoneRequirementHash = {"e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda","d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b", "4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"},
 			zoneRequirementUnlockCopy = true,
 			npcUnlockHash = {"eafcacdb00a30f261075633efd368a23c530de2de46672c379142f583939bb5e","8bee34cab7ae493f2848ff7fb527b0d038152f8e382f924e3a11b70835e1883f","45248be447123432752c81cd0995afab05fc0e5d80d2d622187144f6fa3cfd67"}
+		},
+		{
+			ID = 22,
+			name = "Doomguard ritual",
+			category = ETW_TRACKING_CATEGORY,
+			modelId = "MTQ1MzE",
+			description = "In a forgotten time he taught skilled Warlocks the fine art of controlling a Doomguard. Nowadays he is but an artifact of the past, fullfilling no use other than to attract curious adventures in the tainted forest nearby.",
+			answer = {"e3303f5d616f296a1783d75ba72ae10d96efd7c25771e0fec047388e75d229e8"},
+			zoneRequirementHash = {"f2a666c5477626329e900adbe9bc465598d685202e34d727c9d28733face6b78"},
+			zoneUnlockHash = {"2a0fd71aa349b3c662105e52d182b2950325ca79f408064b351575b983dfebcb"}
 		}
 
 	}
