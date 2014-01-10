@@ -79,15 +79,22 @@ Getting started
 ----------------------------------------------------------------------
 Lets start off with a fully functional question and learn from that:
 
+{
+	ID = 2,
+	name = "Sorrow by Quilboar",
+	category = ETW_TRACKING_CATEGORY,
+	modelId = "Mzg1NQ==",
+	description = "bla bla bla...",
+	answer =
 	{
-		ID = 2,
-		name = "Sorrow by Quilboar",
-		category = ETW_TRACKING_CATEGORY,
-		modelId = "Mzg1NQ==",
-		description = "Living a dry barren land this poor bla bla bla..",
-		answer = {"3007b3f7b3762071034b5525693b2be41c01a210b5725669975dabc5be855e4f"},
-		zoneRequirementHash = {"8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1"}
+		"3007b3f7b3762071034b5525693b2be41c01a210b5725669975dabc5be855e4f"
 	},
+	zoneRequirementHash = 
+	{
+		{ zone="8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1"}
+	}
+
+}
 
 Notice how each attribute, or variable, is separated by a comma. This is
 because each question is actually a table itself, i.e a list of items,
@@ -146,7 +153,20 @@ or "Tanaris" then you input "Feralas" and "Tanaris" accordingly into the input
 box of the hasing addon and press enter. Then you copy over the string from the
 output window to the question:
 
-	zoneRequirementHash = {"hashStringForFeralas", "hashStringForTanaris"}
+	zoneRequirementHash =
+	{
+		{ zone="hashStringForFeralas"},
+		{ zone="hashStringForTanaris"}
+	}
+
+Or if you just want the question answerable within a certain subzone in
+"Feralas" for example, then you'd do like this:
+
+	zoneRequirementHash =
+	{
+		{ zone="hashStringForFeralas", subZone="subZoneWithinFeralas"},
+		{ zone="hashStringForTanaris"}
+	}
 
 IMPORTANT: You CAN'T use an online hashing tool for this because WoW's
 Lua environment forced me to modify the standard sha2 hashing slightly,
@@ -176,6 +196,9 @@ answer:
 		in Stormwind, and instead of displaying Stormwind it might say
 		"The Canals" because we're not interested in the major zones. If
 		no subzone exists it will usually take the name of the general area.
+	Group question:
+		The answer will use the category that is set for the group question
+		and change the answer text accordingly to what is written above here.
 
 zoneRequirementHash:
 	This will usually just be a hashed string of for example "tanaris" if the

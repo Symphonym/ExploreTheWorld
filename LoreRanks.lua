@@ -19,6 +19,10 @@ local ETW_LoreRanks =
 		rank = "Halfway to greatness"
 	},
 	{
+		minimumPercentage = 75,
+		rank = "Not mediocre anymore"
+	},
+	{
 		minimumPercentage = 90,
 		rank = "Lorewalking the Lore"
 	}

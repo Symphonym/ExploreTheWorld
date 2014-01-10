@@ -105,8 +105,20 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 		if(zoneReq == nil) then
 			return true
 		end
-		for _, value in pairs(zoneReq) do
-			if(ETW_Utility:CreateSha2Hash(subZone) == value or ETW_Utility:CreateSha2Hash(realZone) == value) then
+		for _, zoneData in pairs(zoneReq) do
+
+			local zoneReq = true
+			local subZoneReq = true
+
+			if(zoneData.zone ~= nil and ETW_Utility:CreateSha2Hash(realZone) ~= zoneData.zone) then
+				zoneReq = false
+			end
+			if(zoneData.subZone ~= nil and ETW_Utility:CreateSha2Hash(subZone) ~= zoneData.subZone) then
+				subZoneReq = false
+			end
+
+
+			if(zoneReq == true and subZoneReq == true) then
 				return true
 			end
 		end
@@ -134,14 +146,14 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 		return false
 	end
 	-- Check our own answer first
-	if(checkAnswer(yourAnswer, GetSubZoneText(), ETW_Utility:GetCurrentZone()) == false) then
+	if(checkAnswer(yourAnswer, ETW_Utility:GetSubZone(), ETW_Utility:GetCurrentZone()) == false) then
 		correctAnswer = false
 	end
 
 	-- For "Not the required zone" text to display semi-correctly
 	local inTheRequiredZone = false
 	for _, value in pairs(questsAnswers) do
-		if(meetsZoneReq(value.zoneReq, GetSubZoneText(), ETW_Utility:GetCurrentZone()) == true) then
+		if(meetsZoneReq(value.zoneReq, ETW_Utility:GetSubZone(), ETW_Utility:GetCurrentZone()) == true) then
 			inTheRequiredZone = true
 		end
 	end
@@ -369,7 +381,7 @@ do
 											GetRealmName()..","..
 											questionID..","..
 											ETW_Frame.questionFrame.answerBox:GetText()..","..
-											GetSubZoneText()..","..
+											ETW_Utility:GetSubZone()..","..
 											ETW_Utility:GetCurrentZone(),
 										"WHISPER",
 										senderName.."-"..senderRealm)

@@ -43,13 +43,20 @@ ETW_PopupFrame.fading = false
 ETW_PopupFrame.fadeAlpha = 1
 ETW_PopupFrame.elapsedTime = 0
 
+ETW_PopupFrame.itemUnlock = {}
+ETW_PopupFrame.zoneUnlock = {}
+ETW_PopupFrame.npcUnlock = {}
+ETW_PopupFrame.worldObjectUnlock = {}
+ETW_PopupFrame.progressUnlock = {}
+
+ETW_PopupFrame.itemUnlock.name = "|cFFD19D76" .. ETW_ITEM_UNLOCK_NAME .. "|r"
+ETW_PopupFrame.zoneUnlock.name = "|cFF339504" .. ETW_ZONE_UNLOCK_NAME .. "|r"
+ETW_PopupFrame.npcUnlock.name = "|cFF66A3C8" .. ETW_NPC_UNLOCK_NAME .. "|r"
+ETW_PopupFrame.worldObjectUnlock.name = "|cFFFCB25B" .. ETW_WORLDOBJECT_UNLOCK_NAME .. "|r"
+ETW_PopupFrame.progressUnlock.name = "|cFFDB41A6" .. ETW_PROGRESS_UNLOCK_NAME .. "|r"
+
 function ETW_PopupFrame:resetUnlockVariables()
 	self.unlockCount = 0
-	self.itemUnlock = {}
-	self.zoneUnlock = {}
-	self.npcUnlock = {}
-	self.worldObjectUnlock = {}
-	self.progressUnlock = {}
 
 	self.itemUnlock.display = false
 	self.zoneUnlock.display = false
@@ -57,11 +64,7 @@ function ETW_PopupFrame:resetUnlockVariables()
 	self.worldObjectUnlock.display = false
 	self.progressUnlock.display = false
 
-	self.itemUnlock.name = "|cFFD19D76" .. ETW_ITEM_UNLOCK_NAME .. "|r"
-	self.zoneUnlock.name = "|cFF339504" .. ETW_ZONE_UNLOCK_NAME .. "|r"
-	self.npcUnlock.name = "|cFF66A3C8" .. ETW_NPC_UNLOCK_NAME .. "|r"
-	self.worldObjectUnlock.name = "|cFFFCB25B" .. ETW_WORLDOBJECT_UNLOCK_NAME .. "|r"
-	self.progressUnlock.name = "|cFFDB41A6" .. ETW_PROGRESS_UNLOCK_NAME .. "|r"
+
 end
 
 function ETW_PopupFrame:hidePopup()
@@ -119,7 +122,6 @@ ETW_PopupFrame:SetScript("OnUpdate", function(self, elapsed)
 		if(self.fadeAlpha <= 0) then
 			self.fading = false
 			self.fadeAlpha = 0
-			self:resetUnlockVariables()
 			self:hidePopup()
 		end
 
@@ -169,17 +171,17 @@ function ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUn
 		end
 
 
-		if(ETW_PopupFrame.itemUnlock.display) then table.insert(questTypeInfo, ETW_PopupFrame.itemUnlock.name) end
-		if(ETW_PopupFrame.zoneUnlock.display) then table.insert(questTypeInfo, ETW_PopupFrame.zoneUnlock.name) end
-		if(ETW_PopupFrame.npcUnlock.display) then table.insert(questTypeInfo, ETW_PopupFrame.npcUnlock.name) end
-		if(ETW_PopupFrame.worldObjectUnlock.display) then table.insert(questTypeInfo, ETW_PopupFrame.worldObjectUnlock.name) end
-		if(ETW_PopupFrame.progressUnlock.display) then table.insert(questTypeInfo, ETW_PopupFrame.progressUnlock.name) end
+		if(ETW_PopupFrame.itemUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.itemUnlock.name) end
+		if(ETW_PopupFrame.zoneUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.zoneUnlock.name) end
+		if(ETW_PopupFrame.npcUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.npcUnlock.name) end
+		if(ETW_PopupFrame.worldObjectUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.worldObjectUnlock.name) end
+		if(ETW_PopupFrame.progressUnlock.displa == true) then table.insert(questTypeInfo, ETW_PopupFrame.progressUnlock.name) end
 
-		if(ETW_PopupFrame.itemUnlock.display) then questTypeInfo.size = questTypeInfo.size + 1 end
-		if(ETW_PopupFrame.zoneUnlock.display) then questTypeInfo.size = questTypeInfo.size + 1 end
-		if(ETW_PopupFrame.npcUnlock.display) then questTypeInfo.size = questTypeInfo.size + 1 end
-		if(ETW_PopupFrame.worldObjectUnlock.display) then questTypeInfo.size = questTypeInfo.size + 1 end
-		if(ETW_PopupFrame.progressUnlock.display) then questTypeInfo.size = questTypeInfo.size + 1 end
+		if(ETW_PopupFrame.itemUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
+		if(ETW_PopupFrame.zoneUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
+		if(ETW_PopupFrame.npcUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
+		if(ETW_PopupFrame.worldObjectUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
+		if(ETW_PopupFrame.progressUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
 
 
 		-- Format extra info text

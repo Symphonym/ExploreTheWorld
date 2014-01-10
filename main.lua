@@ -107,6 +107,33 @@ local function updateScrollbarSize()
 	end
 end
 
+local function updateButtonSelection()
+
+	local displayedQuestion = ETW_Frame.questionFrame.question
+	local dispalyedQuestionIsVisible = ETW_Frame.questionFrame.questionIsInList
+
+		-- Select arrow displaying
+	if (displayedQuestion ~= nil and dispalyedQuestionIsVisible) then
+		local button = ETW_Frame.questionList.buttons[displayedQuestion.buttonIndex]
+
+		if(button:GetTop() > ETW_Frame.scrollFrame:GetTop()) then
+			ETW_Frame.questionFrame.selectDownArrow:Hide()
+			ETW_Frame.questionFrame.selectUpArrow:Show()
+		elseif (button:GetBottom()+1 < ETW_Frame.scrollFrame:GetBottom()) then
+			ETW_Frame.questionFrame.selectUpArrow:Hide()
+			ETW_Frame.questionFrame.selectDownArrow:Show()
+		else
+			ETW_Frame.questionFrame.selectUpArrow:Hide()
+			ETW_Frame.questionFrame.selectDownArrow:Hide()
+		end
+	else
+		ETW_Frame.questionFrame.selectUpArrow:Hide()
+		ETW_Frame.questionFrame.selectDownArrow:Hide()
+	end
+
+end
+
+
 -- Sort and update position of questions in the list
 function updateQuestList()
 
@@ -114,7 +141,10 @@ function updateQuestList()
 	-- default sorting won't work due to it not being a consecutive array, I THINK
 
 	local categorySorted = {}
-	local buttonIndex = 0
+	local buttonIndex = 1
+
+	ETW_Frame.questionFrame.questionIsInList = false
+	local displayedQuestion = ETW_Frame.questionFrame.question
 
 	-- Divide questions into separate tables by category
 	for _, value in pairs(ETW_Frame.questionList.pages[ETW_Frame.questionList.pageIndex].items) do
@@ -153,6 +183,13 @@ function updateQuestList()
 
 				value.buttonIndex = buttonIndex
 				value.pageIndex = ETW_Frame.questionList.pageIndex
+				ETW_Frame.questionList.buttons[buttonIndex]:deselectButton()
+
+
+				-- Check if the displayed question is in the question list
+				if((displayedQuestion ~= nil and displayedQuestion.ID == value.ID) or displayedQuestion == nil) then
+					ETW_Frame.questionFrame.questionIsInList = true
+				end
 
 				ETW_Frame.questionList.buttons[buttonIndex]:setQuestionToButton(value)
 				ETW_Frame.questionList.buttons[buttonIndex]:Show()
@@ -162,30 +199,37 @@ function updateQuestList()
 
 			end
 		end
-				
-
 	end
 
+
+
+	-- Selection updating, selecting the button that we're currently displaying
+	if(displayedQuestion ~= nil and ETW_Frame.questionFrame.questionIsInList == true) then
+		local button = ETW_Frame.questionList.buttons[displayedQuestion.buttonIndex]
+		button:selectButton()
+	end
+
+	-- Hide unused buttons, if any
 	for remainingButtonIndex = buttonIndex, SymphonymConfig.options.pageLimit, 1 do
 		ETW_Frame.questionList.buttons[remainingButtonIndex]:Hide()
 	end
+
 
 	-- Simply iterate the above table, guaranteeing they will be sorted categorywise
 	local index = 0
 	for _, categoryList in pairs(categorySorted) do
 		for _, question in pairs(categoryList) do
 
-			ETW_Frame.questionList.buttons[question.buttonIndex]:SetPoint(ETW_LISTITEM_ALIGN, 0, index * -ETW_LISTITEM_HEIGHT) --question.listItem:SetPoint("TOP", 0, index * -ETW_LISTITEM_HEIGHT)
+			ETW_Frame.questionList.buttons[question.buttonIndex]:SetPoint(ETW_LISTITEM_ALIGN, 1, index * -ETW_LISTITEM_HEIGHT) --question.listItem:SetPoint("TOP", 0, index * -ETW_LISTITEM_HEIGHT)
 			index = index + 1
-
 		end
 	end
 	ETW_Frame.questionList.pages[ETW_Frame.questionList.pageIndex].count = index
 
 	updateScrollbarSize()
+	updateButtonSelection()
 
 end
-
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --       Utility functions
@@ -228,6 +272,10 @@ local function displayQuestion(question)
 	local questionFrame = ETW_Frame.questionFrame
 	local defaultQuestion = ETW_LoreQuestions.defaultQuestion
 
+	if(questionFrame.question ~= nil) then
+		ETW_Frame.questionList.buttons[questionFrame.question.buttonIndex]:deselectButton()
+	end
+
 	-- Set questionFrame info to the corresponding data
 	questionFrame.question = question
 	questionFrame.titleFrame.title:SetText(question.name)
@@ -258,10 +306,8 @@ local function displayQuestion(question)
 	end
 
 	-- Display "selectArrow" next to list button
-	ETW_Frame.questionList.selectArrow:Show()
-	ETW_Frame.questionFrame.selectUpArrow:Hide()
-	ETW_Frame.questionFrame.selectDownArrow:Hide()
-	ETW_Frame.questionList.selectArrow:SetPoint("LEFT", ETW_Frame.questionList.buttons[question.buttonIndex], "LEFT", -20, 0)
+	updateButtonSelection()
+	ETW_Frame.questionList.buttons[question.buttonIndex]:selectButton(question)
 
 	-- Remove the "new quest" blue glow
 	if(SymphonymConfig.questions[question.ID] and SymphonymConfig.questions[question.ID].newQuest) then
@@ -294,13 +340,13 @@ local function displayQuestion(question)
 			questionFrame.imageFrame.npcModel:Hide()
 		end
 
-		-- Model Y offset, to make it look tidy
-		if(question.modelYOffset ~= nil) then
-			questionFrame.imageFrame.miscModel:SetPosition(0,0,-0.1+question.modelYOffset)
-		else
-			questionFrame.imageFrame.miscModel:SetPosition(0,0,-0.1)
-			questionFrame.imageFrame.npcModel:SetPosition(0,0,-0.1)
-		end
+		-- Model Y and X offset, to make it look tidy
+		local xoffset, yoffset = 0, 0
+		if(question.modelYOffset ~= nil) then yoffset = question.modelYOffset end
+		if(question.modelYOffset ~= nil) then xoffset = question.modelXOffset end
+
+		questionFrame.imageFrame.miscModel:SetPosition(0,xoffset,-0.1+yoffset)
+		questionFrame.imageFrame.npcModel:SetPosition(0,xoffset,-0.1+yoffset)
 
 		-- Misc model zoom
 		if(question.modelZoom ~= nil) then
@@ -321,6 +367,7 @@ local function displayQuestion(question)
 		questionFrame.titleFrame.categoryIcon:SetTexture(question.groupQuestCategory)
 	end
 
+	-- Broadcast group question data in investigation on text typing
 	questionFrame.answerBox:HookScript("OnTextChanged", function(self, userInput)
 
 		-- Send info to group quest players if it's a groupquest
@@ -330,10 +377,29 @@ local function displayQuestion(question)
 			ETW_BroadcastGroupQuestData(
 				questionFrame.question.ID..","..
 				questionFrame.answerBox:GetText()..","..
-				GetSubZoneText()..","..
+				ETW_Utility:GetSubZone()..","..
 				ETW_Utility:GetCurrentZone())
 		end
 
+	end)
+
+	-- All categories will broadcast zones if group question
+	questionFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	questionFrame:RegisterEvent("ZONE_CHANGED")
+	questionFrame:SetScript("OnEvent", function(self, event, ...)
+		if(event == "ZONE_CHANGED_NEW_AREA" or event == "ZONE_CHANGED") then
+
+			-- Send info to group quest players if it's a groupquest
+			if(self.question ~= nil and self.question.category == ETW_GROUPQUEST_CATEGORY and
+				ETW_IsGroupQuestActive(questionFrame.question)) then
+				ETW_Utility:PrintToChat("BROADCAST")
+				ETW_BroadcastGroupQuestData(
+					self.question.ID..","..
+					self.answerBox:GetText()..","..
+					ETW_Utility:GetSubZone()..","..
+					ETW_Utility:GetCurrentZone())
+			end
+		end
 	end)
 
 	if(realCategory == ETW_EXPLORE_CATEGORY or realCategory == ETW_TRACKING_CATEGORY) then
@@ -360,12 +426,12 @@ local function displayQuestion(question)
 						end
 
 						-- Send info to group quest players if it's a groupquest
-						if(questionFrame.question.category == ETW_GROUPQUEST_CATEGORY and
+						if(questionFrame.question ~= nil and questionFrame.question.category == ETW_GROUPQUEST_CATEGORY and
 							ETW_IsGroupQuestActive(questionFrame.question)) then
 							ETW_BroadcastGroupQuestData(
 								questionFrame.question.ID..","..
 								questionFrame.answerBox:GetText()..","..
-								GetSubZoneText()..","..
+								ETW_Utility:GetSubZone()..","..
 								ETW_Utility:GetCurrentZone())
 						end
 					end
@@ -376,27 +442,19 @@ local function displayQuestion(question)
 				questionFrame.answerBox:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 				questionFrame.answerBox:RegisterEvent("ZONE_CHANGED")
 
-				questionFrame.answerBox:SetText(GetSubZoneText())
-
-				if(string.len(questionFrame.answerBox:GetText()) <= 0) then
-					questionFrame.answerBox:SetText(GetRealZoneText())
-				end
+				questionFrame.answerBox:SetText(ETW_Utility:GetSubZone())
 
 				questionFrame.answerBox:SetScript("OnEvent", function(self, event, ...)
 					if(event == "ZONE_CHANGED_NEW_AREA" or event == "ZONE_CHANGED") then
-						self:SetText(GetSubZoneText())
-
-						if(string.len(self:GetText()) <= 0) then
-							self:SetText(GetRealZoneText())
-						end
+						self:SetText(ETW_Utility:GetSubZone())
 
 						-- Send info to group quest players if it's a groupquest
-						if(questionFrame.question.category == ETW_GROUPQUEST_CATEGORY and
+						if(questionFrame.question ~= nil and questionFrame.question.category == ETW_GROUPQUEST_CATEGORY and
 							ETW_IsGroupQuestActive(questionFrame.question)) then
 							ETW_BroadcastGroupQuestData(
 								questionFrame.question.ID..","..
 								questionFrame.answerBox:GetText()..","..
-								GetSubZoneText()..","..
+								ETW_Utility:GetSubZone()..","..
 								ETW_Utility:GetCurrentZone())
 						end
 					end
@@ -437,7 +495,7 @@ local function displayQuestion(question)
 		ETW_BroadcastGroupQuestData(
 			questionFrame.question.ID..","..
 			questionFrame.answerBox:GetText()..","..
-			GetSubZoneText()..","..
+			ETW_Utility:GetSubZone()..","..
 			ETW_Utility:GetCurrentZone())
 	else
 		ETW_CancelGroupQuest()
@@ -474,23 +532,32 @@ local function createListButton()
 
 	-- Highlight on top of the button, indicating different statuses
 	listButton.highlight = listButton:CreateTexture()
+	listButton.highlight:SetAllPoints(listButton) 
 
 	function listButton:highlightNone()
-		self.highlight:SetAllPoints(listButton) 
 		self.highlight:SetTexture(unpack(ETW_NO_HIGHLIGHT))
 	end
 	function listButton:highlightRed()
-		self.highlight:SetAllPoints(listButton) 
 		self.highlight:SetTexture(unpack(ETW_RED_HIGHLIGHT))
 	end
 	function listButton:highlightGreen()
-		self.highlight:SetAllPoints(listButton) 
 		self.highlight:SetTexture(unpack(ETW_GREEN_HIGHLIGHT))
 	end
 	function listButton:highlightBlue()
-		self.highlight:SetAllPoints(listButton) 
 		self.highlight:SetTexture(unpack(ETW_BLUE_HIGHLIGHT))
 	end
+
+	-- Highlight on top of the button, indicating if it's selected
+	listButton.selectHighlight = listButton:CreateTexture()
+	listButton.selectHighlight:SetAllPoints(listButton)
+	listButton.selectHighlight:SetDrawLayer("ARTWORK", 5)
+	function listButton:selectButton()
+		self.selectHighlight:SetTexture(1,1,1,0.3)
+	end
+	function listButton:deselectButton()
+		self.selectHighlight:SetTexture(0,0,0,0)
+	end
+
 	function listButton:setQuestionToButton(question)
 		self.icon:SetTexture(question.category)
 		self.question = question
@@ -636,7 +703,7 @@ do
 	end)
 	iconFrame:SetScript("OnMouseUp", function(self, button)
 		ETW_Frame.startFrame:showFrame()
-		ETW_Frame.questionFrame:Hide()
+		ETW_Frame.questionFrame:hideFrame()
 		frame.portraitIcon:SetVertexColor(1,1,1,1)
 		PlaySound("GAMEDIALOGOPEN")
 	end)
@@ -665,11 +732,10 @@ end
 do
 	-- ScrollFrame for all the unlocked questions, i.e the boundaries of the scroll window 
 	local scrollFrame = CreateFrame("ScrollFrame", "ETW_QuestionScrollFrame", ETW_Frame) 
-	scrollFrame:SetPoint("TOPLEFT", -40, -90) 
+	scrollFrame:SetPoint("TOPLEFT", 10, -90) 
 	scrollFrame:SetPoint("BOTTOMRIGHT", -320, 26)
 	scrollFrame.background = scrollFrame:CreateTexture() 
-	scrollFrame.background:SetPoint("TOPRIGHT")
-	scrollFrame.background:SetSize(ETW_LISTITEM_WIDTH, scrollFrame:GetHeight())
+	scrollFrame.background:SetAllPoints()
 	scrollFrame.background:SetTexture(0,0,0,0.5)
 	scrollFrame:SetScript("OnMouseWheel", function(self, delta)
 		if(ETW_Frame.scrollBar:IsEnabled()) then
@@ -688,19 +754,7 @@ do
 	scrollBar:SetScript("OnValueChanged", function (self, value) 
 		self:GetParent():SetVerticalScroll(value)
 
-		-- Select arrow displaying
-		if(ETW_Frame.questionList.selectArrow:GetTop()) then
-			if(ETW_Frame.questionList.selectArrow:GetTop() > ETW_Frame.scrollFrame:GetTop()) then
-				ETW_Frame.questionFrame.selectDownArrow:Hide()
-				ETW_Frame.questionFrame.selectUpArrow:Show()
-			elseif (ETW_Frame.questionList.selectArrow:GetBottom()+1 < ETW_Frame.scrollFrame:GetBottom()) then
-				ETW_Frame.questionFrame.selectUpArrow:Hide()
-				ETW_Frame.questionFrame.selectDownArrow:Show()
-			else
-				ETW_Frame.questionFrame.selectUpArrow:Hide()
-				ETW_Frame.questionFrame.selectDownArrow:Hide()
-			end
-		end
+		updateButtonSelection()
 	end)
 	scrollBar:SetScript("OnMouseWheel", function(self, delta)
 		if(self:IsEnabled()) then
@@ -884,13 +938,7 @@ do
 	startFrame.authorFrame.text:SetText(ETW_CREDIT_STRING)
 	startFrame.authorFrame.text:SetTextHeight(15)
 	startFrame.authorFrame.text:SetJustifyH("LEFT")
-	startFrame.authorFrame.text:SetPoint("TOPLEFT", 15, -20)
-
-	startFrame.authorFrame.thanksText = startFrame.authorFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	startFrame.authorFrame.thanksText:SetText(ETW_THANKSTO_STRING)
-	startFrame.authorFrame.thanksText:SetTextHeight(12)
-	startFrame.authorFrame.thanksText:SetJustifyH("LEFT")
-	startFrame.authorFrame.thanksText:SetPoint("TOPLEFT", 15, -150)
+	startFrame.authorFrame.text:SetPoint("TOPLEFT", 15, -10)
 
 	function startFrame:showFrame()
 		local class, classFileName = UnitClass("player")
@@ -900,11 +948,74 @@ do
 		self.welcomeText:SetText("Name: "..ETW_Utility:RGBToStringColor(classR, classG, classB) .. UnitName("player") .. "|r")
 		self.rankText:SetText("Rank: ".. ETW_Utility:RGBToStringColor(0.6, (SymphonymConfig.questions.completed / ETW_LoreQuestions.size), 0) ..getQuestionRank())
 
-		ETW_Frame.questionList.selectArrow:Hide()
 		self:Show()
 	end
-	startFrame:Show()
+
+
+		-- ScrollFrame for all the unlocked questions, i.e the boundaries of the scroll window 
+	local scrollFrame = CreateFrame("ScrollFrame", "ETW_CreditScrollFrame", startFrame.authorFrame) 
+	scrollFrame:SetPoint("TOPLEFT", 15, -145) 
+	scrollFrame:SetPoint("BOTTOMRIGHT", -25, 14)
+
+	scrollFrame.background = CreateFrame("Frame", "ETW_CreditScrollFrameBackground", scrollFrame, "InsetFrameTemplate")
+	scrollFrame.background:SetPoint("TOPLEFT", 0, 2)
+	scrollFrame.background:SetSize(scrollFrame:GetWidth(), scrollFrame:GetHeight()+8)
+	scrollFrame.background:SetFrameLevel(7)
+
+	scrollFrame:SetScript("OnMouseWheel", function(self, delta)
+		local scrollbar = ETW_Frame.startFrame.scrollBar
+		if(scrollbar:IsEnabled()) then
+			local sliderMin, sliderMax = scrollbar:GetMinMaxValues()
+			local sliderValue = math.floor(scrollbar:GetValue() + (sliderMax*(-delta*0.05)))
+			scrollbar:SetValue(sliderValue)
+		end
+	end)
+
+	scrollFrame.contentFrame = CreateFrame("Frame", nil, scrollFrame)
+	scrollFrame.contentFrame:SetSize(100, 1)
+	scrollFrame.contentFrame:SetFrameLevel(10)
+
+	scrollFrame.contentFrame.creditText = scrollFrame.contentFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+	scrollFrame.contentFrame.creditText:SetTextHeight(10)
+	scrollFrame.contentFrame.creditText:SetJustifyH("LEFT")
+	scrollFrame.contentFrame.creditText:SetPoint("TOP", 35, -5)
+	scrollFrame.contentFrame.creditText:SetText(ETW_THANKSTO_STRING)
+
+	scrollFrame:SetScrollChild(scrollFrame.contentFrame)
+
+
+
+	-- Scrollbar for all the unlocked questions
+	local scrollBar = CreateFrame("Slider", "ETW_CreditScrollbar", scrollFrame, "UIPanelScrollBarTemplate") 
+	scrollBar:SetPoint("TOPLEFT", scrollFrame, "TOPRIGHT", 4, -16) 
+	scrollBar:SetPoint("BOTTOMLEFT", scrollFrame, "BOTTOMRIGHT", 4, 16) 
+	scrollBar:SetWidth(16)
+	scrollBar:EnableMouseWheel(true)
+	scrollBar:SetMinMaxValues(0, 100)
+	scrollBar:SetValue(0)
+	scrollBar:SetValueStep(1)
+
+	scrollBar:SetScript("OnValueChanged", function (self, value) 
+		self:GetParent():SetVerticalScroll(value)
+	end)
+	scrollBar:SetScript("OnMouseWheel", function(self, delta)
+		if(self:IsEnabled()) then
+			local sliderMin, sliderMax = self:GetMinMaxValues()
+			local sliderValue = math.floor(self:GetValue() + (sliderMax*(-delta*0.05)))
+			self:SetValue(sliderValue)
+		end
+	end)
+
+	-- Background of the scrollbar
+	scrollBar.background = scrollBar:CreateTexture(nil, "BACKGROUND") 
+	scrollBar.background:SetAllPoints(scrollBar) 
+	scrollBar.background:SetTexture(0, 0, 0, 0.4)
+
 	ETW_Frame.startFrame = startFrame
+	ETW_Frame.startFrame.scrollFrame = scrollFrame
+	ETW_Frame.startFrame.scrollBar = scrollBar
+
+	startFrame:Show()
 
 end
 
@@ -938,7 +1049,7 @@ do
 		if (event == "PLAYER_LOGIN") then
 
 			-- Pre allocate buttons for list
-			for buttonIndex = 0, SymphonymConfig.options.pageLimit, 1 do
+			for buttonIndex = 1, SymphonymConfig.options.pageLimit, 1 do
 				ETW_Frame.questionList.buttons[buttonIndex] = createListButton()
 			end
 
@@ -1201,24 +1312,32 @@ do
 	questionFrame:SetAllPoints()
 	questionFrame:SetPoint("CENTER")
 
-	-- Select arrow, displayed next to question list
-	ETW_Frame.questionList.selectArrow = ETW_Frame.questionList:CreateTexture()
-	ETW_Frame.questionList.selectArrow:SetTexture(ETW_ADDONICON)
-	ETW_Frame.questionList.selectArrow:SetSize(20, 20)
-	ETW_Frame.questionList.selectArrow:Hide()
-
 	-- If selected question is out of view, display a lil icon by the top/bottom
 	questionFrame.selectUpArrow = questionFrame:CreateTexture()
-	questionFrame.selectUpArrow:SetTexture(ETW_ADDONICON)
-	questionFrame.selectUpArrow:SetSize(30, 30)
-	questionFrame.selectUpArrow:SetPoint("TOPLEFT", ETW_Frame.scrollFrame, "TOPLEFT", 22, 5)
+	questionFrame.selectUpArrow:SetTexture(ETW_SELECTION_BOUNDS_TEXTURE)
+	questionFrame.selectUpArrow:SetSize(ETW_LISTITEM_WIDTH-2, 30)
+	questionFrame.selectUpArrow:SetAlpha(0.7)
+	questionFrame.selectUpArrow:SetPoint("TOPLEFT", ETW_Frame.scrollFrame, "TOPLEFT", 2, 0)
 	questionFrame.selectUpArrow:Hide()
 
 	questionFrame.selectDownArrow = questionFrame:CreateTexture()
-	questionFrame.selectDownArrow:SetTexture(ETW_ADDONICON)
-	questionFrame.selectDownArrow:SetSize(30, 30)
-	questionFrame.selectDownArrow:SetPoint("BOTTOMLEFT", ETW_Frame.scrollFrame, "BOTTOMLEFT", 22, -2)
+	questionFrame.selectDownArrow:SetTexture(ETW_SELECTION_BOUNDS_TEXTURE)
+	questionFrame.selectDownArrow:SetSize(ETW_LISTITEM_WIDTH-2, 30)
+	questionFrame.selectDownArrow:SetTexCoord(0,1,1,0)
+	questionFrame.selectDownArrow:SetAlpha(0.7)
+	questionFrame.selectDownArrow:SetPoint("BOTTOMLEFT", ETW_Frame.scrollFrame, "BOTTOMLEFT", 2, -2)
 	questionFrame.selectDownArrow:Hide()
+
+	function questionFrame:hideFrame()
+		local displayedQuestion = ETW_Frame.questionFrame.question
+
+		if(displayedQuestion ~= nil) then
+			ETW_Frame.questionList.buttons[displayedQuestion.buttonIndex]:deselectButton()
+			ETW_Frame.questionFrame.question = nil
+		end
+
+		self:Hide()
+	end
 
 
 	-- Link button, to link question to a friend
@@ -1391,6 +1510,9 @@ do
 	questionFrame.confirmButton:SetPoint("BOTTOMRIGHT", 0, 18)
 	questionFrame.confirmButton:SetScript("PostClick", function(self, button, down)
 		if(button == "LeftButton" and not down) then
+			ETW_Utility:PrintToChat(ETW_Utility:GetCurrentZone())
+			ETW_Utility:PrintToChat(GetSubZoneText())
+			ETW_Utility:PrintToChat(GetMinimapZoneText())
 			questionFrame:validateAnswer()
 		end
 	end)
@@ -1453,11 +1575,20 @@ do
 
 	function questionFrame:checkZoneRequirement()
 		if(self.question.zoneRequirementHash ~= nil) then
-			for _, zoneHash in pairs(self.question.zoneRequirementHash) do
+			for _, zoneData in pairs(self.question.zoneRequirementHash) do
 
-				-- Matching zones
-				if(ETW_Utility:CreateSha2Hash(GetSubZoneText()) == zoneHash or
-					ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone()) == zoneHash) then
+				local zoneReq = true
+				local subZoneReq = true
+
+				if(zoneData.zone ~= nil and ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone()) ~= zoneData.zone) then
+					zoneReq = false
+				end
+				if(zoneData.subZone ~= nil and ETW_Utility:CreateSha2Hash(ETW_Utility:GetSubZone()) ~= zoneData.subZone) then
+					subZoneReq = false
+				end
+
+				-- If you match one of the zone requirements, then return true
+				if(zoneReq and subZoneReq) then
 					return true
 				end
 			end
@@ -1575,9 +1706,19 @@ end
 local function meetsZoneUnlockRequirement(question)
 
 	if(question.zoneRequirementUnlockHash ~= nil) then
-		for _, zoneHash in pairs(question.zoneRequirementUnlockHash) do
-			if(ETW_Utility:CreateSha2Hash(GetSubZoneText()) == zoneHash or
-				ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone()) == zoneHash) then
+		for _, zoneData in pairs(question.zoneRequirementUnlockHash) do
+			local zoneReq = true
+			local subZoneReq = true
+
+			if(zoneData.zone ~= nil and ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone()) ~= zoneData.zone) then
+				zoneReq = false
+			end
+			if(zoneData.subZone ~= nil and ETW_Utility:CreateSha2Hash(ETW_Utility:GetSubZone()) ~= zoneData.subZone) then
+				subZoneReq = false
+			end
+
+			-- If you match one of the zone requirements, then return true
+			if(zoneReq and subZoneReq) then
 				return true
 			end
 		end
@@ -1628,7 +1769,7 @@ end
 
 scanZone = function()
 	local zonesUnlocked = 0
-	local subzoneHash = ETW_Utility:CreateSha2Hash(GetSubZoneText())
+	local subzoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetSubZone())
 	local zoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone())
 
 	local zoneList = ETW_UnlockTable.zones[zoneHash]

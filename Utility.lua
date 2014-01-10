@@ -57,6 +57,17 @@ function ETW_Utility:GetCurrentZone()
 	end
 end
 
+-- This function will attempt to grab a subzone, but if none is available then it might equal
+-- GetCurrentZone
+function ETW_Utility:GetSubZone()
+	local subZone = GetSubZoneText()
+	if(subZone == nil or string.len(subZone) <= 0) then
+		return GetRealZoneText()
+	else
+		return subZone
+	end
+end
+
 -- Convert RGB color value to hex string usable by WoW
 function ETW_Utility:RGBToStringColor(r,g,b)
 	-- http://wowprogramming.com/snippets/Convert_decimal_classcolor_into_hex_27

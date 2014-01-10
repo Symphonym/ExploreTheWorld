@@ -212,6 +212,9 @@ ETW_GREEN_HIGHLIGHT = {0, 1, 0, 0.3}
 ETW_BLUE_HIGHLIGHT = {0, 0, 1, 0.3}
 ETW_NO_HIGHLIGHT = {0, 0, 0, 0}
 
+-- Selection "out of bounds" texture
+ETW_SELECTION_BOUNDS_TEXTURE = "Interface\\WorldMap\\UI-QuestBlob-Outside-white.blp"
+
 ETW_CREDIT_STRING = [[
 Created by: 
 Jakob Larsson|n|n|cFFF58CBAProgrammer|n|rDefias Brotherhood, EU|n|cFFC41F3BHorde|r
@@ -219,6 +222,19 @@ Jakob Larsson|n|n|cFFF58CBAProgrammer|n|rDefias Brotherhood, EU|n|cFFC41F3BHorde
 Thanks to:
 ]]
 ETW_THANKSTO_STRING = [[
-Karl Marelius,|cFF0070DE Tezlo|r (Primary tester)
-Niklas löf Arefjärd,|cFFC79C6E Stahli|r (Tester)
+
+|cFF00FF00Testers:|r
+
+   Karl Marelius,|cFF0070DE Tezlo|r
+   Niklas löf Arefjärd,|cFFC79C6E Stahli|r
+
+|cFF00FF00Question creators:|r
+
+|cFF00FF00Explorers:|r
+
+   Garane
+   Skoop
+   Rayzoor, The Maelstrom
+   Delmatae
+
 ]]

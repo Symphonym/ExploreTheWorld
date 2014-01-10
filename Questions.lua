@@ -124,11 +124,19 @@ REQ		description = ""
 REQ		answer = {SHA2HASH}
 			A table of all the possible answers for a question, all
 			in sha2 hash format.
-REQ		zoneRequirementHash = {SHA2HASH}
+REQ		zoneRequirementHash = 
+		{
+			{ zone = SHA2HASH, subZone = SHA2HASH }
+		}
 			A table of all the zones that you're allowed to answer the
-			question in, all in sha2 hash format. Both subzones, such
-			as "The Canal" in Stormwind and real zones, such as
-			"Elwynn Forest" are valid (once in hash format).
+			question in. The table contains a list of smaller tables,
+			each of the smaller tables may contain a "zone" and a "subZone"
+			value. The attribute "zone" here defines a zone that the player
+			must be in, for example "Tanaris" or "Shadowfang Keep". The
+			attribute "subZone" in this case then allows you to define a subzone
+			that the player must be in. For example "The Dark Portal" in
+			Blasted Lands or "The Canal" in Stormwind. Both "zone" and "subZone"
+			are in sha2 hash format.
 
 		OR IF IT IS A GROUPQUEST
 
@@ -139,12 +147,12 @@ REQ 	groupQuest =
 			[1] =
 			{
 				answer = {SHA2HASH},
-				zoneRequirementHash = {SHA2HASH}
+				zoneRequirementHash = {{ zone = SHA2HASH, subZone = SHA2HASH }}
 			}
 			[2] = 
 			{
 				answer = {SHA2HASH},
-				zoneRequirementHash = {SHA2HASH}
+				zoneRequirementHash = {{ zone = SHA2HASH, subZone = SHA2HASH }}
 			}
 		}
 			Answer data for a groupquest, a table of 2-5 "mini-questions" that
@@ -178,8 +186,14 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			modelId = "Mzc2NDU=",
 			description = "A reference to a famous TV chef, most notably known for his hosting of various competitive cooking shows, often in quite the angry mood. Although here we have him relaxing at qutie the resort, with hot springs and steamy food just around the corner.",
-			answer = {"f58b1a0e27867ef20567fd832481aed54e152c46a1c07ed4f9c3aeef8b27e790"},
-			zoneRequirementHash = {"8d0ff8c7feb9ef111a36d09695309f0cd808c38b420626ac2edd2b9531bac61d"}
+			answer =
+			{
+				"f58b1a0e27867ef20567fd832481aed54e152c46a1c07ed4f9c3aeef8b27e790"
+			},
+			zoneRequirementHash = 
+			{
+				{ zone="d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b", subZone="8d0ff8c7feb9ef111a36d09695309f0cd808c38b420626ac2edd2b9531bac61d"}
+			}
 		},
 		{
 			ID = 2,
@@ -187,8 +201,14 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			modelId = "Mzg1NQ==",
 			description = "Living a dry barren land this poor orc had his wife killed by the quilboar, but sought revenge on them through helpfull heroes of the Horde. Not too far from the watch post he resides, consumed by his hatred against the quilboar.",
-			answer = {"3007b3f7b3762071034b5525693b2be41c01a210b5725669975dabc5be855e4f"},
-			zoneRequirementHash = {"8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1"}
+			answer =
+			{
+				"3007b3f7b3762071034b5525693b2be41c01a210b5725669975dabc5be855e4f"
+			},
+			zoneRequirementHash = 
+			{
+				{ zone="8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1"}
+			}
 		},
 		{
 			ID = 3,
@@ -196,8 +216,17 @@ ETW_LoreQuestions = {
 			category = ETW_INVESTIGATION_CATEGORY,
 			modelId = "MzI4",
 			description = "Green plains, plainstriders and kodos are just a few of the things you can find in this zone. Not to mention, critters such as rabbits and prairie dogs can be found using weapons here. Amongst these critters is a decorated stone, name one thing on the stone.",
-			answer = {"e3bfe7e56a821737615132e603dbe6beaf6936710f634d4573250b784e58ae56", "994375f2f240a510dc3af273547d2a553afbea00b088a4f57871ab45c544becd", "edfce16ce1f01e070207fafeadbe6f498516e54cf97292d18c6b3823e893f175", "3e9e7a46c3b80b73483e3129771401ccdaed1d2eff632a824984d489a86a5dea"},
-			zoneRequirementHash = {"798f715b8bfe09111da2750514181ac9f9eaf1f7a5333ba41bfe907fbdea9df5"}
+			answer =
+			{
+				"e3bfe7e56a821737615132e603dbe6beaf6936710f634d4573250b784e58ae56",
+				"994375f2f240a510dc3af273547d2a553afbea00b088a4f57871ab45c544becd",
+				"edfce16ce1f01e070207fafeadbe6f498516e54cf97292d18c6b3823e893f175",
+				"3e9e7a46c3b80b73483e3129771401ccdaed1d2eff632a824984d489a86a5dea"
+			},
+			zoneRequirementHash = 
+			{
+				{ zone="798f715b8bfe09111da2750514181ac9f9eaf1f7a5333ba41bfe907fbdea9df5"}
+			}
 		},
 		{
 			ID = 4,
@@ -205,7 +234,14 @@ ETW_LoreQuestions = {
 			category = ETW_EXPLORE_CATEGORY,
 			modelId = "NTQzMA==",
 			description = "Hidden in a secret cave, one of the lesser known Demon Hunters can be found. Should you fall into this void, fear not, for the Cenarion Circle will be able to help you away from the ghosts in the darkness.",
-			answer = {"088b0b86b90297d53e81ffe6efe6a13519398e4afc7bd282907cc9e6828f859a"}
+			answer =
+			{
+				"088b0b86b90297d53e81ffe6efe6a13519398e4afc7bd282907cc9e6828f859a"
+			},
+			zoneRequirementHash = 
+			{
+				{ zone="9d02d0c7eb122f18cbf34943e43fdc6a96ee00dbc9080c59026278ea4033de6e", subZone="088b0b86b90297d53e81ffe6efe6a13519398e4afc7bd282907cc9e6828f859a"}
+			}
 		},
 		{
 			ID = 5,
@@ -213,8 +249,14 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			modelId = "NDA1MQ==",
 			description = "A gnome with a secret farm of wool producing animals located on a beautiful grasscovered hillside. One of these animals is \"modified\" to suit other needs which we do not know of other than to amuse rude adventurers passing by.",
-			answer = {"8ccff692cd12807cf8ac17e31472f44ef0a00d586534150a865bfb7a2714d14a"},
-			zoneRequirementHash = {"736aaecfc1f584a92486b54aab7ba65d94e6870d5fc4413daa3abca296b4ef0b"}
+			answer =
+			{
+				"8ccff692cd12807cf8ac17e31472f44ef0a00d586534150a865bfb7a2714d14a"
+			},
+			zoneRequirementHash = 
+			{
+				{ zone="736aaecfc1f584a92486b54aab7ba65d94e6870d5fc4413daa3abca296b4ef0b"}
+			}
 		},
 		{
 			ID = 6,
@@ -222,8 +264,14 @@ ETW_LoreQuestions = {
 			category = ETW_EXPLORE_CATEGORY,
 			modelPath = "V29ybGRcXEF6ZXJvdGhcXHN0cmFuZ2xldGhvcm5cXHBhc3NpdmVkb29kYWRzXFxydWluc1xcc3RyYW5nbGV0aG9ybnJ1aW5zMDIubWR4",
 			description = "It was built by the ancient jungle trolls but is now reclaimed by the surrounding vegetation. Although occasionally a short fellow bribes adventurers to once again fill the long forgotten battle ring, with blood.",
-			answer = {"c2f3d971eafd12bef1e2226678e96ca8a3f5dcd372d61cd77c10c67780965cd4"},
-			zoneRequirementHash = {"2a373dec3bde04f90e30284c48c1e583082ea3a61dbe94be0dc9bc935fa20e44"}
+			answer =
+			{
+				"c2f3d971eafd12bef1e2226678e96ca8a3f5dcd372d61cd77c10c67780965cd4"
+			},
+			zoneRequirementHash = 
+			{
+				{ zone="2a373dec3bde04f90e30284c48c1e583082ea3a61dbe94be0dc9bc935fa20e44", subZone="c2f3d971eafd12bef1e2226678e96ca8a3f5dcd372d61cd77c10c67780965cd4"}
+			}
 		},
 		{
 			ID = 7,
@@ -231,8 +279,14 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			modelId = "NTUyOA==",
 			description = "A grand master in the fine artmanship of assassinating designated targets, even a leader in a league teaching just that. Located in a training camp up in the mountains, east from the mill, and north from the south.",
-			answer = {"11ee54b26794b998c485503886d3649b3a82b9c46578fb664704afb1c14f57d3"},
-			zoneRequirementHash = {"0dc11dfaf6c36a4bb6570560942a387182b38b898bf5a82155622fc89df0e464"}
+			answer =
+			{
+				"11ee54b26794b998c485503886d3649b3a82b9c46578fb664704afb1c14f57d3"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61", subZone="0dc11dfaf6c36a4bb6570560942a387182b38b898bf5a82155622fc89df0e464"}
+			}
 		},
 		{
 			ID = 8,
@@ -240,9 +294,17 @@ ETW_LoreQuestions = {
 			category = ETW_INVESTIGATION_CATEGORY,
 			modelPath = "V29ybGRcXEdlbmVyaWNcXGR3YXJmXFxwYXNzaXZlIGRvb2RhZHNcXGJhdHRsZW1lbnRzXFxkd2FydmVuYmF0dGxlbWVudG1vc3N5MDIubWR4",
 			modelZoom = 7,
-			description = "Just south of the overpass combining highlands with wetlands is a now abandoned dwarven city. What may not be known to all is something hidden in the surrounding mountains, what is it?",
-			answer = {"0219f20d577c297930f0b758f6a140f522174b3a142b9d278d8937c4c0125fbc", "e4755cb31c0fffb72499cb3f86cbbceda5ba47c5c7693aa58af164e54d64024b", "3379897f09bbf26bc35f553e9396f58e83a903573995dd110f262c3d136d84a8"},
-			zoneRequirementHash = {"d05b2fc34d0e44c9fb14f601d1794ae1755e91f373d7c679e51ccba0cb34f56a"}
+			description = "Just south of the overpass combining highlands with wetlands is a dwarven city that is overrun by the Twilight Cult. What may not be known to all is something hidden in the surrounding mountains, what is it?",
+			answer =
+			{
+				"0219f20d577c297930f0b758f6a140f522174b3a142b9d278d8937c4c0125fbc",
+				"e4755cb31c0fffb72499cb3f86cbbceda5ba47c5c7693aa58af164e54d64024b",
+				"3379897f09bbf26bc35f553e9396f58e83a903573995dd110f262c3d136d84a8"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="d05b2fc34d0e44c9fb14f601d1794ae1755e91f373d7c679e51ccba0cb34f56a"}
+			}
 		},
 		{
 			ID = 9,
@@ -250,7 +312,14 @@ ETW_LoreQuestions = {
 			category = ETW_EXPLORE_CATEGORY,
 			modelId = "NTk0NQ==",
 			description = "Carved out of stone as a symbol for liberty, now held captive by trogg that has overrun the excavation site. Not even adventurers from the nearby lodge or loch has bothered to dig her up out of the dirt.",
-			answer = {"1a7750fb59a30dbe4133444d07a45910edcce9bb4f7e5be2293c83c4d7434cab"}
+			answer =
+			{
+				"1a7750fb59a30dbe4133444d07a45910edcce9bb4f7e5be2293c83c4d7434cab"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="4edc4b26add532fa92ae3b8bf439bd13aa959daf30f15469a0cbfc3248176681", subZone="1a7750fb59a30dbe4133444d07a45910edcce9bb4f7e5be2293c83c4d7434cab"}
+			}
 		},
 		{
 			ID = 10,
@@ -259,7 +328,14 @@ ETW_LoreQuestions = {
 			modelPath = "V29ybGRcXEdlbmVyaWNcXGdvYmxpblxccGFzc2l2ZWRvb2RhZHNcXGJlZHNcXGdvYmxpbl9ob3JkZV9vcm5hdGViZWRfMDEubWR4",
 			modelZoom = 2,
 			description = "A luxurious retreat for the richest of business men, complete with endless hordes of servants and a pool making use of the finest engineering has to offer. Assuming you have highly positioned friends within the cartel, bring a few million gold to fully experience this palace.",
-			answer = {"483c193d49c8a7fd30802ae41eb73746e3484de4cfda55d412165f02f60f2445"}
+			answer =
+			{
+				"483c193d49c8a7fd30802ae41eb73746e3484de4cfda55d412165f02f60f2445"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="e5fe4f3372ed35b4f76c83df897e4d0e9372f9d50b498f5893b468e3bfae89a8", subZone="483c193d49c8a7fd30802ae41eb73746e3484de4cfda55d412165f02f60f2445"}
+			}
 		},
 		{
 			ID = 11,
@@ -267,8 +343,17 @@ ETW_LoreQuestions = {
 			category = ETW_INVESTIGATION_CATEGORY,
 			modelId = "NzA3",
 			description = "By the western edge of the region that is home to the great forge we find a camp that appears to be overrun by wild animals. But where are the owners of this small camp, surely they must be nearby as the fire is still burning.",
-			answer = {"dbc75b42b12c2a1ddccb94ade789aa654c5577702ad40c043f65b70873d7e02e", "e1f5380ecdd7e582eb7ae4cf3e93498877974dd38bf4fa8b0f5a5fdc6177477a", "f8565e1aa585890db7a5be060456734036c909cd28ea4d448de7206c8e26b54c"},
-			zoneRequirementHash = {"73b5f5b9f0766caa35b01c58a76c0ebe71d8939f7de881ea108b4b25742e8ce6"}
+			answer = 
+			{
+				"dbc75b42b12c2a1ddccb94ade789aa654c5577702ad40c043f65b70873d7e02e",
+				"e1f5380ecdd7e582eb7ae4cf3e93498877974dd38bf4fa8b0f5a5fdc6177477a",
+				"f8565e1aa585890db7a5be060456734036c909cd28ea4d448de7206c8e26b54c",
+				"4edb4b1d896eae5c81ff50dfe4ca35c6f95cfbaa15d7824ae02151f160bc0047"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="73b5f5b9f0766caa35b01c58a76c0ebe71d8939f7de881ea108b4b25742e8ce6"}
+			}
 		},
 		{
 			ID = 12,
@@ -277,8 +362,15 @@ ETW_LoreQuestions = {
 			modelYOffset = 0.8,
 			modelPath = "V29ybGRcXEV4cGFuc2lvbjAzXFxkb29kYWRzXFx3b3JnZW5cXGl0ZW1zXFx3b3JnZW5fc3RhZ2Vjb2FjaF8wMS5tZHg=",
 			description = "Standing strong throughout the effects of the cataclysm as its surrounding areas begin to crumble down the cliffside into the water. At the top of the hill we find this manor owned by those who transform at fullmoon.",
-			answer = {"157f113b8b3695becf1f1f4462c79f2adb8e095ab5151f1d022f027e93e89f24"},
-			zoneRequirementHash = {"ea08da2bd30e28a83f573f469b595a816cec54a34e971252d2f6ca2d8e6fd0af", "fdb767ca3ec0d0d14f9c6ab095559d20aff15776b8c6e36170612966c83fc0af"}
+			answer =
+			{
+				"157f113b8b3695becf1f1f4462c79f2adb8e095ab5151f1d022f027e93e89f24"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="ea08da2bd30e28a83f573f469b595a816cec54a34e971252d2f6ca2d8e6fd0af", subZone="157f113b8b3695becf1f1f4462c79f2adb8e095ab5151f1d022f027e93e89f24"},
+				{ zone="fdb767ca3ec0d0d14f9c6ab095559d20aff15776b8c6e36170612966c83fc0af", subZone="157f113b8b3695becf1f1f4462c79f2adb8e095ab5151f1d022f027e93e89f24"}
+			}
 		},
 		{
 			ID = 13,
@@ -286,8 +378,14 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			modelId = "MTE2NTM=",
 			description = "As one of the few non-hostile Lost Ones he urges for more things to collect, often offering a small reward to adventures who bring something new. Found in a land blasted by magic, crawling with demons and other vile sorcery.",
-			answer = {"78f420f27817ed2dd63e224282b301a6957efb9df4ae6aacafbc80dd43a1e771"},
-			zoneRequirementHash = {"2a0fd71aa349b3c662105e52d182b2950325ca79f408064b351575b983dfebcb"}
+			answer =
+			{
+				"78f420f27817ed2dd63e224282b301a6957efb9df4ae6aacafbc80dd43a1e771"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="2a0fd71aa349b3c662105e52d182b2950325ca79f408064b351575b983dfebcb"}
+			}
 		},
 		{
 			ID = 14,
@@ -295,8 +393,14 @@ ETW_LoreQuestions = {
 			category = ETW_INVESTIGATION_CATEGORY,
 			modelId = "NTIzMw==",
 			description = "In the hills south of a forgotten oasis lies the memorial of an illustrator who died during the development of World of Warcraft. His initials \"MK\" are carved into the shrine beneath his orc character, but what does the \"K\" stand for?",
-			answer = {"7131851b0091461f260f3440c4b8fe71d9d81925a660878cad2bb7d9e50ab89d"},
-			zoneRequirementHash = {"8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1"}
+			answer =
+			{
+				"7131851b0091461f260f3440c4b8fe71d9d81925a660878cad2bb7d9e50ab89d"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1", subZone="5413291cee39af0aea00f533fa226ca3d7c0c6f428b5c5e4e5f56ef9293bd1c7"}
+			}
 		},
 		{
 			ID = 15,
@@ -304,8 +408,17 @@ ETW_LoreQuestions = {
 			category = ETW_INVESTIGATION_CATEGORY,
 			modelId = "MzEwMjE=",
 			description = "Bells are ringing and people are cheering, all waiting for his return. That is until he reveals his new self to the king, his father. An historical event that can be relived as you enter ruined city that is is now home to the Forsaken. What is it that happens during this event?",
-			answer = {"a4747cd5b2f0d657aa56908bd42867f5c14ff352d041537fdea802ede7017273", "11afb9c11b0031ce00ba96700bf2a50c3628f99160e9b58c765030e499e4b3e2", "8b858ec5e5bc99b154f4c37d169a621de03e7ab2e5d4a6663281f1c8e7f37887", "25776fa0bf641799e025e40c29a31e95a7eae5b3677e01b0e6e4b6f8fc612272"},
-			zoneRequirementHash = {"eefe6c1f89fa12da231d98e109f68d8ddbbdfa18bcab74be67c5f73868f95084"}
+			answer =
+			{
+				"a4747cd5b2f0d657aa56908bd42867f5c14ff352d041537fdea802ede7017273",
+				"11afb9c11b0031ce00ba96700bf2a50c3628f99160e9b58c765030e499e4b3e2",
+				"8b858ec5e5bc99b154f4c37d169a621de03e7ab2e5d4a6663281f1c8e7f37887",
+				"25776fa0bf641799e025e40c29a31e95a7eae5b3677e01b0e6e4b6f8fc612272"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="2cfa5f86f8caecee1e714c86b20f026d664ecae5714e01b586583766a1773eee", subZone="eefe6c1f89fa12da231d98e109f68d8ddbbdfa18bcab74be67c5f73868f95084"}
+			}
 		},
 		{
 			ID = 16,
@@ -313,8 +426,15 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			modelId = "MTU5OTM=",
 			description = "He is found kneeling and saluting the memorial grave dedicated towards a close friend of one of the WoW developers, the person whos main character he was. Located to the east in the lands below the league of rogues, overlooking the sea.",
-			answer = {"32eaa3ea7fcf0b4f7f38e7dbd2188cb6d33dadc3dd6fd3a259f765c382cc8913"},
-			zoneRequirementHash = {"50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61"}
+			answer =
+			{
+				"32eaa3ea7fcf0b4f7f38e7dbd2188cb6d33dadc3dd6fd3a259f765c382cc8913"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61", subZone="30e1a2c068c564db211c09702df721c1b32357cf56fae5faf2c5da35bbcfeadd"},
+				{ zone="50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61", subZone="6cd3171458882a02f08666a741d33c2d0aa4ce4213494f1daf001288552800f8"}
+			}
 		},
 		{
 			ID = 17,
@@ -328,18 +448,36 @@ ETW_LoreQuestions = {
 			{
 				[1] =
 				{
-					answer = {"8bee34cab7ae493f2848ff7fb527b0d038152f8e382f924e3a11b70835e1883f"},
-					zoneRequirementHash = {"4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"},
+					answer =
+					{
+						"8bee34cab7ae493f2848ff7fb527b0d038152f8e382f924e3a11b70835e1883f"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"}
+					}
 				},
 				[2] =
 				{
-					answer = {"eafcacdb00a30f261075633efd368a23c530de2de46672c379142f583939bb5e"},
-					zoneRequirementHash = {"e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda"},
+					answer = 
+					{
+						"eafcacdb00a30f261075633efd368a23c530de2de46672c379142f583939bb5e"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda"}
+					}
 				},
 				[3] =
 				{
-					answer = {"45248be447123432752c81cd0995afab05fc0e5d80d2d622187144f6fa3cfd67"},
-					zoneRequirementHash = {"d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b"},
+					answer =
+					{
+						"45248be447123432752c81cd0995afab05fc0e5d80d2d622187144f6fa3cfd67"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b"}
+					}
 				}
 			}
 
@@ -351,8 +489,46 @@ ETW_LoreQuestions = {
 			modelPath = "V29ybGRcXEthbGltZG9yXFxzaWxpdGh1c1xccGFzc2l2ZWRvb2RhZHNcZ29uZ1xzaWxpdGhpZGdvbmcubWR4",
 			modelYOffset = 1.4,
 			description = "The place where the infamous gong is located, that once struck, completes the quest of opening the gates and forever after made you a legend. Rewarding you with a mount and title that will never again be obtainable. And amongst the insects that dwell nearby, you shall be forever known as lord.",
-			answer = {"6b560f8b1b328bdbda98117216f7a86ce503c1b8759ac3b38cbfdd2e81daf1bd"},
-			zoneRequirementHash = {"32d172b5e7fbdc37857a7d1425b10e339c0b338aee2478ae27016e8a37c7e99c"}
+			answer =
+			{
+				"6b560f8b1b328bdbda98117216f7a86ce503c1b8759ac3b38cbfdd2e81daf1bd"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="32d172b5e7fbdc37857a7d1425b10e339c0b338aee2478ae27016e8a37c7e99c", subZone="6b560f8b1b328bdbda98117216f7a86ce503c1b8759ac3b38cbfdd2e81daf1bd"}
+			}
+		},
+		{
+			ID = 19,
+			name = "Island of employees",
+			category = ETW_EXPLORE_CATEGORY,
+			modelPath = "V29ybGRcXEdlbmVyaWNcXGh1bWFuXFxwYXNzaXZlIGRvb2RhZHNcXHN0b3Jtd2luZFxcc3Rvcm13aW5kX2dyYXZlc3RvbmVfMDkubWR4",
+			modelZoom = 0.5,
+			modelYOffset = 0.3,
+			description = "A lake that in which an island full of Blizzard employee related NPC's can be found. That as of now, are serving an unknown purpose other than to attract curious adventures. Located directly north of the jungle ruins that are now home to satyrs, ogres and the undead.",
+			answer =
+			{
+				"d8c68eadae8af5891426707a098333ef7b325460e0979248ae36514e6aaf8c1f"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b", subZone="d8c68eadae8af5891426707a098333ef7b325460e0979248ae36514e6aaf8c1f"}
+			}
+		},
+		{
+			ID = 20,
+			name = "Retired admiral",
+			category = ETW_TRACKING_CATEGORY,
+			modelId = "MjM1MDk=",
+			description = "After retiring he can be found endlessly fishing by his secluded house on the mountainside, guarded by his Booty Bay bodyguards. With Vashj'ir on the horizon and both Ironforge and Stormwind on an equal distance away, he sure picked a good location to retire at.",
+			answer =
+			{
+				"f1d02f3e2311e902cd02c429154404d69cf243a3a40209adcacb95d935e82d4c"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="73b5f5b9f0766caa35b01c58a76c0ebe71d8939f7de881ea108b4b25742e8ce6"}
+			}
 		},
 		{
 			ID = 21,
@@ -361,22 +537,189 @@ ETW_LoreQuestions = {
 			modelId = "NzkyMA==",
 			modelYOffset = 0.1,
 			description = "There are three robot chickens that can be found in Azeroth, all wanted back by their owner in Booty Bay. What you might not know about these chickens is that they each have 2 unique letters at the end of their name, what do they mean?",
-			answer = {"4869f908f491b6f5c9c6eb3f0eab004f54137fc7e36fe9800de5f14486fed4e9", "4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53", "d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b", "539df6fa9856df0ed841122d035951e55517580932eb38cf934a1716570d8436", "331358067956b956143d4a8b207df3121f0f97dcd0ed8aa26d2e3bdbd2b8716b"},
-			zoneRequirementHash = {"e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda","d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b", "4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"},
+			answer =
+			{
+				"4869f908f491b6f5c9c6eb3f0eab004f54137fc7e36fe9800de5f14486fed4e9",
+				"4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53",
+				"d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b",
+				"539df6fa9856df0ed841122d035951e55517580932eb38cf934a1716570d8436",
+				"331358067956b956143d4a8b207df3121f0f97dcd0ed8aa26d2e3bdbd2b8716b"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda"},
+				{ zone="d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b"},
+				{ zone="4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"}
+			},
 			zoneRequirementUnlockCopy = true,
-			npcUnlockHash = {"eafcacdb00a30f261075633efd368a23c530de2de46672c379142f583939bb5e","8bee34cab7ae493f2848ff7fb527b0d038152f8e382f924e3a11b70835e1883f","45248be447123432752c81cd0995afab05fc0e5d80d2d622187144f6fa3cfd67"}
+			npcUnlockHash =
+			{
+				"eafcacdb00a30f261075633efd368a23c530de2de46672c379142f583939bb5e",
+				"8bee34cab7ae493f2848ff7fb527b0d038152f8e382f924e3a11b70835e1883f",
+				"45248be447123432752c81cd0995afab05fc0e5d80d2d622187144f6fa3cfd67"
+			}
 		},
 		{
 			ID = 22,
+			name = "The baron's treasury",
+			category = ETW_EXPLORE_CATEGORY,
+			modelPath = "V29ybGRcXFNraWxsYWN0aXZhdGVkXFxjb250YWluZXJzXFx0cmVhc3VyZWNoZXN0MDIubWR4",
+			modelZoom = 0.8,
+			modelYOffset = 1,
+			description = "A mighty goblin pirate of the bay, one of the few goblins with a unique voice. Hidden nearby, is his treasure, guarded by the cleaver. In plain sight for everyone to see, yet disguised. After being revealed by the Cataclysm, it is yet to be plundered.",
+			answer =
+			{
+				"5966493e1651a97e514afe1b1fd0982d08f1216d9feb6ec51c1c4b71d8163a0a"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="2a373dec3bde04f90e30284c48c1e583082ea3a61dbe94be0dc9bc935fa20e44", subZone="5966493e1651a97e514afe1b1fd0982d08f1216d9feb6ec51c1c4b71d8163a0a"}
+			},
+			npcUnlockHash =
+			{
+				"436813600fe0b3cfea9075a971d514467a2ad3a5bb9db416a453dcea70c6bef3"
+			}
+		},
+		{
+			ID = 23,
 			name = "Doomguard ritual",
 			category = ETW_TRACKING_CATEGORY,
 			modelId = "MTQ1MzE",
 			description = "In a forgotten time he taught skilled Warlocks the fine art of controlling a Doomguard. Nowadays he is but an artifact of the past, fullfilling no use other than to attract curious adventures in the tainted forest nearby.",
-			answer = {"e3303f5d616f296a1783d75ba72ae10d96efd7c25771e0fec047388e75d229e8"},
-			zoneRequirementHash = {"f2a666c5477626329e900adbe9bc465598d685202e34d727c9d28733face6b78"},
-			zoneUnlockHash = {"2a0fd71aa349b3c662105e52d182b2950325ca79f408064b351575b983dfebcb"}
+			answer =
+			{
+				"e3303f5d616f296a1783d75ba72ae10d96efd7c25771e0fec047388e75d229e8"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="2a0fd71aa349b3c662105e52d182b2950325ca79f408064b351575b983dfebcb", subZone="f2a666c5477626329e900adbe9bc465598d685202e34d727c9d28733face6b78"}
+			},
+			zoneUnlockHash =
+			{
+				"2a0fd71aa349b3c662105e52d182b2950325ca79f408064b351575b983dfebcb"
+			}
+		},
+		{
+			ID = 24,
+			name = "Mountain mechanic",
+			category = ETW_TRACKING_CATEGORY,
+			modelId = "MTA0NTQ=",
+			description = "Unlike most of his engineer colleagues, this trainer isn't located at a capital city. As a goblin he has decided to remain close to the nearby Venture Co mining operation. Overlooking green plains and some distant bluffs from the mountainside.",
+			answer =
+			{
+				"9ab5e9292b86012d4c9b5e4508d972915b9df7e3ca11872d5618a53e9edd3383"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="798f715b8bfe09111da2750514181ac9f9eaf1f7a5333ba41bfe907fbdea9df5"}
+			},
+			zoneUnlockHash =
+			{
+				"13e084c1def9e80292a1b052a9d98bd7c8fe281fad9b6b90ac4114ee44334847"
+			}
+		},
+		{
+			ID = 25,
+			name = "Gnome of evil",
+			category = ETW_TRACKING_CATEGORY,
+			modelId = "MTU1NTc=",
+			description = "One of the toughest gnomes in all of Kalimdor, showing himself worthy as a part of the Ahn'Qiraj quest chain. With HP close to that of MoP creatures he resides in his house, guarded by nagas, dragons and even hydras. On a tropical island that is better left unvisited.",
+			answer =
+			{
+				"6a3be8b4457d4a4fef197c9fd5613c1c9ca56b149d3f5c524c1b31284a4f0b87"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="8e8d0136b6b7b15a38f3564489032acc8e81198bf2f4b27ae154bca96b0c909f", subZone="276748e1be000dedad252f4e6c3f62743c564257413f8d1bd076bd6a2f7b054c"}
+			},
+			zoneUnlockHash =
+			{
+				"32d172b5e7fbdc37857a7d1425b10e339c0b338aee2478ae27016e8a37c7e99c"
+			}
+		},
+		{
+			ID = 26,
+			name = "Band manager",
+			category = ETW_TRACKING_CATEGORY,
+			modelId = "MjE5NTk=",
+			description = "Manager of the most well-known band in all of Azeroth and Outland. Often found relaxing backstage with his black sunglasses on. Whether it be behind the stage at the faire, or below the band's balcony lounge in the capital where they are out of physical reach for fans.",
+			answer =
+			{
+				"a484aa23b0918f9602cf50adb637e6c08ff6c517605507a6abf7fcaa213ab5a1"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="c1d87ff59f026782923d2b0fdffa6feb989573946299cf1684399c8b68852665"},
+				{ zone="35bb898a5832f324fc595ad6c6200a126ffe49b60119be38170da1e6f1245aaa"}
+			},
+			progressUnlockHash = "54bd0eb8cfde399f0436509703411a3ec29744b6b98b54b148bdc6c485a2d5fc"
+		},
+		{
+			ID = 27,
+			name = "Interrupted fishing",
+			category = ETW_INVESTIGATION_CATEGORY,
+			modelPath = "V29ybGRcXEdlbmVyaWNcXGRvb2RhZHNcXGZpc2hpbmdcXGNoYWlyXFxmaXNoaW5nY2hhaXIubWR4",
+			modelZoom = 1.5,
+			modelYOffset = 1.2,
+			modelXOffset = -0.65,
+			description = "Someone was having a pretty relaxed fishing trip on a small island in shallow waters. Located by the opposite border from where King Arthas buried his beloved steed. But the fisher isn't fishing there anymore, what happened?",
+			answer =
+			{
+				"c273f12aa9219ecc77fdd9efe1996251197d823dbe3b3fb22f18a9059629ff25",
+				"4e27a7cd247296a1aff531b6c064baaca096e780a34cc2a2031b65b2d0a85fb7",
+				"c8ef66e59a3d324fcb2f104297900deb3c7cdaa72ef9a639ad7d2402a0cbd473",
+				"99722e4e2f757f8769503f3ddebf8986653401c607af1b12e8066f2b6a9184c7",
+				"a519bbb06f9f05c5bdd9d740a47c48c0db88cb1fb67276b511eedf796872e729",
+				"eecf72212b240c3d6b82b14a812f1c359d41a45f7b2cd44ac095a910a39afae9"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="99f577e78adf6e383ab1e310ce4f0b8eb1c27ab4f3b02b1980ea78ccbde2654e"}
+			},
+			zoneUnlockHash =
+			{
+				"99f577e78adf6e383ab1e310ce4f0b8eb1c27ab4f3b02b1980ea78ccbde2654e"
+			}
+		},
+		{
+			ID = 28,
+			name = "The origin of a city",
+			category = ETW_EXPLORE_CATEGORY,
+			modelPath = "V29ybGRcXEdlbmVyaWNcXGRvb2RhZHNcXGZpc2hpbmdcXGNoYWlyXFxmaXNoaW5nY2hhaXIubWR4",
+			description = "The floating city of Dalaran has not always been located in Northrend, nor in the air. It has now left a crater from where it was originally located, west of the league of rogues.",
+			answer =
+			{
+				"ef293107a37d997d25d9f80696135f5dd52c4eda3012ebab86f3c61ef1d297f2"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61"}
+			},
+			zoneUnlockHash =
+			{
+				"1258cc3e7925d569f088d55c16ce09593c0312971d49730854910ac4c1c4cb98"
+			}
+		},
+		{
+			ID = 29,
+			name = "Botanist defence",
+			category = ETW_INVESTIGATION_CATEGORY,
+			modelId = "MzY1NzU=",
+			description = "In the lands west of Alterac Valley a curious farmer seems to have a constant problem with creatures attacking his property. Adventurers usually help him in the defence using what the farmer has available, which is what?",
+			answer =
+			{
+				"1e7f394302d99ad73164dc2536a9f8d26526b9618c8b3fce6aaf8993d400c8fe",
+				"401d8c17c79a30ce621838b6df8bf93803a26761423daf4423ff616a7c6b1214"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61", subZone="0b1a7ec8ff9cbaf1d3f3a0c673fbaa07189aef5fdc979e9190791630d7595aea"}
+			},
+			zoneUnlockHash =
+			{
+				"50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61"
+			}
 		}
-
 	}
 
 }
