@@ -719,6 +719,29 @@ ETW_LoreQuestions = {
 			{
 				"50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61"
 			}
+		},
+		{
+			ID = 30,
+			name = "An archaeologist's pet",
+			category = ETW_TRACKING_CATEGORY,
+			modelId = "MTUzMDI=",
+			description = "It would appear that all the exploring and Titan database hacking has made him forgot about his friends. His long forgotten companion still waits patiently for his return at the dwarven encampment, overlooking the crystal filled sand flats.",
+			answer =
+			{
+				"2fab0a100a5958fb8db10b876bbf53064e778e96d8f3282a719071e798c2a353"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="32d172b5e7fbdc37857a7d1425b10e339c0b338aee2478ae27016e8a37c7e99c", subZone="c5824e2015596f79ba76096791b0313a2fc5657f15cad58212a8f6f1fe32f8c3"}
+			},
+			itemUnlockHash =
+			{
+				"de8d83d5ae8a2cf75569a8a5680c1fd04b12e07d22b0ed9d87e6ba73931dd32a"
+			},
+			npcUnlockHash =
+			{
+				"ffbb7f740e6deece0cc8cc194c3442d8d12491691b3b9be7bd0963012c7a9c65"
+			}
 		}
 	}
 

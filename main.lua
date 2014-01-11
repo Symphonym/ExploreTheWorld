@@ -936,7 +936,7 @@ do
 
 	startFrame.authorFrame.text = startFrame.authorFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	startFrame.authorFrame.text:SetText(ETW_CREDIT_STRING)
-	startFrame.authorFrame.text:SetTextHeight(15)
+	startFrame.authorFrame.text:SetTextHeight(12)
 	startFrame.authorFrame.text:SetJustifyH("LEFT")
 	startFrame.authorFrame.text:SetPoint("TOPLEFT", 15, -10)
 
@@ -954,10 +954,10 @@ do
 
 		-- ScrollFrame for all the unlocked questions, i.e the boundaries of the scroll window 
 	local scrollFrame = CreateFrame("ScrollFrame", "ETW_CreditScrollFrame", startFrame.authorFrame) 
-	scrollFrame:SetPoint("TOPLEFT", 15, -145) 
+	scrollFrame:SetPoint("TOPLEFT", 15, -120) 
 	scrollFrame:SetPoint("BOTTOMRIGHT", -25, 14)
 
-	scrollFrame.background = CreateFrame("Frame", "ETW_CreditScrollFrameBackground", scrollFrame, "InsetFrameTemplate")
+	scrollFrame.background = CreateFrame("Frame", "ETW_CreditScrollFrameBackground", scrollFrame, "InsetFrameTemplate3")
 	scrollFrame.background:SetPoint("TOPLEFT", 0, 2)
 	scrollFrame.background:SetSize(scrollFrame:GetWidth(), scrollFrame:GetHeight()+8)
 	scrollFrame.background:SetFrameLevel(7)
@@ -1769,26 +1769,26 @@ end
 
 scanZone = function()
 	local zonesUnlocked = 0
-	local subzoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetSubZone())
-	local zoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone())
 
-	local zoneList = ETW_UnlockTable.zones[zoneHash]
+	local function scanZoneList(zoneList)
+		if(zoneList ~= nil) then
+			for _, value in pairs(zoneList) do
+				if(ETW_Frame.questionList.items[value.ID] == nil) then
 
-	if (zoneList == nil) then
-		zoneList = ETW_UnlockTable.zones[subzoneHash]
-	end
-
-	if(zoneList ~= nil) then
-		for _, value in pairs(zoneList) do
-			if(ETW_Frame.questionList.items[value.ID] == nil) then
-
-				if(meetsZoneUnlockRequirement(value)) then
-					unlockQuestion(value)
-					zonesUnlocked = zonesUnlocked + 1
+					if(meetsZoneUnlockRequirement(value)) then
+						unlockQuestion(value)
+						zonesUnlocked = zonesUnlocked + 1
+					end
 				end
 			end
 		end
 	end
+
+	local subzoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetSubZone())
+	local zoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone())
+
+	scanZoneList(ETW_UnlockTable.zones[zoneHash])
+	scanZoneList(ETW_UnlockTable.zones[subzoneHash])
 
 	return zonesUnlocked
 end
