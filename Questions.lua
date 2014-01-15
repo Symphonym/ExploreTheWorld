@@ -610,7 +610,7 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			continent = ETW_CONTINENT_EASTERN,
 			modelId = "MTQ1MzE",
-			description = "In a forgotten time he taught skilled Warlocks the fine art of controlling a Doomguard. Nowadays he is but an artifact of the past, filling no use other than to attract curious adventures in the tainted forest nearby.",
+			description = "In a forgotten time he taught skilled Warlocks the fine art of controlling a Doomguard. Nowadays he is but an artifact of the past, fulfilling no use other than to attract curious adventures in the tainted forest nearby.",
 			answer =
 			{
 				"e3303f5d616f296a1783d75ba72ae10d96efd7c25771e0fec047388e75d229e8"
