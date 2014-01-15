@@ -41,6 +41,18 @@ REQ		category = ""
 				ETW_INVESTIGATION_CATEGORY		Investigation category
 				ETW_TRACKING_CATEGORY			Tracking category
 				ETW_GROUPQUEST_CATEGORY			Groupquest category
+REQ 	continent = ""
+			The continent attribute can be set to either of six constants:
+				ETW_CONTINENT_KALIMDOR
+				ETW_CONTINENT_EASTERN
+				ETW_CONTINENT_OUTLAND
+				ETW_CONTINENT_NORTHREND
+				ETW_CONTINENT_PANDARIA
+				ETW_CONTINENT_UNKNOWN
+			They specify on which continent you answer the question to give
+			a general idea where to look. If you can answer the question on
+			multiple continents then the unknown constant is used as seen
+			above.
 REQ		description = ""
 			Description of the question, which is the key part of it,
 			explaining how it is accomplished in a not too obvious manner.
@@ -774,6 +786,23 @@ ETW_LoreQuestions = {
 			{
 				"ffbb7f740e6deece0cc8cc194c3442d8d12491691b3b9be7bd0963012c7a9c65"
 			}
+		},
+		{
+			ID = 31,
+			name = "Along for the ride",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "MzExNzQ=",
+			description = "Getting pulled around, eagerly awaiting to have a ride down the mountain. But he'll have to satisfy with watching the others have fun. Afterall, if he misses the pile at the bottom of the hill then the large hangar behind isn't going to give a comfortable stop to the ride.",
+			answer =
+			{
+				"f6b5367205f3974f0d69315587c43d8bfbfb02d6cbcdeb78e285e3d0c850f977"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="73b5f5b9f0766caa35b01c58a76c0ebe71d8939f7de881ea108b4b25742e8ce6"}
+			},
+			progressUnlockHash = "54bd0eb8cfde399f0436509703411a3ec29744b6b98b54b148bdc6c485a2d5fc"
 		}
 	}
 
