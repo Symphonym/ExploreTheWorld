@@ -175,6 +175,14 @@ ETW_ZONE_UNLOCK_NAME = "Zone"
 ETW_WORLDOBJECT_UNLOCK_NAME = "Lore"
 ETW_PROGRESS_UNLOCK_NAME = "Progress"
 
+-- Continent icons
+ETW_CONTINENT_KALIMDOR = "Interface\\ICONS\\Achievement_Zone_Kalimdor_01.blp"
+ETW_CONTINENT_EASTERN = "Interface\\ICONS\\Achievement_Zone_EasternKingdoms_01.blp"
+ETW_CONTINENT_OUTLAND = "Interface\\ICONS\\Achievement_Zone_Outland_01.blp"
+ETW_CONTINENT_NORTHREND = "Interface\\ICONS\\Achievement_Zone_Northrend_01.blp"
+ETW_CONTINENT_PANDARIA = "Interface\\ICONS\\INV_Pet_Achievement_Pandaria.blp"
+ETW_CONTINENT_UNKNOWN = "Interface\\ICONS\\INV_Misc_QuestionMark.blp"
+
 -- Icons of the addon
 ETW_ADDONICON = "Interface\\WorldMap\\WorldMap-Icon.blp"
 ETW_OPTIONICON = "Interface\\TUTORIALFRAME\\UI-HELP-PORTRAIT.blp"

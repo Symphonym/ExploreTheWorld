@@ -280,6 +280,7 @@ local function displayQuestion(question)
 	questionFrame.question = question
 	questionFrame.titleFrame.title:SetText(question.name)
 	questionFrame.titleFrame.categoryIcon:SetTexture(question.category)
+	questionFrame.continentFrame.continentIcon:SetTexture(question.continent)
 	questionFrame.descriptionFrame.text:SetText(question.description)
 	questionFrame.imageFrame.image:SetTexture(question.texturepath and question.texturepath or defaultQuestion.texturepath) -- Texture data
 	questionFrame.answerBox:SetText("") -- Clear text of answerbox
@@ -383,6 +384,24 @@ local function displayQuestion(question)
 
 	end)
 
+	-- Disable answerBox and button if question is answered already
+	if(ETW_isQuestionDone(question)) then
+		questionFrame:completeQuestion()
+
+		if(questionFrame.question.category ~= ETW_GROUPQUEST_CATEGORY) then
+			questionFrame.answerBox:SetText(SymphonymConfig.questions[question.ID].answer)
+		else
+			questionFrame.answerBox:SetText(SymphonymConfig.questions[question.ID].answer[1].answer)
+		end
+	else
+		questionFrame.confirmButton:Enable()
+		questionFrame.answerBox:Enable()
+
+		-- Reset alpha when switching between questions
+		questionFrame.answerBox.fade:SetAlpha(0)
+		questionFrame.answerBox.fade.text:SetAlpha(0)
+	end
+
 	-- All categories will broadcast zones if group question
 	questionFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	questionFrame:RegisterEvent("ZONE_CHANGED")
@@ -392,7 +411,6 @@ local function displayQuestion(question)
 			-- Send info to group quest players if it's a groupquest
 			if(self.question ~= nil and self.question.category == ETW_GROUPQUEST_CATEGORY and
 				ETW_IsGroupQuestActive(questionFrame.question)) then
-				ETW_Utility:PrintToChat("BROADCAST")
 				ETW_BroadcastGroupQuestData(
 					self.question.ID..","..
 					self.answerBox:GetText()..","..
@@ -467,24 +485,6 @@ local function displayQuestion(question)
 	else
 		ETW_Frame.questionFrame.answerBox:Enable()
 		ETW_Frame.questionFrame.answerBox:unregisterInputEvents()
-	end
-
-		-- Disable answerBox and button if question is answered already
-	if(ETW_isQuestionDone(question)) then
-		questionFrame:completeQuestion()
-
-		if(questionFrame.question.category ~= ETW_GROUPQUEST_CATEGORY) then
-			questionFrame.answerBox:SetText(SymphonymConfig.questions[question.ID].answer)
-		else
-			questionFrame.answerBox:SetText(SymphonymConfig.questions[question.ID].answer[1].answer)
-		end
-	else
-		questionFrame.confirmButton:Enable()
-		questionFrame.answerBox:Enable()
-
-		-- Reset alpha when switching between questions
-		questionFrame.answerBox.fade:SetAlpha(0)
-		questionFrame.answerBox.fade.text:SetAlpha(0)
 	end
 
 	PlaySound("igQuestLogOpen")
@@ -1070,6 +1070,7 @@ do
 				if(question.category == ETW_GROUPQUEST_CATEGORY and question.groupQuest == nil) then
 					printAttributeMissing("ID " .. question.ID, "groupQuest")
 				end
+				if(question.continent == nil) then printAttributeMissing("ID " .. question.ID, "continent") end
 				if(question.category == ETW_GROUPQUEST_CATEGORY and question.groupQuestCategory == nil) then
 					printAttributeMissing("ID " .. question.ID, "groupQuestCategory")
 				end
@@ -1410,7 +1411,7 @@ do
 	end)
 
 	-- Title frame for title stuff
-	questionFrame.titleFrame = CreateFrame("Frame", nil, questionFrame, "InsetFrameTemplate3")
+	questionFrame.titleFrame = CreateFrame("Frame", "ETW_QuestionTitleFrame", questionFrame, "InsetFrameTemplate3")
 	questionFrame.titleFrame:SetSize(ETW_Frame.contentFrame:GetWidth()-20, 40)
 	questionFrame.titleFrame:SetPoint("TOP", 0, -15)
 	-- Title text of the question frame, used for displaying name of the question
@@ -1422,13 +1423,21 @@ do
 	questionFrame.titleFrame.categoryIcon:SetSize(30, 30)
 	questionFrame.titleFrame.categoryIcon:SetPoint("LEFT", 5, 0)
 
+	-- Continenticon show what continent the question is on
+	questionFrame.continentFrame = CreateFrame("Frame", "ETW_ContinentFrame", questionFrame, "InsetFrameTemplate3")
+	questionFrame.continentFrame:SetSize(40, 40)
+	questionFrame.continentFrame:SetPoint("CENTER", questionFrame.titleFrame, "RIGHT", -10, -30)
+	questionFrame.continentFrame.continentIcon = questionFrame.continentFrame:CreateTexture()
+	questionFrame.continentFrame.continentIcon:SetSize(35, 35)
+	questionFrame.continentFrame.continentIcon:SetPoint("CENTER")
+
 	-- Author text, i.e the person who created the question
 	questionFrame.authorText = questionFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	questionFrame.authorText:SetTextHeight(10)
 	questionFrame.authorText:SetPoint("BOTTOMRIGHT", -20, 4)
 
 	-- Frame for the text that describes the question
-	questionFrame.descriptionFrame = CreateFrame("Frame", "questionFrame.descriptionFrame", questionFrame, "InsetFrameTemplate2")
+	questionFrame.descriptionFrame = CreateFrame("Frame", "ETW_QuestionDescriptionFrame", questionFrame, "InsetFrameTemplate2")
 	questionFrame.descriptionFrame:SetSize(ETW_Frame.contentFrame:GetWidth()-20, ETW_Frame.contentFrame:GetHeight()*0.35)
 	questionFrame.descriptionFrame:SetPoint("CENTER", 0, -69)
 

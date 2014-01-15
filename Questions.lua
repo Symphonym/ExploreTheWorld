@@ -88,6 +88,8 @@ REQ		description = ""
 			display a bigger model and bigger values a smaller model.
 		modelYOffset = 0
 			Simple Y offset (up/down) if the model is too far down or up.
+		modelXOffset = 0
+			Simple X offset (up/down) if the model is too far left or right.
 
 	Unlock attributes
 		With an ID of over ETW_DEFAULT_QUESTION_ID, either of these are "REQ", i.e required
@@ -184,6 +186,7 @@ ETW_LoreQuestions = {
 			ID = 1,
 			name = "The TV Chef",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "Mzc2NDU=",
 			description = "A reference to a famous TV chef, most notably known for his hosting of various competitive cooking shows, often in quite the angry mood. Although here we have him relaxing at qutie the resort, with hot springs and steamy food just around the corner.",
 			answer =
@@ -199,6 +202,7 @@ ETW_LoreQuestions = {
 			ID = 2,
 			name = "Sorrow by Quilboar",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "Mzg1NQ==",
 			description = "Living a dry barren land this poor orc had his wife killed by the quilboar, but sought revenge on them through helpfull heroes of the Horde. Not too far from the watch post he resides, consumed by his hatred against the quilboar.",
 			answer =
@@ -214,6 +218,7 @@ ETW_LoreQuestions = {
 			ID = 3,
 			name = "\"Defenseless\" critters",
 			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "MzI4",
 			description = "Green plains, plainstriders and kodos are just a few of the things you can find in this zone. Not to mention, critters such as rabbits and prairie dogs can be found using weapons here. Amongst these critters is a decorated stone, name one thing on the stone.",
 			answer =
@@ -232,6 +237,7 @@ ETW_LoreQuestions = {
 			ID = 4,
 			name = "Consumed by shadows",
 			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "NTQzMA==",
 			description = "Hidden in a secret cave, one of the lesser known Demon Hunters can be found. Should you fall into this void, fear not, for the Cenarion Circle will be able to help you away from the ghosts in the darkness.",
 			answer =
@@ -247,6 +253,7 @@ ETW_LoreQuestions = {
 			ID = 5,
 			name = "Steel wool producer",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "NDA1MQ==",
 			description = "A gnome with a secret farm of wool producing animals located on a beautiful grasscovered hillside. One of these animals is \"modified\" to suit other needs which we do not know of other than to amuse rude adventurers passing by.",
 			answer =
@@ -262,6 +269,7 @@ ETW_LoreQuestions = {
 			ID = 6,
 			name = "Kill for Booty",
 			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelPath = "V29ybGRcXEF6ZXJvdGhcXHN0cmFuZ2xldGhvcm5cXHBhc3NpdmVkb29kYWRzXFxydWluc1xcc3RyYW5nbGV0aG9ybnJ1aW5zMDIubWR4",
 			description = "It was built by the ancient jungle trolls but is now reclaimed by the surrounding vegetation. Although occasionally a short fellow bribes adventurers to once again fill the long forgotten battle ring, with blood.",
 			answer =
@@ -277,6 +285,7 @@ ETW_LoreQuestions = {
 			ID = 7,
 			name = "The assassinator",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "NTUyOA==",
 			description = "A grand master in the fine artmanship of assassinating designated targets, even a leader in a league teaching just that. Located in a training camp up in the mountains, east from the mill, and north from the south.",
 			answer =
@@ -292,6 +301,7 @@ ETW_LoreQuestions = {
 			ID = 8,
 			name = "Hidden between lands",
 			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelPath = "V29ybGRcXEdlbmVyaWNcXGR3YXJmXFxwYXNzaXZlIGRvb2RhZHNcXGJhdHRsZW1lbnRzXFxkd2FydmVuYmF0dGxlbWVudG1vc3N5MDIubWR4",
 			modelZoom = 7,
 			description = "Just south of the overpass combining highlands with wetlands is a dwarven city that is overrun by the Twilight Cult. What may not be known to all is something hidden in the surrounding mountains, what is it?",
@@ -310,6 +320,7 @@ ETW_LoreQuestions = {
 			ID = 9,
 			name = "Trogg liberty",
 			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "NTk0NQ==",
 			description = "Carved out of stone as a symbol for liberty, now held captive by trogg that has overrun the excavation site. Not even adventurers from the nearby lodge or loch has bothered to dig her up out of the dirt.",
 			answer =
@@ -325,6 +336,7 @@ ETW_LoreQuestions = {
 			ID = 10,
 			name = "Requirement: Be rich",
 			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelPath = "V29ybGRcXEdlbmVyaWNcXGdvYmxpblxccGFzc2l2ZWRvb2RhZHNcXGJlZHNcXGdvYmxpbl9ob3JkZV9vcm5hdGViZWRfMDEubWR4",
 			modelZoom = 2,
 			description = "A luxurious retreat for the richest of business men, complete with endless hordes of servants and a pool making use of the finest engineering has to offer. Assuming you have highly positioned friends within the cartel, bring a few million gold to fully experience this palace.",
@@ -341,6 +353,7 @@ ETW_LoreQuestions = {
 			ID = 11,
 			name = "Trapped by bears",
 			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "NzA3",
 			description = "By the western edge of the region that is home to the great forge we find a camp that appears to be overrun by wild animals. But where are the owners of this small camp, surely they must be nearby as the fire is still burning.",
 			answer = 
@@ -359,6 +372,7 @@ ETW_LoreQuestions = {
 			ID = 12,
 			name = "House of Wolves",
 			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelYOffset = 0.8,
 			modelPath = "V29ybGRcXEV4cGFuc2lvbjAzXFxkb29kYWRzXFx3b3JnZW5cXGl0ZW1zXFx3b3JnZW5fc3RhZ2Vjb2FjaF8wMS5tZHg=",
 			description = "Standing strong throughout the effects of the cataclysm as its surrounding areas begin to crumble down the cliffside into the water. At the top of the hill we find this manor owned by those who transform at fullmoon.",
@@ -376,6 +390,7 @@ ETW_LoreQuestions = {
 			ID = 13,
 			name = "The collector",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "MTE2NTM=",
 			description = "As one of the few non-hostile Lost Ones he urges for more things to collect, often offering a small reward to adventures who bring something new. Found in a land blasted by magic, crawling with demons and other vile sorcery.",
 			answer =
@@ -391,6 +406,7 @@ ETW_LoreQuestions = {
 			ID = 14,
 			name = "MK Memorial",
 			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "NTIzMw==",
 			description = "In the hills south of a forgotten oasis lies the memorial of an illustrator who died during the development of World of Warcraft. His initials \"MK\" are carved into the shrine beneath his orc character, but what does the \"K\" stand for?",
 			answer =
@@ -404,10 +420,11 @@ ETW_LoreQuestions = {
 		},
 		{
 			ID = 15,
-			name = "Voices of Lordaeron",
+			name = "Voices of the past",
 			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "MzEwMjE=",
-			description = "Bells are ringing and people are cheering, all waiting for his return. That is until he reveals his new self to the king, his father. An historical event that can be relived as you enter ruined city that is is now home to the Forsaken. What is it that happens during this event?",
+			description = "Bells are ringing and people are cheering, all waiting for his return. That is until he reveals his new self to the king, his father. An historical event that can be relived as you enter the ruined city that is is now home to the Forsaken. What is it that happens during this event?",
 			answer =
 			{
 				"a4747cd5b2f0d657aa56908bd42867f5c14ff352d041537fdea802ede7017273",
@@ -424,6 +441,7 @@ ETW_LoreQuestions = {
 			ID = 16,
 			name = "In loving memory",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "MTU5OTM=",
 			description = "He is found kneeling and saluting the memorial grave dedicated towards a close friend of one of the WoW developers, the person whos main character he was. Located to the east in the lands below the league of rogues, overlooking the sea.",
 			answer =
@@ -440,6 +458,7 @@ ETW_LoreQuestions = {
 			ID = 17,
 			name = "Chickens on the run",
 			category = ETW_GROUPQUEST_CATEGORY,
+			continent = ETW_CONTINENT_UNKNOWN,
 			modelId = "NzkyMA==",
 			modelYOffset = 0.1,
 			description = "Mechanical critters spread across Azeroth after being lost by their goblin owner in Booty Bay. Found surrounded by yetis in a jungle not too far from Dire Maul, crashed on a lake island in the land of gryphons or in the mountains south of the cave that moves time itself.",
@@ -486,6 +505,7 @@ ETW_LoreQuestions = {
 			ID = 18,
 			name = "Opening the gates",
 			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelPath = "V29ybGRcXEthbGltZG9yXFxzaWxpdGh1c1xccGFzc2l2ZWRvb2RhZHNcZ29uZ1xzaWxpdGhpZGdvbmcubWR4",
 			modelYOffset = 1.4,
 			description = "The place where the infamous gong is located, that once struck, completes the quest of opening the gates and forever after made you a legend. Rewarding you with a mount and title that will never again be obtainable. And amongst the insects that dwell nearby, you shall be forever known as lord.",
@@ -502,6 +522,7 @@ ETW_LoreQuestions = {
 			ID = 19,
 			name = "Island of employees",
 			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelPath = "V29ybGRcXEdlbmVyaWNcXGh1bWFuXFxwYXNzaXZlIGRvb2RhZHNcXHN0b3Jtd2luZFxcc3Rvcm13aW5kX2dyYXZlc3RvbmVfMDkubWR4",
 			modelZoom = 0.5,
 			modelYOffset = 0.3,
@@ -519,6 +540,7 @@ ETW_LoreQuestions = {
 			ID = 20,
 			name = "Retired admiral",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "MjM1MDk=",
 			description = "After retiring he can be found endlessly fishing by his secluded house on the mountainside, guarded by his Booty Bay bodyguards. With Vashj'ir on the horizon and both Ironforge and Stormwind on an equal distance away, he sure picked a good location to retire at.",
 			answer =
@@ -534,6 +556,7 @@ ETW_LoreQuestions = {
 			ID = 21,
 			name = "Robo-chicken mystery",
 			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_UNKNOWN,
 			modelId = "NzkyMA==",
 			modelYOffset = 0.1,
 			description = "There are three robot chickens that can be found in Azeroth, all wanted back by their owner in Booty Bay. What you might not know about these chickens is that they each have 2 unique letters at the end of their name, what do they mean?",
@@ -563,6 +586,7 @@ ETW_LoreQuestions = {
 			ID = 22,
 			name = "The baron's treasury",
 			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelPath = "V29ybGRcXFNraWxsYWN0aXZhdGVkXFxjb250YWluZXJzXFx0cmVhc3VyZWNoZXN0MDIubWR4",
 			modelZoom = 0.8,
 			modelYOffset = 1,
@@ -584,8 +608,9 @@ ETW_LoreQuestions = {
 			ID = 23,
 			name = "Doomguard ritual",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "MTQ1MzE",
-			description = "In a forgotten time he taught skilled Warlocks the fine art of controlling a Doomguard. Nowadays he is but an artifact of the past, fullfilling no use other than to attract curious adventures in the tainted forest nearby.",
+			description = "In a forgotten time he taught skilled Warlocks the fine art of controlling a Doomguard. Nowadays he is but an artifact of the past, filling no use other than to attract curious adventures in the tainted forest nearby.",
 			answer =
 			{
 				"e3303f5d616f296a1783d75ba72ae10d96efd7c25771e0fec047388e75d229e8"
@@ -603,6 +628,7 @@ ETW_LoreQuestions = {
 			ID = 24,
 			name = "Mountain mechanic",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "MTA0NTQ=",
 			description = "Unlike most of his engineer colleagues, this trainer isn't located at a capital city. As a goblin he has decided to remain close to the nearby Venture Co mining operation. Overlooking green plains and some distant bluffs from the mountainside.",
 			answer =
@@ -622,6 +648,7 @@ ETW_LoreQuestions = {
 			ID = 25,
 			name = "Gnome of evil",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "MTU1NTc=",
 			description = "One of the toughest gnomes in all of Kalimdor, showing himself worthy as a part of the Ahn'Qiraj quest chain. With HP close to that of MoP creatures he resides in his house, guarded by nagas, dragons and even hydras. On a tropical island that is better left unvisited.",
 			answer =
@@ -641,6 +668,7 @@ ETW_LoreQuestions = {
 			ID = 26,
 			name = "Band manager",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_UNKNOWN,
 			modelId = "MjE5NTk=",
 			description = "Manager of the most well-known band in all of Azeroth and Outland. Often found relaxing backstage with his black sunglasses on. Whether it be behind the stage at the faire, or below the band's balcony lounge in the capital where they are out of physical reach for fans.",
 			answer =
@@ -658,6 +686,7 @@ ETW_LoreQuestions = {
 			ID = 27,
 			name = "Interrupted fishing",
 			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelPath = "V29ybGRcXEdlbmVyaWNcXGRvb2RhZHNcXGZpc2hpbmdcXGNoYWlyXFxmaXNoaW5nY2hhaXIubWR4",
 			modelZoom = 1.5,
 			modelYOffset = 1.2,
@@ -685,6 +714,7 @@ ETW_LoreQuestions = {
 			ID = 28,
 			name = "The origin of a city",
 			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_NORTHREND,
 			modelPath = "V29ybGRcXEdlbmVyaWNcXGRvb2RhZHNcXGZpc2hpbmdcXGNoYWlyXFxmaXNoaW5nY2hhaXIubWR4",
 			description = "The floating city of Dalaran has not always been located in Northrend, nor in the air. It has now left a crater from where it was originally located, west of the league of rogues.",
 			answer =
@@ -704,6 +734,7 @@ ETW_LoreQuestions = {
 			ID = 29,
 			name = "Botanist defence",
 			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "MzY1NzU=",
 			description = "In the lands west of Alterac Valley a curious farmer seems to have a constant problem with creatures attacking his property. Adventurers usually help him in the defence using what the farmer has available, which is what?",
 			answer =
@@ -724,6 +755,7 @@ ETW_LoreQuestions = {
 			ID = 30,
 			name = "An archaeologist's pet",
 			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "MTUzMDI=",
 			description = "It would appear that all the exploring and Titan database hacking has made him forgot about his friends. His long forgotten companion still waits patiently for his return at the dwarven encampment, overlooking the crystal filled sand flats.",
 			answer =
