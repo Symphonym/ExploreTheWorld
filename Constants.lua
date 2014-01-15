@@ -244,5 +244,6 @@ ETW_THANKSTO_STRING = [[
    Skoop
    Rayzoor, The Maelstrom
    Delmatae
+   Tabori
 
 ]]
