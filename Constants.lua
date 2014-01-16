@@ -33,7 +33,12 @@
 			pageLimit = 100,
 		},
 
-		uniqueHash = sha2.hash256(tostring(random(0, 1000)))
+		uniqueHash = sha2.hash256(tostring(random(0, 1000))),
+
+		 -- Number of total questions in the addon on the last session,
+		 -- can be used to check if more questions has been added with a
+		 -- new addon version.
+		totalQuestionCount = 0
 
 	}
 
@@ -174,6 +179,7 @@ ETW_NPC_UNLOCK_NAME = "Npc"
 ETW_ZONE_UNLOCK_NAME = "Zone"
 ETW_WORLDOBJECT_UNLOCK_NAME = "Lore"
 ETW_PROGRESS_UNLOCK_NAME = "Progress"
+ETW_QUESTION_UNLOCK_NAME = "Question"
 
 -- Continent icons
 ETW_CONTINENT_KALIMDOR = "Interface\\ICONS\\Achievement_Zone_Kalimdor_01.blp"
@@ -233,10 +239,13 @@ ETW_THANKSTO_STRING = [[
 
 |cFF00FF00Testers:|r
 
+   Argathom |cFF00FF00(Primary tester)|r
    Karl Marelius,|cFF0070DE Tezlo|r
    Niklas löf Arefjärd,|cFFC79C6E Stahli|r
 
 |cFF00FF00Question creators:|r
+
+   Argathom
 
 |cFF00FF00Explorers:|r
 

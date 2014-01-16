@@ -26,7 +26,7 @@ local frameName = "ETW_Frame"
 ETW_Frame = {}
 
 -- Scanner functions
-local scanInventory, scanZone, scanNpc, scanWorldObjects, scanProgress
+local scanInventory, scanZone, scanNpc, scanWorldObjects, scanProgress, scanQuestion
 
 -- Updating functions
 local updatePageIndex, updateProgressText, updateScrollbarSize,
@@ -252,8 +252,8 @@ local function changePageIndex(index)
 end
 
 -- Shows unlock popup if more than 0 unlocks where specified as arguments
-local function showUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUnlocks, progressUnlocks)
-	local questsUnlocked = ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUnlocks, progressUnlocks)
+local function showUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUnlocks, progressUnlocks, questionUnlocks)
+	local questsUnlocked = ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUnlocks, progressUnlocks, questionUnlocks)
 
 	-- If new quests were unlocked, move to the last page as new quests will be pushed there
 	if(questsUnlocked > 0) then
@@ -1133,6 +1133,15 @@ do
 						ETW_UnlockTable.worldObjects[worldObjectHash][question.ID] = question
 					end
 				end
+				if(question.questionUnlock) then
+					for _, questionBase64 in pairs(question.questionUnlock) do
+						local normalFormat = tonumber(ETW_Utility:ConvertBase64(questionBase64))
+						if not ETW_UnlockTable.questions[normalFormat] then
+							ETW_UnlockTable.questions[normalFormat] = {}
+						end
+						ETW_UnlockTable.questions[normalFormat][question.ID] = question
+					end
+				end
 				if(question.progressUnlockHash) then
 					if not ETW_UnlockTable.progress[question.progressUnlockHash] then
 						ETW_UnlockTable.progress[question.progressUnlockHash] = {}
@@ -1189,6 +1198,12 @@ do
 
 			-- Store total amount of questions
 			ETW_LoreQuestions.size = questionCount
+
+			-- Force update progress unlocks if more questions has been added
+			if(SymphonymConfig.totalQuestionCount ~= ETW_LoreQuestions.size) then
+				showUnlockPopup(nil, nil, nil, nil, scanProgress(true))
+			end
+			SymphonymConfig.totalQuestionCount = ETW_LoreQuestions.size
 
 			changePageIndex(0) -- Set starting page index to 0
 			updateProgressText() -- Update the completed quest text
@@ -1679,7 +1694,9 @@ do
 			-- Unlock sound
 			PlaySound("igQuestListComplete")
 			self:completeQuestion()
-			showUnlockPopup(nil, nil, nil, nil, scanProgress())
+
+			-- Unlock questions from completion
+			showUnlockPopup(nil, nil, nil, nil, scanProgress(), scanQuestion(self.question.ID))
 			
 			ETW_Frame.questionList.buttons[self.question.buttonIndex]:highlightGreen()
 		else
@@ -1852,26 +1869,54 @@ scanWorldObjects = function()
 	return worldObjectsUnlocked
 end
 
-scanProgress = function()
+scanProgress = function(fullScan)
 	local progressUnlocked = 0
-	local progress = SymphonymConfig.questions.completed
-	local progressHash = ETW_Utility:CreateSha2Hash(tostring(progress))
 
-	local progressList = ETW_UnlockTable.progress[progressHash]
 
-	if(progressList) then
-		for _, value in pairs(progressList) do
-			if(ETW_Frame.questionList.items[value.ID] == nil) then
+	local function checkList(progressList)
+		if(progressList) then
+			for _, value in pairs(progressList) do
+				if(ETW_Frame.questionList.items[value.ID] == nil) then
 
-				if(meetsZoneUnlockRequirement(value)) then
-					unlockQuestion(value)
-					progressUnlocked = progressUnlocked + 1
+					if(meetsZoneUnlockRequirement(value)) then
+						unlockQuestion(value)
+						progressUnlocked = progressUnlocked + 1
+					end
 				end
 			end
 		end
 	end
 
+	if(fullScan) then
+		for completedQs = 0, SymphonymConfig.questions.completed, 1 do
+			local progressHash = ETW_Utility:CreateSha2Hash(tostring(completedQs))
+			checkList(ETW_UnlockTable.progress[progressHash])
+		end
+	else
+		local progress = SymphonymConfig.questions.completed
+		local progressHash = ETW_Utility:CreateSha2Hash(tostring(progress))
+		checkList(ETW_UnlockTable.progress[progressHash])
+	end
+
+
+
 	return progressUnlocked
+end
+
+scanQuestion = function(questionID)
+	local questionsUnlocked = 0
+	local questionList = ETW_UnlockTable.questions[questionID]
+
+	if(questionList) then
+		for _, value in pairs(questionList) do
+			if(ETW_Frame.questionList.items[value.ID] == nil) then
+				unlockQuestion(value)
+				questionsUnlocked = questionsUnlocked + 1
+			end
+		end
+	end
+
+	return questionsUnlocked
 end
 
 do
@@ -1882,6 +1927,7 @@ do
 	unlockScanner:RegisterEvent("PLAYER_TARGET_CHANGED")
 	unlockScanner:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	unlockScanner:RegisterEvent("ITEM_TEXT_BEGIN")
+	unlockScanner:RegisterEvent("PLAYER_LOGIN")
 	unlockScanner:SetScript("OnEvent", function(self, event, ...)
 
 		local inCombat = UnitAffectingCombat("player")
@@ -1897,7 +1943,7 @@ do
 				local bagID = ...
 				itemsUnlocked = scanInventory(bagID)
 			end
-			if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_NEW_AREA") then
+			if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_LOGIN") then
 				zonesUnlocked = scanZone()
 			end
 			if (event == "PLAYER_TARGET_CHANGED") then

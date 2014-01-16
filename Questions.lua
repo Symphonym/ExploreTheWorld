@@ -132,6 +132,10 @@ REQ		description = ""
 		zoneRequirementUnlockCopy = true
 			If this attribute is true, then the value of "zoneRequirementUnlockHash" will
 			be equal to that of "zoneRequirementHash"
+		questionUnlock = {BASE64}
+			Table of questions that will make the question unlock when answered. The table
+			values should be the base64 format of the QUESTION ID of the question that
+			unlocks the question.
 
 	Answer attributes
 				
@@ -808,7 +812,7 @@ ETW_LoreQuestions = {
 
 }
 
--- Stores hashtables on zones/npcs/other with a bunch of questions as values
+-- Contains unlocking data for each question in tables
 ETW_UnlockTable = {}
 
 ETW_UnlockTable.zones = {}
@@ -816,3 +820,4 @@ ETW_UnlockTable.items = {}
 ETW_UnlockTable.npcs = {}
 ETW_UnlockTable.worldObjects = {}
 ETW_UnlockTable.progress = {}
+ETW_UnlockTable.questions = {}

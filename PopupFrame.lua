@@ -48,12 +48,14 @@ ETW_PopupFrame.zoneUnlock = {}
 ETW_PopupFrame.npcUnlock = {}
 ETW_PopupFrame.worldObjectUnlock = {}
 ETW_PopupFrame.progressUnlock = {}
+ETW_PopupFrame.questionUnlock = {}
 
 ETW_PopupFrame.itemUnlock.name = "|cFFD19D76" .. ETW_ITEM_UNLOCK_NAME .. "|r"
 ETW_PopupFrame.zoneUnlock.name = "|cFF339504" .. ETW_ZONE_UNLOCK_NAME .. "|r"
 ETW_PopupFrame.npcUnlock.name = "|cFF66A3C8" .. ETW_NPC_UNLOCK_NAME .. "|r"
-ETW_PopupFrame.worldObjectUnlock.name = "|cFFFCB25B" .. ETW_WORLDOBJECT_UNLOCK_NAME .. "|r"
+ETW_PopupFrame.worldObjectUnlock.name = "|cFFEE7D0A" .. ETW_WORLDOBJECT_UNLOCK_NAME .. "|r"
 ETW_PopupFrame.progressUnlock.name = "|cFFDB41A6" .. ETW_PROGRESS_UNLOCK_NAME .. "|r"
+ETW_PopupFrame.questionUnlock.name = "|cFFFFF569" .. ETW_QUESTION_UNLOCK_NAME .. "|r"
 
 function ETW_PopupFrame:resetUnlockVariables()
 	self.unlockCount = 0
@@ -63,7 +65,7 @@ function ETW_PopupFrame:resetUnlockVariables()
 	self.npcUnlock.display = false
 	self.worldObjectUnlock.display = false
 	self.progressUnlock.display = false
-
+	self.questionUnlock.display = false
 
 end
 
@@ -133,12 +135,10 @@ ETW_PopupFrame:resetUnlockVariables()
 
 ETW_PopupFrame:Hide()
 
-function ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUnlocks, progressUnlocks)
-
-	
+function ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUnlocks, progressUnlocks, questionUnlocks)
 
 	local questsUnlocked = 0
-	
+
 	if(SymphonymConfig.options.showUnlockPopups) then
 	
 		local questTypeInfo = {}
@@ -169,19 +169,26 @@ function ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUn
 			questsUnlocked = questsUnlocked + progressUnlocks
 			ETW_Utility:PrintToChat(" You unlocked " .. progressUnlocks .. " quest(s) from " .. ETW_PopupFrame.progressUnlock.name)
 		end
+		if (questionUnlocks and questionUnlocks > 0) then
+			ETW_PopupFrame.questionUnlock.display = true
+			questsUnlocked = questsUnlocked + questionUnlocks
+			ETW_Utility:PrintToChat(" You unlocked " .. questionUnlocks .. " quest(s) from " .. ETW_PopupFrame.questionUnlock.name)
+		end
 
 
 		if(ETW_PopupFrame.itemUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.itemUnlock.name) end
 		if(ETW_PopupFrame.zoneUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.zoneUnlock.name) end
 		if(ETW_PopupFrame.npcUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.npcUnlock.name) end
 		if(ETW_PopupFrame.worldObjectUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.worldObjectUnlock.name) end
-		if(ETW_PopupFrame.progressUnlock.displa == true) then table.insert(questTypeInfo, ETW_PopupFrame.progressUnlock.name) end
+		if(ETW_PopupFrame.progressUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.progressUnlock.name) end
+		if(ETW_PopupFrame.questionUnlock.display == true) then table.insert(questTypeInfo, ETW_PopupFrame.questionUnlock.name) end
 
 		if(ETW_PopupFrame.itemUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
 		if(ETW_PopupFrame.zoneUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
 		if(ETW_PopupFrame.npcUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
 		if(ETW_PopupFrame.worldObjectUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
 		if(ETW_PopupFrame.progressUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
+		if(ETW_PopupFrame.questionUnlock.display == true) then questTypeInfo.size = questTypeInfo.size + 1 end
 
 
 		-- Format extra info text
@@ -193,7 +200,7 @@ function ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUn
 				extraText = extraText .. ", "
 			end
 
-			if(count == 2) then
+			if(count == 3) then
 				extraText = extraText .. "|n"
 			end
 		end

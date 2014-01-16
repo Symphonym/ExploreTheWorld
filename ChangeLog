@@ -1,0 +1,6 @@
+Thursday 16/1-2014 
+	[ Version 0.1.2a ] 
+	-	Added questionUnlock attribute, allowing the question to be unlocked by
+	 	answering a different question.
+	-	Full scan of progressUnlocks at startup if new questions are detected.
+	-	Added more people to credit list
