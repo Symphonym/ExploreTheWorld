@@ -807,6 +807,28 @@ ETW_LoreQuestions = {
 				{ zone="73b5f5b9f0766caa35b01c58a76c0ebe71d8939f7de881ea108b4b25742e8ce6"}
 			},
 			progressUnlockHash = "54bd0eb8cfde399f0436509703411a3ec29744b6b98b54b148bdc6c485a2d5fc"
+		},
+		{
+			ID = 32,
+			name = "Making a wish",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelPath = "V29ybGRcXEV4cGFuc2lvbjA0XFxkb29kYWRzXFxwYW5kYXJlblxcbGFudGVyblxccGFfbGFudGVybl9mbG9hdGluZ18wMV9kZXN0cm95ZWQubWR4",
+			modelZoom = 0.5,
+			modelYOffset = 0.4,
+			description = "In the beautiful green forest, with vessels of both factions lurking in the waters below, a wishing well can be found. Made as a tribute to a young boy named Brian who suffered of bone cancer, whose last wish was to visit the Blizzard HQ and whose nickname names the wishing well.",
+			answer =
+			{
+				"9be14520ef83faa278020ea3816d9e901374e79c2128d79a6bd71423b8903726"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="9be14520ef83faa278020ea3816d9e901374e79c2128d79a6bd71423b8903726"}
+			},
+			questionUnlock = 
+			{
+				"MTQ="
+			}
 		}
 	}
 

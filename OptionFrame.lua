@@ -100,13 +100,13 @@ do
 	button:SetText("Reset saved data")
 
 	StaticPopupDialogs["ETW_ResetSavedData"] = {
-		text = "Are you sure you wish to reset all question related data saved for \"Explore the World\"?|n|nDoing so requires you to reload the UI.",
+		text = "Are you sure you wish to reset all question related data saved for \"Explore the World\"?|n|nDoing so will reload the UI.",
 		showAlert = true,
 		button1 = "Yes",
 		button2 = "No",
 		OnAccept = function()
 			SymphonymConfig.questions = SymphonymConfig_Default.questions
-			ETW_Utility:PrintToChat("Deleted saved data.")
+			ReloadUI()
 		end,
 		OnCancel = function (_,reason)
 

@@ -1,6 +1,12 @@
-Thursday 16/1-2014 
-	[ Version 0.1.2a ] 
+
+[ Version 0.1.2a ] 
+	Thursday 16/1-2014 
 	-	Added questionUnlock attribute, allowing the question to be unlocked by
 	 	answering a different question.
 	-	Full scan of progressUnlocks at startup if new questions are detected.
 	-	Added more people to credit list
+
+[ Version 0.1.3a ] 
+	Friday 17/1-2014 
+	-	Made the UI reload occur automatically when you reset saved data.
+	-	Added #32

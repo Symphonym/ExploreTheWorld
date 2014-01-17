@@ -1085,7 +1085,8 @@ do
 						question.itemUnlockHash == nil and
 						question.npcUnlockHash == nil and
 						question.worldObjectHash == nil and
-						question.progressUnlockHash == nil) then
+						question.progressUnlockHash == nil and
+						question.questionUnlock == nil) then
 						printAttributeMissing("ID " .. question.ID, "any unlock attribute")
 					end
 				end
@@ -1943,7 +1944,7 @@ do
 				local bagID = ...
 				itemsUnlocked = scanInventory(bagID)
 			end
-			if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_LOGIN") then
+			if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_NEW_AREA") then
 				zonesUnlocked = scanZone()
 			end
 			if (event == "PLAYER_TARGET_CHANGED") then
