@@ -731,8 +731,9 @@ ETW_LoreQuestions = {
 			name = "The origin of a city",
 			category = ETW_EXPLORE_CATEGORY,
 			continent = ETW_CONTINENT_EASTERN,
-			modelPath = "V29ybGRcXEdlbmVyaWNcXGRvb2RhZHNcXGZpc2hpbmdcXGNoYWlyXFxmaXNoaW5nY2hhaXIubWR4",
-			description = "The floating city of Dalaran has not always been located in Northrend, nor in the air. It has now left a crater from where it was originally located, west of the league of rogues.",
+			modelPath = "V29ybGRcXEV4cGFuc2lvbjAyXFxkb29kYWRzXFxkYWxhcmFuXFxkYWxhcmFuX2NyYXRlcmRvbWUubWR4",
+			modelZoom = 13,
+			description = "The floating city of Dalaran has not always been located in Northrend, nor in the air. It has now left a crater from where it was originally located, west of the league of rogues and south of the kingdom where Arthas used to be prince.",
 			answer =
 			{
 				"ef293107a37d997d25d9f80696135f5dd52c4eda3012ebab86f3c61ef1d297f2"
