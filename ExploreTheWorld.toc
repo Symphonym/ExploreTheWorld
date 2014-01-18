@@ -13,4 +13,5 @@ Questions.lua
 PopupFrame.lua
 OptionFrame.lua
 GroupFrame.lua
+InspectFrame.lua
 main.lua
