@@ -280,7 +280,6 @@ function ETW_ShowLinkPopup(sender, senderRank, senderVersion, questionID, redire
 	local senderLvl = UnitLevel("player", sender)
 	
 	ETW_LinkPopupFrame.icon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[classFileName]))
-
 	ETW_LinkPopupFrame.text:SetText(sender .. "  [Lvl. " .. senderLvl .. "]")
 	ETW_LinkPopupFrame.rankText:SetText(senderRank)
 	ETW_LinkPopupFrame.versionText:SetText("Sender using version: " .. senderVersion)

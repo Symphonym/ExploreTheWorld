@@ -81,9 +81,7 @@ end
 function ETW_BroadcastGroupQuestData(data)
 
 	SendAddonMessage(ETW_ADDONMSG_GROUPQUEST,
-		UnitName("player")..","..
-		GetRealmName()..","..
-		"GiveData,"..
+		ETW_ADDONMSG_GROUPQUEST_REPORT..","..
 		UnitName("player")..","..
 		GetRealmName()..","..
 		data,
@@ -317,7 +315,6 @@ do
 		end
 	end
 
-	RegisterAddonMessagePrefix(ETW_ADDONMSG_GROUPQUEST)
 	groupFrame:RegisterEvent("CHAT_MSG_ADDON")
 	groupFrame:SetScript("OnEvent", function(self, event, ...)
 		
@@ -325,24 +322,26 @@ do
 
 			local prefix, sentMessage, channel, sender = ...
 			local messageList = ETW_Utility:SplitString(sentMessage, ",")
+			local messageCount = #(messageList)
 
-			if(prefix == ETW_ADDONMSG_GROUPQUEST and sender ~= UnitName("player")) then
+			if(messageCount == 7 and prefix == ETW_ADDONMSG_PREFIX) then
 
-				-- First two items are always name and realm
-				local senderName, senderRealm = messageList[1], messageList[2]
+				-- First item is always topic/prefix
+				local messageTitle = messageList[1]
 
-				local messageTitle = messageList[3]
+				-- Second and third items are always name and realm of sender, because I don't
+				-- trust the "sender" variable :I
+				local senderName, senderRealm = messageList[2], messageList[3]
 
+				local senderNotMe = not (senderName == UnitName("player") and senderRealm == GetRealmName())
 
-				if(messageTitle == "GiveData" or messageTitle == "ReplyData") then
+				if(messageTitle == ETW_ADDONMSG_GROUPQUEST_REPORT and senderNotMe or messageTitle == ETW_ADDONMSG_GROUPQUEST_REPLY and senderNotMe) then
 
-					-- The leader of the quest is giving us data about the other players
-					local playerName = messageList[4]
-					local playerRealm = messageList[5]
-					local questionID = tonumber(messageList[6])
-					local playerAnswer = messageList[7]
-					local playerSubZone = messageList[8]
-					local playerZone = messageList[9]
+					-- We're receiving data from other players
+					local questionID = tonumber(messageList[4])
+					local senderAnswer = messageList[5]
+					local senderSubZone = messageList[6]
+					local senderZone = messageList[7]
 
 					-- Make sure you have the group quest
 					if(ETW_Frame.questionList.items[questionID] ~= nil and groupQuest.activeQuest) then
@@ -355,28 +354,26 @@ do
 							groupQuest.playerReq = ETW_Frame.questionList.items[questionID].groupQuest.limit
 
 							for index = 1, groupQuest.playerReq, 1 do
-								if(groupQuest[index].name == playerName and groupQuest[index].realm == playerRealm or
+								if(groupQuest[index].name == senderName and groupQuest[index].realm == senderRealm or
 									groupQuest[index].isActive == false) then
 
 									groupQuest[index].isActive = true
-									groupQuest[index].name = playerName
-									groupQuest[index].realm = playerRealm
-									groupQuest[index].subZone = playerSubZone
-									groupQuest[index].realZone = playerZone
+									groupQuest[index].name = senderName
+									groupQuest[index].realm = senderRealm
+									groupQuest[index].subZone = senderSubZone
+									groupQuest[index].realZone = senderZone
 
 									if(groupQuest.completedQuest == false) then
-										groupQuest[index].answerBox:SetText(playerAnswer)
-										groupQuest[index].answerBox.text:SetText(playerName.."-"..playerRealm)
+										groupQuest[index].answerBox:SetText(senderAnswer)
+										groupQuest[index].answerBox.text:SetText(senderName.."-"..senderRealm)
 									end
 
 
-									if(messageTitle == "GiveData") then
+									-- Give the sender our data as well
+									if(messageTitle == ETW_ADDONMSG_GROUPQUEST_REPORT) then
 
-										-- Give the sender our data as well
 										SendAddonMessage(ETW_ADDONMSG_GROUPQUEST,
-											UnitName("player")..","..
-											GetRealmName()..","..
-											"ReplyData,"..
+											ETW_ADDONMSG_GROUPQUEST_REPLY..","..
 											UnitName("player")..","..
 											GetRealmName()..","..
 											questionID..","..

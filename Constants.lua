@@ -217,8 +217,14 @@ ETW_UNLOCK_POPUP_ICON = "Interface\\ICONS\\INV_Misc_Map02.blp"
 ETW_CLASSICONS = "Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes.blp"
 
 -- Custom addon prefix for linking questions
-ETW_ADDONMSG_LINK = "ETW_QuestionLink"
-ETW_ADDONMSG_GROUPQUEST = "ETW_GroupQuest"
+ETW_ADDONMSG_PREFIX = "ETW_AddonPrefix"
+RegisterAddonMessagePrefix(ETW_ADDONMSG_PREFIX)
+
+ETW_ADDONMSG_LINK = "QuestionLink"
+ETW_ADDONMSG_GROUPQUEST_REPLY = "GroupQuest ReplyData"
+ETW_ADDONMSG_GROUPQUEST_REPORT = "GroupQuest ReportData"
+ETW_ADDONMSG_INSPECT_REQUEST = "Inspect RequestData"
+ETW_ADDONMSG_INSPECT_REPORT = "Inspect ReportData"
 
 -- Button highlighting
 ETW_RED_HIGHLIGHT = {1, 0, 0, 0.3}

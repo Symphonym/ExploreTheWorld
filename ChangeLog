@@ -11,3 +11,15 @@
 	-	Made the UI reload occur automatically when you reset saved data.
 	-	Added #32
 	-	Changed model on #28 to a more fitting one
+
+[ Version 0.1.5a ] 
+	Saturday 18/1-2014 
+	-	Remade the client-to-client communcation so the addon only reserves 1 prefix
+		for all kinds of messages instead of one prefix for each type of message.
+	-	Added a frame to the inspect frame showing the ExploreTheWorld rank of the
+		player as well as their progress.
+	-	Remade how other players ranks are shown to you, instead of sending your rank
+		in plain text format (basically allowing people to make all kinds of custom ranks)
+		it will send the total amount of quests as well as the number of completed quests.
+		The receiving end will then convert these to percent and grab a rank from their
+		client accordingly.

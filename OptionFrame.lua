@@ -57,7 +57,7 @@ end
 
 -- Ignore question links
 do
-	local button = ETW_Templates:CreateCheckButton("ETW_Options_IgnoreLinks", ETW_OptionFrame, "Ignore question links")
+	local button = ETW_Templates:CreateCheckButton("ETW_Options_IgnoreLinks", ETW_OptionFrame, "Ignore question links and\nETW inspect data requests")
 	button:SetPoint("TOPLEFT", 10, -160)
 	button:HookScript("OnClick", function(self,event,arg1) 
 		SymphonymConfig.options.ignoreLinks = self:GetChecked()
