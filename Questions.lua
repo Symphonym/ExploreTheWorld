@@ -830,7 +830,159 @@ ETW_LoreQuestions = {
 			{
 				"MTQ="
 			}
+		},
+		{
+			ID = 33,
+			name = "Friend or foe?",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_NORTHREND,
+			modelId = "MjU5OTg=",
+			description = "These 2 'brothers' met in Quel'thalas, where eventually one of them killed the other. They were both raised as a death knight by Arthas. After beeing freed from the Scourge by Tirion Fordring, they seperated into the Alliance and Horde. Find either of these 2 friends on their factions ship.",
+			answer =
+			{
+				"42ce1c85ac08192d877509bacb0db38b83106e5c13769a5c7d6ffedf0b0d95b7",
+				"fe3834bddc109276775e95196137d273a3f14c268aa8cde97dfd42d917c017e0",
+			},
+			zoneRequirementHash =
+			{
+				{zone="785f4154f54111e999354e89d2fb6dea40272887bbf98e25d114704a57b55ec6"}
+			},
+			zoneUnlockHash = 
+			{
+				"ba4a4cbf46c8a4a9b65f180f277a9d6ba590686e371349191b774bf0d2c72273"
+			},
+			author = "Argathom",
+		},
+		{
+			ID = 34,
+			name = "Beings of Light",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_OUTLAND,
+			modelId = "MTcwNzI=",
+			description = "A'dal is one of the Naaru, a pure being of light. Yet there are more Naaru. Find the next Naaru in a vessel with which the Draenei arrived on Draenor, that became sacred to the orcs later on.",
+			answer =
+			{
+				"f3dac27c33f3ff57cd5f4d83dbffe733c7f6a1657d0d5c2057c0296726f662ef",
+			},
+			zoneRequirementHash =
+			{
+				{zone="3e9158840b73b38c814569d333cf5b03b9a6c1ec6591fd08e3586355fc2f3c1d", subZone="3e602eee61c2b1f51f93951b90ca345b7b79ced2c0df14e280e4c6920bf483fe"}
+			},
+			npcUnlockHash =
+			{
+				"9464f02b65605ca8b230691ab235b86b7366bd85e2853c3fd43d9359a1b24d89"
+			},
+			author = "Argathom",
+		},
+		{
+			ID = 35,
+			name = "Beings of Light part 2",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_OUTLAND,
+			modelId = "MTgxMzU=",
+			description = "The Draenei used Oshu'gun as a ship to flee from the Burning Legion on Eredar. There were more then one Naaru on this vessel. The next Naaru 'died' when the ship crash landed on Draenor. He is buried in the crypt of a mausoleum.",
+			answer =
+			{
+				"cf8c6fc78bb32aeabfaf60a850b191d99fd43ced7c1fdedc7cddd712c4e5cc01",
+			},
+			zoneRequirementHash =
+			{
+				{zone="2ae4ce21b40611b0b2cc6187089f26b1758439a2519ae89172c0171fafbaf00c"}
+			},
+			questionUnlock =
+			{
+				"MzQ="
+			},
+			author = "Argathom",
+		},
+		{
+			ID = 36,
+			name = "Beings of Light part 3",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
+			modelId = "MjM0MDQ=",
+			description = "The Naaru don't die, but enter a darkened state as you can see with the Naaru you just found. In this state they suck up the souls of the dead to recover their light. The next Naaru has been completely drained of the light by a knightly lady sworn to blood, and the naaru in question is now killable.",
+			answer =
+			{
+				"e44a5a3bf472d865c130b8a1040bbba5c6d67fd33ffb27805b0ade5a852fe373",
+			},
+			zoneRequirementHash =
+			{
+				{zone="fe2d464d7114f5a0fc99f36c2e55846425a0abc1eb2a89f46fe54cbaad0debad"}
+			},
+			questionUnlock =
+			{
+				"MzU="
+			},
+			author = "Argathom",
+		},
+		{
+			ID = 37,
+			name = "Beings of Light part 4",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "MTgxNTQ=",
+			description = "Prophet Velen got help from the Naaru to continuously escape from the Burning Legion. Find the Naaru that helped the Draenei on their latest escape to a new world.",
+			answer =
+			{
+				"3950e035e2d982a39c4176c60fa3010498f81ed8b3215f7eba2e0b047b9fe6c9",
+			},
+			zoneRequirementHash =
+			{
+				{zone="2456fe11bec8acade65f58288b83c3d041e47b5acc41c6875fda88ec2f2088aa"}
+			},
+			questionUnlock =
+			{
+				"MzY="
+			},
+			author = "Argathom",
+		},
+		{
+			ID = 38,
+			name = "A ghostly battle",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
+			modelId = "MTA0NDU=",
+			description = "This small town is abandoned after the scourge invasion, but after gathering the right artifacts from the past, you can relive the battle that took place in this small town.",
+			answer =
+			{
+				"1d90e6a1174a00c25c30d3c2a79c63c12cda3b05fbf7d5040b01586a9adb7020",
+			},
+			zoneRequirementHash =
+			{
+				{zone = "eda5f8c9406e9accca1ccb2e4ee2f8acf767461fd419e2d704bdb25260034a92", subZone = "1d90e6a1174a00c25c30d3c2a79c63c12cda3b05fbf7d5040b01586a9adb7020"}
+			},
+			npcUnlockHash = 
+			{
+				"32fb4210d119ed30dc93a8cc941d4ce8df1be5cb650231f45477b048bca6037c",
+				"2efc8386d1846594003943241a5d896cd7cdaee63c57a67738610109281ec968",
+				"63b48f9e68954d239f7b04e91225cca4ad80e07848c6637371965bf372796f22",
+				"b866ca133fcc58f55dd1e01bb6161f0fb0d26176dded9fc1fd8b1570b940c1c0",
+				"30db0b8948e0eaede4813516554f0d6268131de21a898fa59fed5dd885e062a2",
+				"c14bb430a180169b53a50a8822e2f9fdb665eb3f24b28b58885db90a1a063d6f",
+				"e103c89793eb69d0ff8d57349fc60f76e12d01b760446397b698cf0c0c0df093",
+			},
+			author = "Argathom"
+		},
+		{
+			ID = 39,
+			name = "Socialite?",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_OUTLAND,
+			modelId = "MTgxNDg=",
+			description = "This woman is most famous for having the biggest bags in Outland, and they are not cheap! Many others claim she's more then that, but those are just rumors.",
+			answer =
+			{
+				"c303b5beceba88c3096e4984c4474a1afe3127e0201785deb1df71e8e0178232",
+			},
+			zoneRequirementHash = 
+			{
+				{zone = "0062ef4a0dfa758fae0ae92b123759d9d0301987d65108ce286df6bc5f012322"}
+			},
+			progressUnlockHash = "54bd0eb8cfde399f0436509703411a3ec29744b6b98b54b148bdc6c485a2d5fc",
+			author = "Argathom"
 		}
+
 	}
 
 }
