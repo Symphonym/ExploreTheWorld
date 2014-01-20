@@ -583,7 +583,6 @@ local function createListButton()
 
 	-- What will happen when the question is pressed
 	listButton:SetScript("PostClick", function(self, button, down)
-
 		if(button == "LeftButton" and not down) then
 			displayQuestion(self.question)
 		end
@@ -599,7 +598,6 @@ end
 
 
 function addETWQuestion(question)
-
 	local questionList = ETW_Frame.questionList
 
 	-- If questions already exists in the list, abort adding a new one

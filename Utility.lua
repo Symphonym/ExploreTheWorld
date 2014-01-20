@@ -96,8 +96,8 @@ end
 
 
 function ETW_Utility:PrintToChat(msg)
-	ChatFrame1:AddMessage("|cFF00FF00[Explore the World]|r|cFFFFFB00:" .. msg)
+	print("|cFF00FF00[Explore the World]|r|cFFFFFB00:" .. msg)
 end 
 function ETW_Utility:PrintErrorToChat(msg)
-	ChatFrame1:AddMessage("|cFF00FF00[Explore the World]|r|cFFFFFB00:|cFFFF3F40" .. msg)
+	print("|cFF00FF00[Explore the World]|r|cFFFFFB00:|cFFFF3F40" .. msg)
 end

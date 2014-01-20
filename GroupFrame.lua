@@ -79,8 +79,8 @@ function ETW_CancelGroupQuest()
 end
 
 function ETW_BroadcastGroupQuestData(data)
-
-	SendAddonMessage(ETW_ADDONMSG_GROUPQUEST,
+	SendAddonMessage(
+	ETW_ADDONMSG_PREFIX,
 		ETW_ADDONMSG_GROUPQUEST_REPORT..","..
 		UnitName("player")..","..
 		GetRealmName()..","..
@@ -372,7 +372,7 @@ do
 									-- Give the sender our data as well
 									if(messageTitle == ETW_ADDONMSG_GROUPQUEST_REPORT) then
 
-										SendAddonMessage(ETW_ADDONMSG_GROUPQUEST,
+										SendAddonMessage(ETW_ADDONMSG_PREFIX,
 											ETW_ADDONMSG_GROUPQUEST_REPLY..","..
 											UnitName("player")..","..
 											GetRealmName()..","..
