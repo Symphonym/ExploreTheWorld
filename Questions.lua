@@ -49,8 +49,8 @@ REQ 	continent = ""
 				ETW_CONTINENT_NORTHREND
 				ETW_CONTINENT_PANDARIA
 				ETW_CONTINENT_UNKNOWN
-			They specify on which continent you answer the question to give
-			a general idea where to look. If you can answer the question on
+			They specify on which continent the answer to the question can be
+			found to give a general idea where to look. If you can answer the question on
 			multiple continents then the unknown constant is used as seen
 			above.
 REQ		description = ""

@@ -23,8 +23,8 @@ So that for example Questions.lua is located at
 	WoWdir/Interface/Addons/ExploreTheWorld/Questions.lua
 
 Because if you get the files from github then they will come in
-a zip folder instead, and then you'll have to create the folder
-yourself.
+a zip folder instead, named "something - master" or something of the
+sort, and then you'll have to create/rename the folder yourself.
 
 
 Lua syntax
@@ -54,7 +54,7 @@ Boolean:
 	false
 
 Table:
-	Tables be used for many things, but in this case just think of it as
+	Tables can be used for many things, but in this case just think of it as
 	a list of items encased by {} brackets. Each item is separated by a
 	comma like so:
 
@@ -80,20 +80,26 @@ Getting started
 Lets start off with a fully functional question and learn from that:
 
 {
-	ID = 2,
-	name = "Sorrow by Quilboar",
-	category = ETW_TRACKING_CATEGORY,
-	modelId = "Mzg1NQ==",
-	description = "bla bla bla...",
+	ID = 32,
+	name = "Making a wish",
+	category = ETW_EXPLORE_CATEGORY,
+	continent = ETW_CONTINENT_PANDARIA,
+	modelPath = "V29ybGRcXEV4cGFuc2lvbjA0XFxkb29kYWRzXFxwYW5kYXJlblxcbGFudGVyblxccGFfbGFudGVybl9mbG9hdGluZ18wMV9kZXN0cm95ZWQubWR4",
+	modelZoom = 0.5,
+	modelYOffset = 0.4,
+	description = "description...",
 	answer =
 	{
-		"3007b3f7b3762071034b5525693b2be41c01a210b5725669975dabc5be855e4f"
+		"9be14520ef83faa278020ea3816d9e901374e79c2128d79a6bd71423b8903726"
 	},
-	zoneRequirementHash = 
+	zoneRequirementHash =
 	{
-		{ zone="8231b7f748e85a746e443e3e16371c434fe51068382472029cad77f64af40fd1"}
+		{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="9be14520ef83faa278020ea3816d9e901374e79c2128d79a6bd71423b8903726"}
+	},
+	questionUnlock = 
+	{
+		"MTQ="
 	}
-
 }
 
 Notice how each attribute, or variable, is separated by a comma. This is
@@ -103,9 +109,9 @@ but in this case, a list of attributes.
 What we do here is simply set a bunch of different attributes that together
 forms data for a question.
 
-Although notice how "answer" and "zoneRequirementHash" are encased by {}
-brackets, this is because they support more than 1 answers/zones even though
-we only use one at this specific question.
+Whilst all of the existing attributes are explained in the Questions.lua
+file (Which I very much recommend taking a look at), this will explain a
+little more of what some of them are.
 
 modelId and modelPath
 ----------------------------------------------------------------------
@@ -126,7 +132,7 @@ The modelId attribute is also converted this way, but instead of
 converting a path it converts a number, a displayId. To find the
 displayId of an NPC, simply find the NPC on WoWhead. As they allow
 you to view the models in 3D you then want to right click and "View
-source" of the webpage. Then do "Ctrl-f" (or local equivalent) to
+source" of the webpage. Then do "Ctrl-f" (or local OS equivalent) to
 search the webpage for "displayId", next to the place where you find
 the text "displayId" should be a number, that's your displayId. Just
 convert the displayId to base64 and pop it into the question.
@@ -199,17 +205,20 @@ answer:
 	Group question:
 		The answer will use the category that is set for the group question
 		and change the answer text accordingly to what is written above here.
+		Please note however that the "answer" attribute is not used for group
+		questions but are instead set in a separate table. See Questions.lua.
 
 zoneRequirementHash:
 	This will usually just be a hashed string of for example "tanaris" if the
 	question is located in that zone. It ensures the question can only be
 	answered if the player is located in one of the zones mentioned in the
-	zoneRequirementHash table. It will however also work on subzones if your
-	question should require that, like "The Canals" in Stormwind for example.
+	zoneRequirementHash table. It contains smaller subtables which have
+	a "zone" and "subZone" value, indicating a zone which you should be in
+	or a subzone you should be in to answer the question.
 
 author:
 	Dont forget to give yourself some credit, set this attribute to any
-	name you identify yourself with, just make sure it fits in the game.
+	name you identify yourself with, just make sure it fits in the addon frame.
 
 
 Bugs and feedback
