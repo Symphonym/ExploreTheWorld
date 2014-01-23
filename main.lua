@@ -693,6 +693,17 @@ do
 		end
 	end)
 
+	-- Help window button
+	local helpButton = CreateFrame("Button", "ETW_HelpMenuButton", frame, "UIPanelButtonTemplate")
+	helpButton:SetSize(25, 18)
+	helpButton:SetPoint("TOPRIGHT", -85, -2)
+	helpButton:SetText("?")
+	helpButton:SetScript("PostClick", function(self, button, down)
+		if(button == "LeftButton" and not down) then
+			ETW_HelpFrame:Show()
+		end
+	end)
+
 	-- Frame for icon, used when targeting it
 	local iconFrame = CreateFrame("Frame", nil, frame)
 	iconFrame:SetAllPoints(frame.portraitIcon)

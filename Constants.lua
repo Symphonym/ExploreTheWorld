@@ -192,6 +192,7 @@ ETW_CONTINENT_UNKNOWN = "Interface\\ICONS\\INV_Misc_QuestionMark.blp"
 -- Icons of the addon
 ETW_ADDONICON = "Interface\\WorldMap\\WorldMap-Icon.blp"
 ETW_OPTIONICON = "Interface\\TUTORIALFRAME\\UI-HELP-PORTRAIT.blp"
+ETW_HELPICON = "Interface\\FriendsFrame\\FriendsFrameScrollIcon.blp"
 
 -- Background for the description frame of the questions
 ETW_QUESTLOG_BACKGROUND = "Interface\\QUESTFRAME\\QuestBG.blp"

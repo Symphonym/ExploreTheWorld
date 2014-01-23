@@ -11,6 +11,7 @@ Constants.lua
 LoreRanks.lua
 Questions.lua
 PopupFrame.lua
+HelpFrame.lua
 OptionFrame.lua
 GroupFrame.lua
 InspectFrame.lua
