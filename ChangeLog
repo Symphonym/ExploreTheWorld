@@ -27,3 +27,10 @@
 	-	Added user created questions
 	Monday 20/1-2014
 	-	Fixed a bug with group questions still using old prefix to broadcast data
+
+[ Version 0.1.7a ] 
+	Thursday 23/1-2014
+	- Added a simple help frame, giving some info on how things work.
+	Saturday 25-1-2014
+	- Added startup scan for question unlocks if more questions have been added
+	- Added questions 40-44

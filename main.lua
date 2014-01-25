@@ -1209,9 +1209,17 @@ do
 			-- Store total amount of questions
 			ETW_LoreQuestions.size = questionCount
 
-			-- Force update progress unlocks if more questions has been added
+			-- Force update progress/question unlocks if more questions has been added
 			if(SymphonymConfig.totalQuestionCount ~= ETW_LoreQuestions.size) then
-				showUnlockPopup(nil, nil, nil, nil, scanProgress(true))
+				ETW_Utility:PrintToChat("More questions detected, starting full startup scan.")
+				local questionUnlocks = 0
+				for _, question in pairs(ETW_LoreQuestions.questions) do
+					if(ETW_isQuestionDone(question)) then
+						questionUnlocks = questionUnlocks + scanQuestion(question.ID)
+					end
+				end
+				showUnlockPopup(nil, nil, nil, nil, scanProgress(true), questionUnlocks)
+				ETW_Utility:PrintToChat("Full startup scan completed.")
 			end
 			SymphonymConfig.totalQuestionCount = ETW_LoreQuestions.size
 

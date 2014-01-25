@@ -981,6 +981,112 @@ ETW_LoreQuestions = {
 			},
 			progressUnlockHash = "54bd0eb8cfde399f0436509703411a3ec29744b6b98b54b148bdc6c485a2d5fc",
 			author = "Argathom"
+		},
+		{
+			ID = 40,
+			name = "Not actually smiling",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
+			modelId = "Mjc1MTA=",
+			modelYOffset = 0.5,
+			description = "Found endlessly circling between three captains just outside the shore. Ocasionally used for target practise by the pirates, yet his small boat still floats just fine.",
+			answer =
+			{
+				"da90588dee39f9460a3b357b6247ad3d9e593eec681ae4ec4990b0693c9daae6",
+			},
+			zoneRequirementHash = 
+			{
+				{zone = "2a373dec3bde04f90e30284c48c1e583082ea3a61dbe94be0dc9bc935fa20e44", subZone = "39fc19c04e793d15bfd25834860a190b16ccf8ed2b013b0357b6080e8cf7927e"}
+			},
+			zoneUnlockHash = 
+			{
+				"2a373dec3bde04f90e30284c48c1e583082ea3a61dbe94be0dc9bc935fa20e44"
+			}
+		},
+		{
+			ID = 41,
+			name = "Distant colleagues",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "Nzk1Mg==",
+			description = "Working at remote locations doesn't seem to be exclusive to only one engineer. These two gnome brothers make a living selling engineering supplies, in the jungle. Although there's not many possible customers around other than the Venture Co. to the northwest.",
+			answer =
+			{
+				"1b4c453ed6a3cb09774a1c331c7f7986e4e2e56da9ff4b714d29dd785a2b07bc",
+				"ecd70e6b0e43eede21270e09498e1ee0c2ce22e78a3c420c13f675b1d7de4708"
+			},
+			zoneRequirementHash =
+			{
+				{zone="7d3be233c9f4739621f3457cf0a2b212ca556a9775ed401c5de50e3e1b4a95be"}
+			},
+			questionUnlock =
+			{
+				"MjQ="
+			}
+		},
+		{
+			ID = 42,
+			name = "Junior hunter",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "MTQxMA==",
+			description = "When his father left to find more exotic places and bigger preys, he left his son in charge of the hunting camp. The core base of all hunting operations happening in the jungle, perfectly located by the river.",
+			answer =
+			{
+				"ab81a8455c303c6d5f5aa3d8b3c63831af6251cf8f3c483978419777eda84824",
+			},
+			zoneRequirementHash =
+			{
+				{zone="7d3be233c9f4739621f3457cf0a2b212ca556a9775ed401c5de50e3e1b4a95be", subZone="90f0846629f58271913a9d0998b77645e48e7b35898bb38d99ac2db75e289ab3"}
+			},
+			zoneUnlockHash = 
+			{
+				"7d3be233c9f4739621f3457cf0a2b212ca556a9775ed401c5de50e3e1b4a95be"
+			}
+		},
+		{
+			ID = 43,
+			name = "Papa hunter",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_OUTLAND,
+			modelId = "MTc1NTc=",
+			description = "When he put his son in charge of his jungle camp, he himself ventured forth to find animals out of this world. Although the camp is smaller, the plane is infested with snakes and there's house sized mushrooms nearby, a land of green plains and floating island is surely better looking.",
+			answer =
+			{
+				"8dc2ab0a41577373ef2d60af557e6a296f0242166b6becbb6b9f2173b126661f",
+			},
+			zoneRequirementHash =
+			{
+				{zone="3e9158840b73b38c814569d333cf5b03b9a6c1ec6591fd08e3586355fc2f3c1d", subZone="d21652250b32e5affa8c14ca98eea113f2665baf189addffc79324c10306da6f"}
+			},
+			questionUnlock =
+			{
+				"NDI="
+			}
+		},
+		{
+			ID = 44,
+			name = "Unappreciated hunter",
+			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_NORTHREND,
+			texturepath = "Interface\\Pictures\\obj_nesingwary_256.blp",
+			modelPath = "V29ybGRcXEtoYXptb2RhblxcdWxkYW1hblxccGFzc2l2ZWRvb2RhZHNcXHN0YXR1ZXNcXHVsZGFtYW5kd2FyZnN0YXR1ZS5tZHg=",
+			modelYOffset = -1.5,
+			modelZoom = 3,
+			description = "While both he and his son very much like their hunting, there are others who do not. Far away in a land where mammoths roam on the tundra, a party of druids has put up a poster at their camp, demanding his head. But what is the supposed crime they accuse him off?",
+			answer =
+			{
+				"4889ba7fd23477bfdea6c6cd368cb7ffc682bc151e9fbc037a7c6016c4bbd063",
+				"7ff356942152595ed3a609cc86398a53a82eae633ccbd0590fcf82c60cf6e777"
+			},
+			zoneRequirementHash =
+			{
+				{zone="7c6885ccb58ccd76a43c60745806ecaf5db18c36fb8dd10f024c4340d08c133b", subZone="8d3817186c6aaa70dfcdd63139b5702ceb9db7fe8d776ab1b5552b404c012bbb"}
+			},
+			questionUnlock =
+			{
+				"NDM="
+			}
 		}
 
 	}
