@@ -1098,6 +1098,52 @@ ETW_LoreQuestions = {
 			{
 				"NDM="
 			}
+		},
+		{
+			ID = 45,
+			name = "The lost hatch",
+			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_NORTHREND,
+			modelPath = "V29ybGRcXEV4cGFuc2lvbjAyXFxkb29kYWRzXFxzY2hvbGF6YXJcXGxvc3RoYXRjaC5tZHg=",
+			modelZoom = 0.8,
+			description = "Found on a small island in a jungle surrounded by winter, is a mysterious hatch. A Lost reference, located to the west of the lost lands. It would also appear that something is written on the hatch, what is it that stands on it?",
+			answer =
+			{
+				"978e67a1716bda2a0e033f16808f8caeaefcda0b793bdc40d9a0a525e2228c0c",
+				"bf862fba14625b4fdbb011bdac77ae18e6692d15d9ad2d3f15f3743f0d0ad682"
+			},
+			zoneRequirementHash =
+			{
+				{zone="0bf42222786bcc8ee896c3e1f9e13d2c221528a9e9e2da86cd8dfb4727361096", subZone="51fbb7951ac4d93529228102060b09dd91a975a954e106a17a10712b9327ffe4"}
+			},
+			zoneUnlockHash = 
+			{
+				{ zone="0bf42222786bcc8ee896c3e1f9e13d2c221528a9e9e2da86cd8dfb4727361096"}
+			}
+		},
+		{
+			ID = 46,
+			name = "Unappreciated hunter",
+			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_NORTHREND,
+			texturepath = "Interface\\Pictures\\obj_nesingwary_256.blp",
+			modelPath = "V29ybGRcXEtoYXptb2RhblxcdWxkYW1hblxccGFzc2l2ZWRvb2RhZHNcXHN0YXR1ZXNcXHVsZGFtYW5kd2FyZnN0YXR1ZS5tZHg=",
+			modelYOffset = -1.5,
+			modelZoom = 3,
+			description = "While both he and his son very much like their hunting, there are others who do not. Far away in a land where mammoths roam on the tundra, a party of druids has put up a poster at their camp, demanding his head. But what is the supposed crime they accuse him off?",
+			answer =
+			{
+				"4889ba7fd23477bfdea6c6cd368cb7ffc682bc151e9fbc037a7c6016c4bbd063",
+				"7ff356942152595ed3a609cc86398a53a82eae633ccbd0590fcf82c60cf6e777"
+			},
+			zoneRequirementHash =
+			{
+				{zone="7c6885ccb58ccd76a43c60745806ecaf5db18c36fb8dd10f024c4340d08c133b", subZone="8d3817186c6aaa70dfcdd63139b5702ceb9db7fe8d776ab1b5552b404c012bbb"}
+			},
+			questionUnlock =
+			{
+				"NDM="
+			}
 		}
 
 	}

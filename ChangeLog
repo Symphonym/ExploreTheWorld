@@ -38,3 +38,4 @@
 	Sunday 26/1-2014
 	- Removed zoneRequirementUnlockCopy attribute and redid zoneUnlockHash to make
 	it work more like other similar attributes.
+	- Added question 45
