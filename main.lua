@@ -405,8 +405,9 @@ local function displayQuestion(question)
 	-- All categories will broadcast zones if group question
 	questionFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	questionFrame:RegisterEvent("ZONE_CHANGED")
+	questionFrame:RegisterEvent("ZONE_CHANGED_INDOORS")
 	questionFrame:SetScript("OnEvent", function(self, event, ...)
-		if(event == "ZONE_CHANGED_NEW_AREA" or event == "ZONE_CHANGED") then
+		if(event == "ZONE_CHANGED_NEW_AREA" or event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS") then
 
 			-- Send info to group quest players if it's a groupquest
 			if(self.question ~= nil and self.question.category == ETW_GROUPQUEST_CATEGORY and
@@ -459,11 +460,12 @@ local function displayQuestion(question)
 			elseif(realCategory == ETW_EXPLORE_CATEGORY) then
 				questionFrame.answerBox:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 				questionFrame.answerBox:RegisterEvent("ZONE_CHANGED")
+				questionFrame.answerBox:RegisterEvent("ZONE_CHANGED_INDOORS")
 
 				questionFrame.answerBox:SetText(ETW_Utility:GetSubZone())
 
 				questionFrame.answerBox:SetScript("OnEvent", function(self, event, ...)
-					if(event == "ZONE_CHANGED_NEW_AREA" or event == "ZONE_CHANGED") then
+					if(event == "ZONE_CHANGED_NEW_AREA" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED") then
 						self:SetText(ETW_Utility:GetSubZone())
 
 						-- Send info to group quest players if it's a groupquest
@@ -1112,11 +1114,56 @@ do
 
 				-- Store unlocking data in a separate table for easier access by the unlock scanner
 				if(question.zoneUnlockHash) then
-					for _, zoneHash in pairs(question.zoneUnlockHash) do
-						if not ETW_UnlockTable.zones[zoneHash] then
-							ETW_UnlockTable.zones[zoneHash] = {}
+					for _, zoneValue in pairs(question.zoneUnlockHash) do
+
+
+						--[[
+							           / - questions [question.ID]
+						zones[zoneHash] 
+							           \ - subZones [subZoneHash][question.ID]
+
+						subZones[subZoneHash][question.ID]
+						]]
+
+						-- Main zones
+						if(zoneValue.zone ~= nil) then
+							if not ETW_UnlockTable.zones[zoneValue.zone] then
+								ETW_UnlockTable.zones[zoneValue.zone] = {}
+							end
+
+							-- Question that unlocks in a subzone, within a main zone
+							if(zoneValue.subZone ~= nil) then
+								-- Give subzones a separate table
+								if not ETW_UnlockTable.zones[zoneValue.zone].subZones then
+									ETW_UnlockTable.zones[zoneValue.zone].subZones = {}
+								end
+
+								if not ETW_UnlockTable.zones[zoneValue.zone].subZones[zoneValue.subZone] then
+									ETW_UnlockTable.zones[zoneValue.zone].subZones[zoneValue.subZone] = {}
+								end
+
+								ETW_UnlockTable.zones[zoneValue.zone].subZones[zoneValue.subZone][question.ID] = question
+							
+							-- Question that simply unlocks with the main zone
+							else
+								-- Give mainzones a separate table
+								if not ETW_UnlockTable.zones[zoneValue.zone].questions then
+									ETW_UnlockTable.zones[zoneValue.zone].questions = {}
+								end
+
+								ETW_UnlockTable.zones[zoneValue.zone].questions[question.ID] = question
+							end
+
+						-- Subzones, without a main zone
+						elseif(zoneValue.subZone ~= nil) then
+							if not ETW_UnlockTable.subZones[zoneValue.subZone] then
+								ETW_UnlockTable.subZones[zoneValue.subZone] = {}
+							end
+							ETW_UnlockTable.subZones[zoneValue.subZone][question.ID] = question
+						else
+							ETW_Utility:PrintErrorToChat("Invalid question " .. question.ID)
+							ETW_Utility:PrintErrorToChat("Invalid zoneUnlockHash attribute")
 						end
-						ETW_UnlockTable.zones[zoneHash][question.ID] = question
 					end
 				end
 				if(question.itemUnlockHash) then
@@ -1158,10 +1205,6 @@ do
 					end
 
 					ETW_UnlockTable.progress[question.progressUnlockHash][question.ID] = question
-				end
-
-				if(question.zoneRequirementUnlockCopy == true) then
-					question.zoneRequirementUnlockHash = question.zoneRequirementHash
 				end
 
 				-- Count available data for group quest, i.e how many players are needed for the question
@@ -1527,6 +1570,7 @@ do
 		self:UnregisterEvent("PLAYER_TARGET_CHANGED")
 		self:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
 		self:UnregisterEvent("ZONE_CHANGED")
+		self:UnregisterEvent("ZONE_CHANGED_INDOORS")
 	end
 
 	questionFrame.answerBox:SetScript("OnUpdate", function(self, elapsed)
@@ -1821,25 +1865,44 @@ end
 scanZone = function()
 	local zonesUnlocked = 0
 
-	local function scanZoneList(zoneList)
-		if(zoneList ~= nil) then
-			for _, value in pairs(zoneList) do
-				if(ETW_Frame.questionList.items[value.ID] == nil) then
+	local function scanQuestionList(questionList)
+		if(questionList ~= nil) then
+			for key, value in pairs(questionList) do
 
-					if(meetsZoneUnlockRequirement(value)) then
-						unlockQuestion(value)
-						zonesUnlocked = zonesUnlocked + 1
-					end
+				-- Zone requirements not used since they are set in the zoneUnlockHash anyway
+				if(ETW_Frame.questionList.items[value.ID] == nil) then
+					unlockQuestion(value)
+					zonesUnlocked = zonesUnlocked + 1
 				end
 			end
 		end
 	end
 
-	local subzoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetSubZone())
 	local zoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetCurrentZone())
+	local subzoneHash = ETW_Utility:CreateSha2Hash(ETW_Utility:GetSubZone())
 
-	scanZoneList(ETW_UnlockTable.zones[zoneHash])
-	scanZoneList(ETW_UnlockTable.zones[subzoneHash])
+	-- Zones unlocking questions
+	local zoneList = nil
+
+	-- Subzones within zones unlocking questions
+	local zoneWithSubList = nil
+
+	-- Main zones and subzones within main zones
+	if(ETW_UnlockTable.zones[zoneHash] ~= nil) then
+		zoneList = ETW_UnlockTable.zones[zoneHash].questions
+
+		if(ETW_UnlockTable.zones[zoneHash].subZones ~= nil) then
+			zoneWithSubList = ETW_UnlockTable.zones[zoneHash].subZones[subzoneHash]
+		end
+	end
+
+	-- Subzones, anywhere, unlocking questions
+	local subZoneList = ETW_UnlockTable.subZones[subzoneHash]
+
+
+	scanQuestionList(zoneList)
+	scanQuestionList(zoneWithSubList)
+	scanQuestionList(subZoneList)
 
 	return zonesUnlocked
 end
@@ -1949,6 +2012,7 @@ do
 	unlockScanner:RegisterEvent("BAG_UPDATE")
 	unlockScanner:RegisterEvent("ITEM_PUSH")
 	unlockScanner:RegisterEvent("ZONE_CHANGED")
+	unlockScanner:RegisterEvent("ZONE_CHANGED_INDOORS")
 	unlockScanner:RegisterEvent("PLAYER_TARGET_CHANGED")
 	unlockScanner:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	unlockScanner:RegisterEvent("ITEM_TEXT_BEGIN")
@@ -1968,7 +2032,7 @@ do
 				local bagID = ...
 				itemsUnlocked = scanInventory(bagID)
 			end
-			if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_NEW_AREA") then
+			if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA") then
 				zonesUnlocked = scanZone()
 			end
 			if (event == "PLAYER_TARGET_CHANGED") then

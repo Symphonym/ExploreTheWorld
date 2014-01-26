@@ -34,3 +34,7 @@
 	Saturday 25-1-2014
 	- Added startup scan for question unlocks if more questions have been added
 	- Added questions 40-44
+[ Version 0.1.8a ] 
+	Sunday 26/1-2014
+	- Removed zoneRequirementUnlockCopy attribute and redid zoneUnlockHash to make
+	it work more like other similar attributes.

@@ -106,9 +106,15 @@ REQ		description = ""
 	Unlock attributes
 		With an ID of over ETW_DEFAULT_QUESTION_ID, either of these are "REQ", i.e required
 
-		zoneUnlockHash = {SHA2HASH}
+		zoneUnlockHash = 
+			{
+				{ zone = SHA2HASH, subZone = SHA2HASH }
+			}
 			Table of zones that unlock the questions when entered, subzones
 			or map zones, any zone. The hash values should be of the ZONE NAME.
+			PLEASE note that if this attribute is set, it is VERY redundant to
+			set the zoneRequirementUnlockHash. See zoneRequirementHash for more
+			info.
 		itemUnlockHash = {SHA2HASH}
 			Table of items that unlock the question when looted. The hash
 			values should be of the ITEM ID. (http://www.wowhead.com/item=49623)
@@ -124,14 +130,14 @@ REQ		description = ""
 			Amount of completed quests that unlocks the question. The hash value should
 			be of the NUMBER OF COMPLETED QUESTS. For example 5 if you want the question
 			to unlock after 5 completed quests.
-		zoneRequirementUnlockHash = {SHA2HASH}
+		zoneRequirementUnlockHash = 		
+		{
+			{ zone = SHA2HASH, subZone = SHA2HASH }
+		}
 			Optional attribute, table of zones that you have to be at to unlock the
 			question. So if you have a question unlock from an NPC, but the NPC can be
 			found in various places, you might only want the question to unlock at a 
-			certain place.
-		zoneRequirementUnlockCopy = true
-			If this attribute is true, then the value of "zoneRequirementUnlockHash" will
-			be equal to that of "zoneRequirementHash"
+			certain place. See zoneRequiremetHash for more info.
 		questionUnlock = {BASE64}
 			Table of questions that will make the question unlock when answered. The table
 			values should be the base64 format of the QUESTION ID of the question that
@@ -590,7 +596,12 @@ ETW_LoreQuestions = {
 				{ zone="d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b"},
 				{ zone="4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"}
 			},
-			zoneRequirementUnlockCopy = true,
+			zoneRequirementUnlockHash =
+			{
+				{ zone="e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda"},
+				{ zone="d75d71989b25d8114bdeeedd4f36d9b5fb8ba548ae1a66cf52329cb691330a7b"},
+				{ zone="4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"}
+			},
 			npcUnlockHash =
 			{
 				"eafcacdb00a30f261075633efd368a23c530de2de46672c379142f583939bb5e",
@@ -637,7 +648,7 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash =
 			{
-				"2a0fd71aa349b3c662105e52d182b2950325ca79f408064b351575b983dfebcb"
+				{ zone="2a0fd71aa349b3c662105e52d182b2950325ca79f408064b351575b983dfebcb"}
 			}
 		},
 		{
@@ -657,7 +668,7 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash =
 			{
-				"13e084c1def9e80292a1b052a9d98bd7c8fe281fad9b6b90ac4114ee44334847"
+				{ zone="13e084c1def9e80292a1b052a9d98bd7c8fe281fad9b6b90ac4114ee44334847"}
 			}
 		},
 		{
@@ -677,7 +688,7 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash =
 			{
-				"32d172b5e7fbdc37857a7d1425b10e339c0b338aee2478ae27016e8a37c7e99c"
+				{ zone="32d172b5e7fbdc37857a7d1425b10e339c0b338aee2478ae27016e8a37c7e99c"}
 			}
 		},
 		{
@@ -723,7 +734,7 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash =
 			{
-				"99f577e78adf6e383ab1e310ce4f0b8eb1c27ab4f3b02b1980ea78ccbde2654e"
+				{ zone="99f577e78adf6e383ab1e310ce4f0b8eb1c27ab4f3b02b1980ea78ccbde2654e"}
 			}
 		},
 		{
@@ -744,7 +755,7 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash =
 			{
-				"1258cc3e7925d569f088d55c16ce09593c0312971d49730854910ac4c1c4cb98"
+				{ zone="1258cc3e7925d569f088d55c16ce09593c0312971d49730854910ac4c1c4cb98"}
 			}
 		},
 		{
@@ -765,7 +776,7 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash =
 			{
-				"50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61"
+				{ zone="50ffd9e239f0b31b94298b59f862e0b454919e64120c54905eb771f6877ced61"}
 			}
 		},
 		{
@@ -849,7 +860,7 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash = 
 			{
-				"ba4a4cbf46c8a4a9b65f180f277a9d6ba590686e371349191b774bf0d2c72273"
+				{ zone="ba4a4cbf46c8a4a9b65f180f277a9d6ba590686e371349191b774bf0d2c72273"}
 			},
 			author = "Argathom",
 		},
@@ -980,7 +991,7 @@ ETW_LoreQuestions = {
 				{zone = "0062ef4a0dfa758fae0ae92b123759d9d0301987d65108ce286df6bc5f012322"}
 			},
 			progressUnlockHash = "54bd0eb8cfde399f0436509703411a3ec29744b6b98b54b148bdc6c485a2d5fc",
-			author = "Argathom"
+			author = "Argathom",
 		},
 		{
 			ID = 40,
@@ -1000,7 +1011,7 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash = 
 			{
-				"2a373dec3bde04f90e30284c48c1e583082ea3a61dbe94be0dc9bc935fa20e44"
+				{ zone="2a373dec3bde04f90e30284c48c1e583082ea3a61dbe94be0dc9bc935fa20e44"}
 			}
 		},
 		{
@@ -1041,7 +1052,7 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash = 
 			{
-				"7d3be233c9f4739621f3457cf0a2b212ca556a9775ed401c5de50e3e1b4a95be"
+				{ zone="7d3be233c9f4739621f3457cf0a2b212ca556a9775ed401c5de50e3e1b4a95be"}
 			}
 		},
 		{
@@ -1097,6 +1108,7 @@ ETW_LoreQuestions = {
 ETW_UnlockTable = {}
 
 ETW_UnlockTable.zones = {}
+ETW_UnlockTable.subZones = {}
 ETW_UnlockTable.items = {}
 ETW_UnlockTable.npcs = {}
 ETW_UnlockTable.worldObjects = {}
