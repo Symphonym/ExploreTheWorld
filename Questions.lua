@@ -1175,12 +1175,34 @@ ETW_LoreQuestions = {
 			},
 			zoneRequirementHash =
 			{
-				{zone="e51a8864e898c576ec1213bebffc1d411cb1d226a9a25989a2e0ec0e1af0bc4f", subZone="7600651a465e94610847b1f848f66ee2caaf388f82652fe8994d7f9786d17e47"}
+				{ zone="e51a8864e898c576ec1213bebffc1d411cb1d226a9a25989a2e0ec0e1af0bc4f", subZone="7600651a465e94610847b1f848f66ee2caaf388f82652fe8994d7f9786d17e47"}
 			},
 			questionUnlock =
 			{
 				"NDc="
 			},
+		},
+		{
+			ID = 49,
+			name = "Meal for the wyrms",
+			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_NORTHREND,
+			modelId = "MjY3MTA=",
+			description = "In the lands beneath the sky-touching peaks, west of the female clan who captures and rides these savage beasts, frost breathing wyrms roam the skies. But what animal are they so mercilessly hunting in the plains below?",
+			answer =
+			{
+				"1afb4fa7b4b84995c553ea1004cfdd9f197fe9b65b6e0728ae465f1fbd3aeaf8",
+				"dc21c7edba273763b997f8867a53d5ea79272fd5de8f9aef9cc064a8379e005c",
+				"ab5255e2f3ed7ef7db58a3794460f585b93edb7cb03f45c4cc882294ec0aa8b4"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="c9ebfb6c611f618982ae29ae40b3e31907118844b53003e56552bdc27fe8581f", subZone="3e506372eb2b7a1664a7dbf0591fb23029c11b2fcab5be09756e7d27297ee416"}
+			},
+			zoneUnlockHash = 
+			{
+				{ zone="c9ebfb6c611f618982ae29ae40b3e31907118844b53003e56552bdc27fe8581f"}
+			}
 		}
 
 	}

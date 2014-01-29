@@ -28,7 +28,7 @@ ETW_PopupFrame:SetPoint("TOP", 0, -100)
 
 ETW_PopupFrame.text = ETW_PopupFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 ETW_PopupFrame.text:SetTextHeight(14)
-ETW_PopupFrame.text:SetText("Quests unlocked")
+ETW_PopupFrame.text:SetText("Questions unlocked")
 ETW_PopupFrame.text:SetPoint("LEFT", 80, 19)
 
 ETW_PopupFrame.unlockText = ETW_PopupFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
@@ -147,32 +147,32 @@ function ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUn
 		if (itemUnlocks and itemUnlocks > 0) then
 			ETW_PopupFrame.itemUnlock.display = true
 			questsUnlocked = questsUnlocked + itemUnlocks
-			ETW_Utility:PrintToChat(" You unlocked " .. itemUnlocks .. " quest(s) from " .. ETW_PopupFrame.itemUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. itemUnlocks .. " question(s) from " .. ETW_PopupFrame.itemUnlock.name)
 		end
 		if (zoneUnlocks and zoneUnlocks > 0) then
 			ETW_PopupFrame.zoneUnlock.display = true
 			questsUnlocked = questsUnlocked + zoneUnlocks
-			ETW_Utility:PrintToChat(" You unlocked " .. zoneUnlocks .. " quest(s) from " .. ETW_PopupFrame.zoneUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. zoneUnlocks .. " question(s) from " .. ETW_PopupFrame.zoneUnlock.name)
 		end
 		if (npcUnlocks and npcUnlocks > 0) then
 			ETW_PopupFrame.npcUnlock.display = true
 			questsUnlocked = questsUnlocked + npcUnlocks
-			ETW_Utility:PrintToChat(" You unlocked " .. npcUnlocks .. " quest(s) from " .. ETW_PopupFrame.npcUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. npcUnlocks .. " question(s) from " .. ETW_PopupFrame.npcUnlock.name)
 		end
 		if (worldObjectUnlocks and worldObjectUnlocks > 0) then
 			ETW_PopupFrame.worldObjectUnlock.display = true
 			questsUnlocked = questsUnlocked + worldObjectUnlocks
-			ETW_Utility:PrintToChat(" You unlocked " .. worldObjectUnlocks .. " quest(s) from " .. ETW_PopupFrame.worldObjectUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. worldObjectUnlocks .. " question(s) from " .. ETW_PopupFrame.worldObjectUnlock.name)
 		end
 		if (progressUnlocks and progressUnlocks > 0) then
 			ETW_PopupFrame.progressUnlock.display = true
 			questsUnlocked = questsUnlocked + progressUnlocks
-			ETW_Utility:PrintToChat(" You unlocked " .. progressUnlocks .. " quest(s) from " .. ETW_PopupFrame.progressUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. progressUnlocks .. " question(s) from " .. ETW_PopupFrame.progressUnlock.name)
 		end
 		if (questionUnlocks and questionUnlocks > 0) then
 			ETW_PopupFrame.questionUnlock.display = true
 			questsUnlocked = questsUnlocked + questionUnlocks
-			ETW_Utility:PrintToChat(" You unlocked " .. questionUnlocks .. " quest(s) from " .. ETW_PopupFrame.questionUnlock.name)
+			ETW_Utility:PrintToChat(" You unlocked " .. questionUnlocks .. " question(s) from " .. ETW_PopupFrame.questionUnlock.name)
 		end
 
 
@@ -210,7 +210,7 @@ function ETW_ShowUnlockPopup(itemUnlocks, zoneUnlocks, npcUnlocks, worldObjectUn
 
 			PlaySound("QUESTADDED")
 			ETW_PopupFrame:Show()
-			ETW_PopupFrame.unlockText:SetText(ETW_PopupFrame.unlockCount .. " quest(s) unlocked!")
+			ETW_PopupFrame.unlockText:SetText(ETW_PopupFrame.unlockCount .. " question(s) unlocked!")
 			ETW_PopupFrame.infoText:SetText(extraText)
 
 			ETW_PopupFrame.fading = true

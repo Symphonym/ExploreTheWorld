@@ -170,8 +170,8 @@ ETW_EXPLORE_DROPDOWN_NAME = "Explore"
 ETW_INVESTIGATION_DROPDOWN_NAME = "Investigation"
 ETW_TRACKING_DROPDOWN_NAME = "Tracking"
 ETW_GROUPQUEST_DROPDOWN_NAME = "Group question"
-ETW_COMPLETED_DROPDOWN_NAME = "Completed quests"
-ETW_NEWQUEST_DROPDOWN_NAME = "New quests"
+ETW_COMPLETED_DROPDOWN_NAME = "Completed questions"
+ETW_NEWQUEST_DROPDOWN_NAME = "New questions"
 
 -- Names of the different things you can unlock questions from
 ETW_ITEM_UNLOCK_NAME = "Item"
@@ -246,13 +246,13 @@ ETW_THANKSTO_STRING = [[
 
 |cFF00FF00Testers:|r
 
-   Argathom |cFF00FF00(Primary tester)|r
-   Karl Marelius,|cFF0070DE Tezlo|r
-   Niklas löf Arefjärd,|cFFC79C6E Stahli|r
+   |cFFF58CBAArgathom|r
+   |cFF0070DETezlo|r
+   |cFFC79C6EStahli|r
 
 |cFF00FF00Question creators:|r
 
-   Argathom
+   |cFFF58CBAArgathom|r
 
 |cFF00FF00Explorers:|r
 
@@ -260,6 +260,7 @@ ETW_THANKSTO_STRING = [[
    Skoop
    Rayzoor, The Maelstrom
    Delmatae
-   Tabori
+   Tabori,
+   Kalmisto
 
 ]]
