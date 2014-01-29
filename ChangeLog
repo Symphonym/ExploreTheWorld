@@ -39,3 +39,9 @@
 	- Removed zoneRequirementUnlockCopy attribute and redid zoneUnlockHash to make
 	it work more like other similar attributes.
 	- Added question 45
+	Monday 27/1-2014
+	- Added question 46
+[ Version 0.1.9a ] 
+	Wednesday 29/1-2014
+	- Fixed bug that was making modelXOffset not being used properly by the addon
+	- Added question 47-48

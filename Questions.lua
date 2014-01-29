@@ -717,7 +717,7 @@ ETW_LoreQuestions = {
 			modelPath = "V29ybGRcXEdlbmVyaWNcXGRvb2RhZHNcXGZpc2hpbmdcXGNoYWlyXFxmaXNoaW5nY2hhaXIubWR4",
 			modelZoom = 1.5,
 			modelYOffset = 1.2,
-			modelXOffset = -0.65,
+			modelXOffset = -0.9,
 			description = "Someone was having a pretty relaxed fishing trip on a small island in shallow waters. Located by the opposite border from where King Arthas buried his beloved steed. But the fisher isn't fishing there anymore, what happened?",
 			answer =
 			{
@@ -828,7 +828,7 @@ ETW_LoreQuestions = {
 			modelPath = "V29ybGRcXEV4cGFuc2lvbjA0XFxkb29kYWRzXFxwYW5kYXJlblxcbGFudGVyblxccGFfbGFudGVybl9mbG9hdGluZ18wMV9kZXN0cm95ZWQubWR4",
 			modelZoom = 0.5,
 			modelYOffset = 0.4,
-			description = "In the beautiful green forest, with vessels of both factions lurking in the waters below, a wishing well can be found. Made as a tribute to a young boy named Brian who suffered of bone cancer, whose last wish was to visit the Blizzard HQ and whose nickname names the wishing well.",
+			description = "In the beautiful green forest, with vessels of both factions lurking in the waters below, a wishing well can be found. Made as a tribute to a young boy named Brian who suffered of cancer, whose last wish was to visit the Blizzard HQ and whose nickname names the wishing well.",
 			answer =
 			{
 				"9be14520ef83faa278020ea3816d9e901374e79c2128d79a6bd71423b8903726"
@@ -1123,27 +1123,64 @@ ETW_LoreQuestions = {
 		},
 		{
 			ID = 46,
-			name = "Unappreciated hunter",
-			category = ETW_INVESTIGATION_CATEGORY,
+			name = "Elite hunter",
+			category = ETW_TRACKING_CATEGORY,
 			continent = ETW_CONTINENT_NORTHREND,
-			texturepath = "Interface\\Pictures\\obj_nesingwary_256.blp",
-			modelPath = "V29ybGRcXEtoYXptb2RhblxcdWxkYW1hblxccGFzc2l2ZWRvb2RhZHNcXHN0YXR1ZXNcXHVsZGFtYW5kd2FyZnN0YXR1ZS5tZHg=",
-			modelYOffset = -1.5,
-			modelZoom = 3,
-			description = "While both he and his son very much like their hunting, there are others who do not. Far away in a land where mammoths roam on the tundra, a party of druids has put up a poster at their camp, demanding his head. But what is the supposed crime they accuse him off?",
+			modelId = "MTc1NTc=",
+			description = "Some wanting him dead is not going to stop this mighty hunter. He's now back in the game with a large, well defended camp in another animal filled jungle, with access to water from the nearby river. Showcasing his skill with the piles of bones surrounding his tent.",
 			answer =
 			{
-				"4889ba7fd23477bfdea6c6cd368cb7ffc682bc151e9fbc037a7c6016c4bbd063",
-				"7ff356942152595ed3a609cc86398a53a82eae633ccbd0590fcf82c60cf6e777"
+				"8dc2ab0a41577373ef2d60af557e6a296f0242166b6becbb6b9f2173b126661f"
 			},
 			zoneRequirementHash =
 			{
-				{zone="7c6885ccb58ccd76a43c60745806ecaf5db18c36fb8dd10f024c4340d08c133b", subZone="8d3817186c6aaa70dfcdd63139b5702ceb9db7fe8d776ab1b5552b404c012bbb"}
+				{zone="0bf42222786bcc8ee896c3e1f9e13d2c221528a9e9e2da86cd8dfb4727361096", subZone="806ec9a9f79a310db8ceedf8e9efaa41e9fefad0533737b3d0fac36631b2bea6"}
 			},
 			questionUnlock =
 			{
-				"NDM="
+				"NDQ="
+			},
+		},
+		{
+			ID = 47,
+			name = "Home of the gryphons",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
+			modelId = "MTc2OTc=",
+			description = "With a plethora of tall trees and mountains in this green region, winged creatures of all kinds peacefully roam this land. Home to the capital of one of the dwarven clans, whose inocupants train the animals that roam here to provide the allied world with faster means of transportation.",
+			answer =
+			{
+				"645da62dff16d2a84dfbb04d1adde55430f5003a8ebfd763d6f2dedcfcd9db88"
+			},
+			zoneRequirementHash =
+			{
+				{zone="e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda", subZone="645da62dff16d2a84dfbb04d1adde55430f5003a8ebfd763d6f2dedcfcd9db88"}
+			},
+			zoneUnlockHash = 
+			{
+				{ zone="e9288d744b1ba953b6ac213c87456c57aeda811cd2fca0044c2f432484328cda"}
 			}
+		},
+		{
+			ID = 48,
+			name = "Those in the mountains",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "MjIyNTU=",
+			modelXOffset = 0.5,
+			description = "Aerie Peak is not the only aerie dedicated to training winged creatures, another one can be found at more secluded place. Accessable only by the old passage if you're going by foot. Where it is hidden in the misty mountains, in between lands.",
+			answer =
+			{
+				"7600651a465e94610847b1f848f66ee2caaf388f82652fe8994d7f9786d17e47"
+			},
+			zoneRequirementHash =
+			{
+				{zone="e51a8864e898c576ec1213bebffc1d411cb1d226a9a25989a2e0ec0e1af0bc4f", subZone="7600651a465e94610847b1f848f66ee2caaf388f82652fe8994d7f9786d17e47"}
+			},
+			questionUnlock =
+			{
+				"NDc="
+			},
 		}
 
 	}

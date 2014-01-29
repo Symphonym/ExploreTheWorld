@@ -344,10 +344,11 @@ local function displayQuestion(question)
 		-- Model Y and X offset, to make it look tidy
 		local xoffset, yoffset = 0, 0
 		if(question.modelYOffset ~= nil) then yoffset = question.modelYOffset end
-		if(question.modelYOffset ~= nil) then xoffset = question.modelXOffset end
+		if(question.modelXOffset ~= nil) then xoffset = question.modelXOffset end
 
+		-- Positioning is different on models and NPC's, not sure why
 		questionFrame.imageFrame.miscModel:SetPosition(0,xoffset,-0.1+yoffset)
-		questionFrame.imageFrame.npcModel:SetPosition(0,xoffset,-0.1+yoffset)
+		questionFrame.imageFrame.npcModel:SetPosition(xoffset,0,-0.1+yoffset)
 
 		-- Misc model zoom
 		if(question.modelZoom ~= nil) then
