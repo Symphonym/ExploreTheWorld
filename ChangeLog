@@ -34,6 +34,7 @@
 	Saturday 25-1-2014
 	- Added startup scan for question unlocks if more questions have been added
 	- Added questions 40-44
+
 [ Version 0.1.8a ] 
 	Sunday 26/1-2014
 	- Removed zoneRequirementUnlockCopy attribute and redid zoneUnlockHash to make
@@ -41,8 +42,22 @@
 	- Added question 45
 	Monday 27/1-2014
 	- Added question 46
+
 [ Version 0.1.9a ] 
 	Wednesday 29/1-2014
 	- Fixed bug that was making modelXOffset not being used properly by the addon
 	- Added question 47-49
 	- Fixed wording on filter and popup frames
+
+[ Version 0.2.0b ]																					-- First public release
+	Thursday 30/1-2014
+	- Initial release version, thus entering beta.
+	- Fixed wording on inspect frame.
+	- Added question 50
+	- Removed debugging messages
+	- Made slash commands toggle addon frame instead of just showing it
+	- Changed wording on help frame pages
+	- Changed wording on filter dropdown
+	- Tweaked options menu
+	- Added two more pages to the help menu, about the continent icon and
+	about security/protection.

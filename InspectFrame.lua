@@ -39,8 +39,8 @@ do
 						GameTooltip:AddLine("No data received")
 					else
 						GameTooltip:AddLine("Rank: "..ETW_Utility:RGBToStringColor(0.6, (self.playerCompleted / self.playerTotal), 0)..self.playerRank)
-						GameTooltip:AddLine("Completed quests: |cFF00FF00"..self.playerCompleted)
-						GameTooltip:AddLine("Total quests: |cFF00FF00"..self.playerTotal)
+						GameTooltip:AddLine("Completed questions: |cFF00FF00"..self.playerCompleted)
+						GameTooltip:AddLine("Total questions: |cFF00FF00"..self.playerTotal)
 						GameTooltip:AddLine("Using version: |cFF00FF00"..self.playerVersion)
 					end
 

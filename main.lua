@@ -39,7 +39,13 @@ local changePageIndex, showUnlockPopup, getQuestionRank,
 -- Slash command
 SLASH_EXPLORETHEWORLD1, SLASH_EXPLORETHEWORLD2 = '/etw', '/exploretheworld'
 function SlashCmdList.EXPLORETHEWORLD(msg, editbox)
-	ETW_Frame:Show()
+
+	-- Toggle etw frame
+	if(ETW_Frame:IsShown()) then
+		ETW_Frame:Hide()
+	else
+		ETW_Frame:Show()
+	end
 end
 
 
@@ -1604,9 +1610,6 @@ do
 	questionFrame.confirmButton:SetPoint("BOTTOMRIGHT", 0, 18)
 	questionFrame.confirmButton:SetScript("PostClick", function(self, button, down)
 		if(button == "LeftButton" and not down) then
-			ETW_Utility:PrintToChat(ETW_Utility:GetCurrentZone())
-			ETW_Utility:PrintToChat(GetSubZoneText())
-			ETW_Utility:PrintToChat(GetMinimapZoneText())
 			questionFrame:validateAnswer()
 		end
 	end)

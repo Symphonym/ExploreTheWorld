@@ -166,7 +166,7 @@ ETW_GROUPQUEST_CATEGORY = "Interface\\ICONS\\INV_Misc_GroupNeedMore.blp"
 ETW_DEFAULT_QUESTION_TEXTURE = "Interface\\Glues\\Models\\UI_Worgen\\UI_Worgen_BG05a.blp"
 
 -- Names of the dropdown menu
-ETW_EXPLORE_DROPDOWN_NAME = "Explore"
+ETW_EXPLORE_DROPDOWN_NAME = "Exploration"
 ETW_INVESTIGATION_DROPDOWN_NAME = "Investigation"
 ETW_TRACKING_DROPDOWN_NAME = "Tracking"
 ETW_GROUPQUEST_DROPDOWN_NAME = "Group question"

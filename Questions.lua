@@ -1143,6 +1143,27 @@ ETW_LoreQuestions = {
 		},
 		{
 			ID = 47,
+			name = "Hunting together",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "MTc1NTc=",
+			description = "After splitting up back in Stranglethorn Vale, the bigger and more exotic game that was hidden in the mists finally got them to hunt together. With their new camp in the valley, and as true dwarves they've made sure not to be too far away from the local brewery.",
+			answer =
+			{
+				"ab81a8455c303c6d5f5aa3d8b3c63831af6251cf8f3c483978419777eda84824",
+				"8dc2ab0a41577373ef2d60af557e6a296f0242166b6becbb6b9f2173b126661f"
+			},
+			zoneRequirementHash =
+			{
+				{zone="848ed985145172cdf974a390a8b865911c60bdada052cf4e5e971ff46fe2fe11", subZone="bea7efb4dc18d5cffdc8581556325fa0c23b40b8ed23bdc9bf283a99e2c4926d"}
+			},
+			questionUnlock =
+			{
+				"NDY="
+			},
+		},
+		{
+			ID = 48,
 			name = "Home of the gryphons",
 			category = ETW_EXPLORE_CATEGORY,
 			continent = ETW_CONTINENT_EASTERN,
@@ -1162,7 +1183,7 @@ ETW_LoreQuestions = {
 			}
 		},
 		{
-			ID = 48,
+			ID = 49,
 			name = "Those in the mountains",
 			category = ETW_EXPLORE_CATEGORY,
 			continent = ETW_CONTINENT_PANDARIA,
@@ -1179,11 +1200,11 @@ ETW_LoreQuestions = {
 			},
 			questionUnlock =
 			{
-				"NDc="
+				"NDg="
 			},
 		},
 		{
-			ID = 49,
+			ID = 50,
 			name = "Meal for the wyrms",
 			category = ETW_INVESTIGATION_CATEGORY,
 			continent = ETW_CONTINENT_NORTHREND,

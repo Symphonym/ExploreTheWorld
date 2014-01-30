@@ -7,7 +7,7 @@
 ETW_HelpFrame = {}
 
 local pageIndex = 1
-local maxPages = 8
+local maxPages = 10
 
 ----------------------------------------------------------------------------------
 --       Functions
@@ -222,7 +222,7 @@ do
 	createIconPage(categoryThree, ETW_EXPLORE_CATEGORY, "The purpose of the Exploration category is to locate a zone/area based on what is said to you. This is usually smaller subzones and not a major zone such as \"Mulgore\"")
 
 	local categoryFour = createHelpPage("Group question", 5)
-	createIconPage(categoryFour, ETW_GROUPQUEST_CATEGORY, "Group questions can be either of the three \"normal\" categories. Data is broadcasted within your party whenever your answer changes. The question can then only be answered when all participants each fulfill one answer requirement each.")
+	createIconPage(categoryFour, ETW_GROUPQUEST_CATEGORY, "Group questions can be either of the three \"normal\" categories, with the exception of requiring 2-5 players in a party. The question can then only be answered when all participants each fulfill one answer requirement each.")
 end
 
 do
@@ -236,10 +236,19 @@ do
 end
 
 do 
-	local helpFrame = createHelpPage("Contact", 8)
-	createIconPage(helpFrame, "Interface\\ICONS\\ACHIEVEMENT_GUILDPERK_GMAIL.BLP", "If you have any feedback to give or bugs to report, or if you want to help with development and contribute with questions, use the following|ne-mail:|n|netwaddon@gmail.com")
+	local helpFrame = createHelpPage("Continent icons", 8)
+	createIconPage(helpFrame, ETW_CONTINENT_PANDARIA, "Icons of continents, such as the one above, can be seen at the top-right corner of questions. These simply indicate on which continent the answer to the question is. If there's answers on multiple continents, the question mark icon is used.")
 end
 
+do 
+	local helpFrame = createHelpPage("Security", 9)
+	createIconPage(helpFrame, "Interface\\ICONS\\INV_Misc_Key_04.blp", "The addon uses things just as base64 formats and sha2 hashes simply to make it less obvious what answers to questions are. While there's no doubt people can bypass those minor security measures, I encourage you not to. Play fair and have fun :)")
+end
+
+do 
+	local helpFrame = createHelpPage("Contact", 10)
+	createIconPage(helpFrame, "Interface\\ICONS\\ACHIEVEMENT_GUILDPERK_GMAIL.BLP", "If you have any feedback to give or bugs to report, or if you want to help with development and contribute with questions, use the following|ne-mail:|n|netwaddon@gmail.com")
+end
 ----------------------------------------------------------------------------------
 --       Set to default page
 ----------------------------------------------------------------------------------

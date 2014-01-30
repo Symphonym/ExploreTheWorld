@@ -10,7 +10,7 @@ do
 	options:SetSize(250, 300)
 
 	-- Extra tweaking because optionicon not same size
-	options.portraitIcon:SetPoint("TOPLEFT", -2, 5)
+	options.portraitIcon:SetPoint("TOPLEFT", -3, 5)
 
 	ETW_Templates:MakeFrameDraggable(options)
 	options:Hide()
