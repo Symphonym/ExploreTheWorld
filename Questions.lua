@@ -226,7 +226,7 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "Mzg1NQ==",
-			description = "Living a dry barren land this poor orc had his wife killed by the quilboar, but sought revenge on them through helpfull heroes of the Horde. Not too far from the watch post he resides, consumed by his hatred against the quilboar.",
+			description = "Living in a barren land of the north, this poor orc had his wife killed by the quilboar. Seeking revenge on them through helpfull heroes of the Horde. Not too far from the watch post he resides, consumed by his hatred against the quilboar.",
 			answer =
 			{
 				"3007b3f7b3762071034b5525693b2be41c01a210b5725669975dabc5be855e4f"
@@ -452,7 +452,10 @@ ETW_LoreQuestions = {
 				"a4747cd5b2f0d657aa56908bd42867f5c14ff352d041537fdea802ede7017273",
 				"11afb9c11b0031ce00ba96700bf2a50c3628f99160e9b58c765030e499e4b3e2",
 				"8b858ec5e5bc99b154f4c37d169a621de03e7ab2e5d4a6663281f1c8e7f37887",
-				"25776fa0bf641799e025e40c29a31e95a7eae5b3677e01b0e6e4b6f8fc612272"
+				"25776fa0bf641799e025e40c29a31e95a7eae5b3677e01b0e6e4b6f8fc612272",
+				"2ab34f54da6ccf1e8889001fb1eb82f32c56025c436e5ebc8d44874f52540ef5",
+				"979aeecbdf17326194d10874f2e307a406ce15126b3878d5ec6412f098fa29f2",
+				"2ab34f54da6ccf1e8889001fb1eb82f32c56025c436e5ebc8d44874f52540ef5"
 			},
 			zoneRequirementHash =
 			{
@@ -668,7 +671,8 @@ ETW_LoreQuestions = {
 			},
 			zoneUnlockHash =
 			{
-				{ zone="13e084c1def9e80292a1b052a9d98bd7c8fe281fad9b6b90ac4114ee44334847"}
+				{ zone="13e084c1def9e80292a1b052a9d98bd7c8fe281fad9b6b90ac4114ee44334847"},
+				{ zone="798f715b8bfe09111da2750514181ac9f9eaf1f7a5333ba41bfe907fbdea9df5"}
 			}
 		},
 		{
@@ -1223,6 +1227,57 @@ ETW_LoreQuestions = {
 			zoneUnlockHash = 
 			{
 				{ zone="c9ebfb6c611f618982ae29ae40b3e31907118844b53003e56552bdc27fe8581f"}
+			}
+		},
+		{
+			ID = 51,
+			name = "A lorewalker's pets",
+			category = ETW_GROUPQUEST_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDI4Mzc=",
+			description = "A lorewalker needs companions after all the time spent reading ancient scrolls, and are thus often nearby the lorewalker himself. At his home or at the palace where he stores all his knowledge. Or when he's on an adventure in the chilly mountains.",
+			groupQuestCategory = ETW_TRACKING_CATEGORY,
+			groupQuest = 
+			{
+				[1] =
+				{
+					answer =
+					{
+						"dee68d54d7078c162ef5f4f4f438f1dfc31b105a86aaff80dbdc8419c65f2654"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="3689e78a3109a07d0e520541645a4c7348ab4faeeebb7c30c7eebcdfc4e2ff69"},
+						{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0"},
+					}
+				},
+				[2] =
+				{
+					answer = 
+					{
+						"895c678f7dc37fe664842a89d436ef355522453f2f5b0ecefb5fddeb2c9b5e94"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="3689e78a3109a07d0e520541645a4c7348ab4faeeebb7c30c7eebcdfc4e2ff69", subZone="b86847ac34678021e21893a03e68b4fe90e213ac183f382b9eaf9cc26708746c"},
+						{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="79657c234c3526bea652dfaea381be3e23db542a907d076c4b3d30b529d96615"}
+					}
+				},
+				[3] =
+				{
+					answer = 
+					{
+						"929d7a0eb84d6804619c6a9cd794df43a3bfe211bc48dc8a24883503a86d47a4"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="79657c234c3526bea652dfaea381be3e23db542a907d076c4b3d30b529d96615"}
+					}
+				}
+			},
+			npcUnlockHash = 
+			{
+				"635dc44019a65e2bb8de984aa802eef26622ed5a0d45741831289b536cb7cfcd"
 			}
 		}
 

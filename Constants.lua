@@ -38,7 +38,12 @@
 		 -- Number of total questions in the addon on the last session,
 		 -- can be used to check if more questions has been added with a
 		 -- new addon version.
-		totalQuestionCount = 0
+		totalQuestionCount = 0,
+
+		-- Cooldown for challenges
+		challengeCooldownStarted = 0,
+		-- Points from challenges that unlocks questions
+		challengePoints = 0
 
 	}
 
@@ -227,14 +232,27 @@ ETW_ADDONMSG_GROUPQUEST_REPORT = "GroupQuest ReportData"
 ETW_ADDONMSG_INSPECT_REQUEST = "Inspect RequestData"
 ETW_ADDONMSG_INSPECT_REPORT = "Inspect ReportData"
 
+
+
 -- Button highlighting
 ETW_RED_HIGHLIGHT = {1, 0, 0, 0.3}
 ETW_GREEN_HIGHLIGHT = {0, 1, 0, 0.3}
 ETW_BLUE_HIGHLIGHT = {0, 0, 1, 0.3}
+ETW_PURPLE_HIGHLIGHT = {1, 0, 0.7, 0.3}
 ETW_NO_HIGHLIGHT = {0, 0, 0, 0}
 
 -- Selection "out of bounds" texture
 ETW_SELECTION_BOUNDS_TEXTURE = "Interface\\WorldMap\\UI-QuestBlob-Outside-white.blp"
+
+-- Challenge cooldown
+ETW_CHALLENGE_COOLDOWN = 5--108000 -- 30 hours
+ETW_CHALLENGE_COMPLETE_REDUCTION = 3600 -- 1 hour
+ETW_CHALLENGE_POINTS_REQUIRED = 10
+
+ETW_CHALLENGE_DESCRIPTION = "Challenges provide new objectives by randomly choosing unlocked questions and de-completing them. Completing challenges will reward you with challenge points, which will unlock random questions once the blue bar is full. The green bar is the challenge cooldown."
+ETW_CHALLENGE_EXPLORERS_TOURNAMENT_DESCRIPTION = ""
+ETW_CHALLENGE_SWIFT_EXPLORING_DESCRIPTION = "The Swift exploring challenge will select one question randomly from those you have available, effectively de-completing it if it was completed. You will then be given 5 minutes to complete it, if you succeed, you will be rewarded 2 points."
+ETW_CHALLENGE_SWIFT_EXPLORING_TIME = 300 -- 5 minutes
 
 ETW_CREDIT_STRING = [[
 Created by: 

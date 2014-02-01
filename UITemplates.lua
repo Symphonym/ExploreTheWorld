@@ -142,6 +142,41 @@ function ETW_Templates:CreateRotatingModel(globalName, parent)
 	return model
 end
 
+-- Status bar
+function ETW_Templates:CreateStatusBar(globalName, parent, minValue, maxValue, barColor, width, height)
+
+	local statusFrame = CreateFrame("Frame", globalName.."Frame", parent, "InsetFrameTemplate3")
+	statusFrame:SetSize(width,height)
+
+	local statusbar = CreateFrame("StatusBar", globalName, statusFrame)
+	statusbar:SetPoint("CENTER")
+	statusbar:SetSize(width-6,height-9)
+	
+	-- Statusbar background
+	statusbar.bg = statusbar:CreateTexture(nil,"BACKGROUND",nil,-8)
+	statusbar.bg:SetAllPoints(statusbar)
+	statusbar.bg:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar.blp")
+	statusbar.bg:SetVertexColor(unpack(barColor),0.2)
+	
+	-- Statusbar texture
+	local texture = statusbar:CreateTexture(nil,"BACKGROUND",nil,-6)
+	texture:SetTexture("Interface\\TARGETINGFRAME\\UI-StatusBar.blp")
+	texture:SetVertexColor(unpack(barColor),1)
+	statusbar:SetStatusBarTexture(texture)
+	statusbar:SetStatusBarColor(unpack(barColor))
+
+	statusbar.text = statusbar:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+	statusbar.text:SetPoint("CENTER")
+
+	-- Values
+	statusbar:SetMinMaxValues(minValue, maxValue)
+	statusbar:SetValue(0)
+
+	statusFrame.bar = statusbar
+
+	return statusFrame
+end
+
 
 -------------------------------------------------------------------------------------
 --  UI utility templates

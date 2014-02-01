@@ -555,6 +555,9 @@ local function createListButton()
 	function listButton:highlightBlue()
 		self.highlight:SetTexture(unpack(ETW_BLUE_HIGHLIGHT))
 	end
+		function listButton:highlightPurple()
+		self.highlight:SetTexture(unpack(ETW_PURPLE_HIGHLIGHT))
+	end
 
 	-- Highlight on top of the button, indicating if it's selected
 	listButton.selectHighlight = listButton:CreateTexture()
@@ -587,6 +590,10 @@ local function createListButton()
 			ETW_Frame.questionList.buttons[question.buttonIndex]:highlightNone()
 		end
 
+		if(ETW_IsChallengeQuestion(question)) then
+			ETW_Frame.questionList.buttons[question.buttonIndex]:highlightPurple()
+		end
+
 	end
 
 
@@ -599,62 +606,6 @@ local function createListButton()
 
 	return listButton
 end
-
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
---       ADD QUESTION
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-function addETWQuestion(question)
-	local questionList = ETW_Frame.questionList
-
-	-- If questions already exists in the list, abort adding a new one
-	if(questionList.items[question.ID] ~= nil) then
-		return
-	end
-
-	local function newPage()
-		questionList.pages[questionList.maxPageIndex] = {}
-		questionList.pages[questionList.maxPageIndex].items = {}
-		questionList.pages[questionList.maxPageIndex].totalCount = 0
-		questionList.pages[questionList.maxPageIndex].count = 0
-	end
-
-	-- Create new page if none exists
-	if(questionList.pages[questionList.maxPageIndex] == nil) then
-		newPage()
-	end
-
-	-- Limit page question count
-	if not(questionList.pages[questionList.maxPageIndex].totalCount + 1 <= SymphonymConfig.options.pageLimit) then
-		questionList.maxPageIndex = questionList.maxPageIndex + 1
-		newPage()
-	end
-
-	changePageIndex(questionList.maxPageIndex)
-	question.buttonIndex = 0
-
-	questionList.pages[questionList.maxPageIndex].items[question.ID] = question
-	questionList.pages[questionList.maxPageIndex].totalCount = questionList.pages[questionList.maxPageIndex].totalCount + 1
-	questionList.pages[questionList.maxPageIndex].count = questionList.pages[questionList.maxPageIndex].totalCount
-
-
-	-- Insert question to question list
-	questionList.items[question.ID] = question
-end
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -710,6 +661,17 @@ do
 	helpButton:SetScript("PostClick", function(self, button, down)
 		if(button == "LeftButton" and not down) then
 			ETW_HelpFrame:Show()
+		end
+	end)
+
+	-- Challenge window button
+	local challengeButton = CreateFrame("Button", "ETW_ChallengeMenuButton", frame, "UIPanelButtonTemplate")
+	challengeButton:SetSize(79, 18)
+	challengeButton:SetPoint("TOPLEFT", 56, -2)
+	challengeButton:SetText("Challenges")
+	challengeButton:SetScript("PostClick", function(self, button, down)
+		if(button == "LeftButton" and not down) then
+			ETW_ChallengeFrame:ShowFrame()
 		end
 	end)
 
@@ -1256,6 +1218,15 @@ do
 			UIDropDownMenu_Initialize(ETW_DropDownMenu, ETW_InitDropDownMenu, "MENU")
 			updatePageIndex()
 
+			-- Reset cooldown the first login
+			if(SymphonymConfig.challengeCooldownStarted == 0) then
+				SymphonymConfig.challengeCooldownStarted = time() - ETW_CHALLENGE_COOLDOWN
+			end
+			-- Limit challenge points
+			if(SymphonymConfig.challengePoints > ETW_CHALLENGE_POINTS_REQUIRED) then
+				SymphonymConfig.challengePoints = ETW_CHALLENGE_POINTS_REQUIRED
+			end
+
 			-- Store total amount of questions
 			ETW_LoreQuestions.size = questionCount
 
@@ -1277,7 +1248,17 @@ do
 			updateProgressText() -- Update the completed quest text
 
 			ETW_Frame.startFrame:showFrame()
-			ETW_Utility:PrintToChat(" Successfully initialized addon. Welcome " .. UnitName("player"))
+
+			local locale = GetLocale()
+			if(locale ~= nil) then
+				if(locale ~= "enGB" and locale ~= "enUS") then
+					ETW_Utility:PrintErrorToChat(" Your client is of \""..locale.."\" which is not supported by the addon.")
+				end
+			end
+
+			if(locale == "enGB" or locale == "enUS" or locale == nil) then
+				ETW_Utility:PrintToChat(" Successfully initialized addon. Welcome " .. UnitName("player"))
+			end
 		end
 	end)
 
@@ -1659,6 +1640,7 @@ do
 
 	-- Modifies functionality of questionframe when a question is completed
 	function questionFrame:completeQuestion()
+
 		self.answerBox.fade.fading = false
 		self.answerBox.fade:SetSuccessColor()
 		self.answerBox.fade.text:SetText("Correct answer!")
@@ -1758,11 +1740,18 @@ do
 			-- Disable input events for answerbox as answer is already inputted
 			self.answerBox:unregisterInputEvents()
 
+			-- Append completed qs
+			SymphonymConfig.questions.completed = SymphonymConfig.questions.completed + 1
+
 			-- Store plain answer in config file, as it is now known to us anyway
 			self:saveAnswer()
 
-			-- Append completed qs
-			SymphonymConfig.questions.completed = SymphonymConfig.questions.completed + 1
+			-- Reduce challenge cooldown, if it's ongoing
+			if (ETW_IsChallengeReady() == false and ETW_IsChallengeQuestion(self.question) == false) then
+				SymphonymConfig.challengeCooldownStarted = SymphonymConfig.challengeCooldownStarted - ETW_CHALLENGE_COMPLETE_REDUCTION
+			end
+			-- Notify the challenge of the completed question, in case it's a challenge question
+			ETW_ChallengeQuestionCompleted(self.question)
 
 			-- Unlock sound
 			PlaySound("igQuestListComplete")
@@ -2052,4 +2041,117 @@ do
 	end)
 
 	ETW_Frame.unlockScanner = unlockScanner
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--       Global functions
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+function addETWQuestion(question)
+	local questionList = ETW_Frame.questionList
+
+	-- If questions already exists in the list, abort adding a new one
+	if(questionList.items[question.ID] ~= nil) then
+		return
+	end
+
+	local function newPage()
+		questionList.pages[questionList.maxPageIndex] = {}
+		questionList.pages[questionList.maxPageIndex].items = {}
+		questionList.pages[questionList.maxPageIndex].count = 0
+	end
+
+	-- Create new page if none exists
+	if(questionList.pages[questionList.maxPageIndex] == nil) then
+		newPage()
+	end
+
+	-- Limit page question count
+	if not(questionList.pages[questionList.maxPageIndex].count + 1 <= SymphonymConfig.options.pageLimit) then
+		questionList.maxPageIndex = questionList.maxPageIndex + 1
+		newPage()
+	end
+
+	changePageIndex(questionList.maxPageIndex)
+	question.buttonIndex = 0
+
+	questionList.pages[questionList.maxPageIndex].items[question.ID] = question
+	questionList.pages[questionList.maxPageIndex].count = questionList.pages[questionList.maxPageIndex].count + 1
+
+
+	-- Insert question to question list
+	questionList.items[question.ID] = question
+end
+
+-- Randomly picks and returns question that is already unlocked to be use for challenges
+function ETW_GenerateChallengeQuestion()
+	local randomPage = ETW_Frame.questionList.pages[random(0, ETW_Frame.questionList.maxPageIndex)]
+	local randomButtonIndex = random(0, randomPage.count)
+
+	if(ETW_isQuestionDone(ETW_Frame.questionList.items[24])) then
+		SymphonymConfig.questions.completed = SymphonymConfig.questions.completed - 1
+		SymphonymConfig.questions[24].answer = nil
+	end
+
+	return ETW_Frame.questionList.items[24]
+
+	-- TODO removing hard code for id 24, should be random
+	--[[ETW_Utility:PrintToChat("TARGET "  .. randomButtonIndex)
+
+	for _, question in pairs(randomPage.items) do
+		ETW_Utility:PrintToChat("LOOP "  .. question.buttonIndex)
+
+		-- Question may NOT be a group question
+		if(question.category ~= ETW_GROUPQUEST_CATEGORY and question.buttonIndex == randomButtonIndex) then
+			return question
+		end
+	end]]
+end
+
+-- Randomly unlocks a question meeting certain criterias
+function ETW_GrantChallengeReward()
+
+	for _, question in pairs(ETW_LoreQuestions.questions) do
+
+		-- Question may not be in middle of a chain
+		if(question.questionUnlock == nil) then
+
+			-- Make sure question isn't unlocked
+			if(ETW_Frame.questionList.items[question.ID] == nil) then
+				showUnlockPopup(nil, nil, nil, nil, nil, 1)
+				unlockQuestion(question)
+				return question
+			end
+		end
+	end
+
+end
+
+function ETW_DisplayQuestion(question)
+	displayQuestion(question)
+end
+function ETW_ForceUpdate()
+	updateQuestList()
+	updateProgressText()
+	updateScrollbarSize()
+	updatePageIndex()
 end

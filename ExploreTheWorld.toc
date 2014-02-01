@@ -2,7 +2,7 @@
 ## Title: |cFF00FF00Explore the World|r
 ## Notes: Explore the entirety of World of Warcraft|n|cFFFFFB00Created by |r|cFF00FF00Jakob Larsson|r|cFFFFFB00 (Programmer, Defias Brotherhood)
 ## Author: Jakob Larsson
-## Version: 0.2.0b
+## Version: 0.2.1b
 ## SavedVariables: SymphonymConfig
 sha2.lua
 Utility.lua
@@ -13,6 +13,7 @@ Questions.lua
 PopupFrame.lua
 HelpFrame.lua
 OptionFrame.lua
+ChallengeFrame.lua
 GroupFrame.lua
 InspectFrame.lua
 main.lua

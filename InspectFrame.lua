@@ -59,18 +59,23 @@ do
 			ETW_InspectFrame.container.text:SetText(ETW_Utility:RGBToStringColor(0.6, 0, 0) .. " Unknown |r(??/??)")
 			ETW_InspectFrame.container:UpdateSize()
 
-			local targetName, targetRealm = UnitName("target")
-			if(targetRealm == nil) then
-				targetRealm = GetRealmName()
-			end
+			-- Request data if the inspect frame is visible
+			if(inspectFrame:IsShown()) then
 
-			-- Request inspect data from the player
-			SendAddonMessage(ETW_ADDONMSG_PREFIX,
-				ETW_ADDONMSG_INSPECT_REQUEST..","..
-				UnitName("player")..","..
-				GetRealmName(),
-			"WHISPER",
-			targetName.."-"..targetRealm)
+				local targetName, targetRealm = UnitName("target")
+				if(targetRealm == nil) then
+					targetRealm = GetRealmName()
+				end
+
+				-- Request inspect data from the player
+				SendAddonMessage(ETW_ADDONMSG_PREFIX,
+					ETW_ADDONMSG_INSPECT_REQUEST..","..
+					UnitName("player")..","..
+					GetRealmName(),
+				"WHISPER",
+				targetName.."-"..targetRealm)
+				
+			end
 
 		elseif(event == "CHAT_MSG_ADDON") then
 			local prefix, sentMessage, channel, sender = ...
