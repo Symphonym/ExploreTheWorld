@@ -237,8 +237,6 @@ ETW_ADDONMSG_TE_START = "Challenge_TE StartChallenge"
 ETW_ADDONMSG_TE_DATA = "Challenge_TE ChallengeData"
 ETW_ADDONMSG_TE_GIVE_TIME = "Challenge_TE GiveTime"
 ETW_ADDONMSG_TE_GIVE_SCORE = "Challenge_TE GiveScore"
-ETW_ADDONMSG_TE_QUIT = "Challenge_TE QuitChallenge"
-
 
 -- Button highlighting
 ETW_RED_HIGHLIGHT = {1, 0, 0, 0.3}

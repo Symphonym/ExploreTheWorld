@@ -156,15 +156,21 @@ end
 local function removeChallengePoints(points)
 
 	ETW_Utility:PrintToChat(points .. " challenge points was removed")
+	local negativeScore = false
 	for count = 1, math.abs(points), 1 do
 
 		SymphonymConfig.challengePoints = SymphonymConfig.challengePoints - 1
 
 		-- Add time to challenge cooldown for each negative point
 		if(SymphonymConfig.challengePoints < 0) then
+			negativeScore = true
 			SymphonymConfig.challengePoints = 0
 			SymphonymConfig.challengeCooldownStarted = SymphonymConfig.challengeCooldownStarted + ETW_CHALLENGE_NEGATIVE_POINT_REDUCTION
 		end
+	end
+
+	if(negativeScore) then
+		ETW_Utility:PrintToChat(" You received negative challenge points and had time added to your challenge cooldown.")
 	end
 end
 
@@ -843,7 +849,7 @@ do
 
 	local inviteText = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	inviteText:SetPoint("LEFT", 10, -8)
-	inviteText:SetText("Connected players\n\nP1\np2\np3\np4")
+	inviteText:SetText("Connected players\n\n")
 	frame.inviteText = inviteText
 
 	local timeText = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")

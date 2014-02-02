@@ -67,14 +67,15 @@ do
 					targetRealm = GetRealmName()
 				end
 
-				-- Request inspect data from the player
-				SendAddonMessage(ETW_ADDONMSG_PREFIX,
-					ETW_ADDONMSG_INSPECT_REQUEST..","..
-					UnitName("player")..","..
-					GetRealmName(),
-				"WHISPER",
-				targetName.."-"..targetRealm)
-				
+				if(targetName and targetRealm) then
+					-- Request inspect data from the player
+					SendAddonMessage(ETW_ADDONMSG_PREFIX,
+						ETW_ADDONMSG_INSPECT_REQUEST..","..
+						UnitName("player")..","..
+						GetRealmName(),
+					"WHISPER",
+					targetName.."-"..targetRealm)
+				end
 			end
 
 		elseif(event == "CHAT_MSG_ADDON") then
