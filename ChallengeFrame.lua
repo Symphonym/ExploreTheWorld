@@ -29,7 +29,6 @@ local function createChallengeButton(title, icon)
 	button:SetSize(frame:GetWidth()-image:GetWidth()-3, 37)
 	button:SetPoint("RIGHT", 0, 1)
 	button:SetText(title)
-	button:Disable()
 
 	frame.icon = image
 	frame.button = button
@@ -43,14 +42,6 @@ do
 	challenge:SetSize(250, 300)
 	ETW_Templates:MakeFrameDraggable(challenge)
 	challenge:Hide()
-
-	function challenge:ShowFrame()
-		-- Make sure challenges are disabled by default and then let OnUpdate regulate it
-		for index = 1, challengeFrameCount, 1 do
-			_G["ETW_ChallengeButton"..index]:Disable()
-		end
-		self:Show()
-	end
 
 	function challenge:CreateData(name, title, text, initChallengeFunction)
 		self.frames[name] = {}
@@ -124,7 +115,13 @@ do
 	startButton:SetText("Start the challenge")
 	startButton:HookScript("OnClick", function(self,button,down)
 		if(button == "LeftButton" and not down) then
-			ETW_ChallengeFrame.initChallengeFunction()
+			if not (ETW_IsChallengeReady()) then
+				ETW_Utility:PrintErrorToChat(" Your challenge cooldown is still active!")
+			elseif(ETW_ChallengeWindow.activeChallenge) then
+				ETW_Utility:PrintErrorToChat(" You're already doing a challenge. Stay focused!")
+			else
+				ETW_ChallengeFrame.initChallengeFunction()
+			end
 		end
 	end)
 	startButton:Hide()
@@ -199,13 +196,6 @@ do
 			self:SetValue(maxValue)
 			self.text:SetText("Challenges ready")
 
-			-- Only enable challenges when we're done with the current
-			if not(ETW_ChallengeWindow.activeChallenge) then
-				for index = 1, challengeFrameCount, 1 do
-					_G["ETW_ChallengeButton"..index]:Enable()
-				end
-			end
-
 		-- Cooldown still active, challenges not ready
 		else
 			-- Time left, the power of modulo
@@ -215,11 +205,6 @@ do
 
 			self.text:SetText(hours.."h "..minutes.."m "..seconds.."s")
 			self:SetValue(maxValue*percentagePassed)
-
-
-			for index = 1, challengeFrameCount, 1 do
-				_G["ETW_ChallengeButton"..index]:Disable()
-			end
 		end
 
 		challengePointBar.bar:SetValue(SymphonymConfig.challengePoints)
@@ -607,8 +592,6 @@ do
 
 			-- Goal question completed
 			if(question.goalQuestion) then
-				print("GOAL")
-
 				self.goalStatusFrame.bar:SetValue(self.goalStatusFrame.bar:GetValue() + 1)
 
 				challengeQuestions[2] = nil
@@ -617,7 +600,6 @@ do
 
 			-- Time question completed
 			elseif(question.timeQuestion) then
-				print("TIME")
 				ETW_ChallengeWindow.startedTime = ETW_ChallengeWindow.startedTime + ET_Data.timeAdd
 
 				challengeQuestions[1] = nil
@@ -832,7 +814,7 @@ do
 	end
 
 	StaticPopupDialogs["ETW_StartChallenge_StartTeamExploration"] = {
-		text = "Pressing \"Start\" will start the challenge and reset the challenge cooldown of all participants.",
+		text = "Pressing \"Start\" will start the challenge and reset the challenge cooldown of all participants. It might be clever to throw out an invite again to make sure everyone is with you.",
 		showAlert = true,
 		button1 = "Start",
 		button2 = "Cancel",
@@ -861,7 +843,7 @@ do
 
 	local inviteText = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	inviteText:SetPoint("LEFT", 10, -8)
-	inviteText:SetText("Connected players")
+	inviteText:SetText("Connected players\n\nP1\np2\np3\np4")
 	frame.inviteText = inviteText
 
 	local timeText = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -924,7 +906,7 @@ do
 	end)
 
 	local backButton = CreateFrame("Button", "ETW_Challenge_TE_BackButton", frame, "UIPanelButtonTemplate")
-	backButton:SetSize(110, 22)
+	backButton:SetSize(50, 20)
 	backButton:SetPoint("BOTTOMRIGHT", 0, 2)
 	backButton:SetText("Back")
 	backButton:HookScript("OnClick", function(self,button,down)
@@ -932,6 +914,8 @@ do
 			ETW_ChallengeWindow:Hide()
 		end
 	end)
+
+
 
 	frame.startButton = startButton
 	frame.inviteButton = inviteButton
@@ -1002,15 +986,14 @@ do
 
 			local messageList = ETW_Utility:SplitString(sentMessage, ",")
 			local messageCount = #(messageList)
-				print(sentMessage)
 
-			if(prefix == ETW_ADDONMSG_PREFIX and sender ~= UnitName("player")) then
+			if(prefix == ETW_ADDONMSG_PREFIX and sender ~= UnitName("player") and UnitInParty(sender)) then
 
 				-- You received an Team Exploration invite
 				if(messageCount == 1 and messageList[1] == ETW_ADDONMSG_TE_INVITE) then
 
 					StaticPopupDialogs["ETW_Challenge_TE_Invite"] = {
-						text = "%s has invited you to a Team Exploration challenge, do you wish to join? %s will then be able to start the challenge at any time, which will reset your challenge cooldown.",
+						text = "%s has invited you to a Team Exploration challenge, do you wish to join? They may then be able to start the challenge at any time, which will reset your challenge cooldown.",
 						button1 = "Yes",
 						button2 = "No",
 						OnAccept = function()
@@ -1019,6 +1002,8 @@ do
 							ET_Data.leaderName = sender
 
 							ET_Data.isActive = true
+
+							updatePlayerList()
 
 							-- Notify leader that we want to join
 							SendAddonMessage(ETW_ADDONMSG_PREFIX,
@@ -1033,6 +1018,7 @@ do
 						whileDead = true,
 						hideOnEscape = true,
 					}
+
 					StaticPopup_Show("ETW_Challenge_TE_Invite", sender)
 
 				-- Someone accepted our invites
@@ -1097,7 +1083,7 @@ do
 						if(player == sender) then playerInGame = true break end
 					end
 
-					if(UnitInParty(sender) and playerInGame) then
+					if(playerInGame) then
 						ETW_ChallengeWindow.startedTime = ETW_ChallengeWindow.startedTime + ET_Data.timeAdd
 						self:BroadcastData()
 					end
@@ -1114,11 +1100,11 @@ do
 						end
 					end
 
-					if(UnitInParty(sender) and playerInGame) then
+					if(playerInGame) then
 						self.goalStatusFrame.bar:SetValue(self.goalStatusFrame.bar:GetValue() + 1)
 						self:BroadcastData()
 					end
-				end 
+				end
 			end
 
 		end

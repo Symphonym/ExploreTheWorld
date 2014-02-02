@@ -673,7 +673,7 @@ do
 	challengeButton:SetText("Challenges")
 	challengeButton:SetScript("PostClick", function(self, button, down)
 		if(button == "LeftButton" and not down) then
-			ETW_ChallengeFrame:ShowFrame()
+			ETW_ChallengeFrame:Show()
 		end
 	end)
 
