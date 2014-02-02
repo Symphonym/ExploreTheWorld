@@ -231,7 +231,13 @@ ETW_ADDONMSG_GROUPQUEST_REPLY = "GroupQuest ReplyData"
 ETW_ADDONMSG_GROUPQUEST_REPORT = "GroupQuest ReportData"
 ETW_ADDONMSG_INSPECT_REQUEST = "Inspect RequestData"
 ETW_ADDONMSG_INSPECT_REPORT = "Inspect ReportData"
-
+ETW_ADDONMSG_TE_INVITE = "Challenge_TE InviteRequest"
+ETW_ADDONMSG_TE_ACCEPT_INVITE = "Challenge_TE AcceptInvite"
+ETW_ADDONMSG_TE_START = "Challenge_TE StartChallenge"
+ETW_ADDONMSG_TE_DATA = "Challenge_TE ChallengeData"
+ETW_ADDONMSG_TE_GIVE_TIME = "Challenge_TE GiveTime"
+ETW_ADDONMSG_TE_GIVE_SCORE = "Challenge_TE GiveScore"
+ETW_ADDONMSG_TE_QUIT = "Challenge_TE QuitChallenge"
 
 
 -- Button highlighting
@@ -245,13 +251,17 @@ ETW_NO_HIGHLIGHT = {0, 0, 0, 0}
 ETW_SELECTION_BOUNDS_TEXTURE = "Interface\\WorldMap\\UI-QuestBlob-Outside-white.blp"
 
 -- Challenge cooldown
-ETW_CHALLENGE_COOLDOWN = 5--108000 -- 30 hours
+ETW_CHALLENGE_COOLDOWN = 36000 -- 10 hours
 ETW_CHALLENGE_COMPLETE_REDUCTION = 3600 -- 1 hour
+ETW_CHALLENGE_NEGATIVE_POINT_REDUCTION = 3600 -- 1 hour
 ETW_CHALLENGE_POINTS_REQUIRED = 10
 
 ETW_CHALLENGE_DESCRIPTION = "Challenges provide new objectives by randomly choosing unlocked questions and de-completing them. Completing challenges will reward you with challenge points, which will unlock random questions once the blue bar is full. The green bar is the challenge cooldown."
-ETW_CHALLENGE_EXPLORERS_TOURNAMENT_DESCRIPTION = ""
-ETW_CHALLENGE_SWIFT_EXPLORING_DESCRIPTION = "The Swift exploring challenge will select one question randomly from those you have available, effectively de-completing it if it was completed. You will then be given 5 minutes to complete it, if you succeed, you will be rewarded 2 points."
+ETW_CHALLENGE_TEAM_EXPLORATION_DESCRIPTION = "Two questions will be randomly selected for each participant. Completing the first question adds extra time, completing the other goes towards completing the challenge. If the time exceeds the maximum or expires the challenge will fail."
+ETW_CHALLENGE_TEAM_EXPLORATION_QUESTIONCOUNT = 2
+ETW_CHALLENGE_TEAM_EXPLORATION_WIN_LIMIT_MULTIPLIER = 2
+ETW_CHALLENGE_TEAM_EXPLORATION_TIME = 300 -- 5 minutes
+ETW_CHALLENGE_SWIFT_EXPLORING_DESCRIPTION = "A question will be randomly selected. You will then be given 5 minutes to complete it, if you succeed, you will be rewarded points depending on your speed."
 ETW_CHALLENGE_SWIFT_EXPLORING_TIME = 300 -- 5 minutes
 
 ETW_CREDIT_STRING = [[

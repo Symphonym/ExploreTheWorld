@@ -63,9 +63,14 @@
 	about security/protection.
 
 [ Version 0.2.1b ]
-	Thursday 30/1-2014
+	Friday 1/2-2014
 	- Added question 51
 	- Attempted to fix inspection frame bug
 	- Make some questions clearer, added additional answers and such
 	- Added challenge, with the singleplayer challenge semi-working
 	- Added status bar template
+	Saturday 2/2-2014
+	- Redid buttons in the way they are handled internally, now they're
+	used from top to bottom instead in a random order.
+	Sunday 3/2-2014
+	- Implemented functional multiplayer challenge

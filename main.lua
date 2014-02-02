@@ -147,7 +147,6 @@ function updateQuestList()
 	-- default sorting won't work due to it not being a consecutive array, I THINK
 
 	local categorySorted = {}
-	local buttonIndex = 1
 
 	ETW_Frame.questionFrame.questionIsInList = false
 	local displayedQuestion = ETW_Frame.questionFrame.question
@@ -187,9 +186,7 @@ function updateQuestList()
 				(string.find(string.lower(value.name), string.lower(ETW_Frame.searchBox:GetText())) ~= nil) or
 				(string.find(string.lower(tostring(value.ID)), string.lower(ETW_Frame.searchBox:GetText())) ~= nil)) then
 
-				value.buttonIndex = buttonIndex
 				value.pageIndex = ETW_Frame.questionList.pageIndex
-				ETW_Frame.questionList.buttons[buttonIndex]:deselectButton()
 
 
 				-- Check if the displayed question is in the question list
@@ -197,9 +194,6 @@ function updateQuestList()
 					ETW_Frame.questionFrame.questionIsInList = true
 				end
 
-				ETW_Frame.questionList.buttons[buttonIndex]:setQuestionToButton(value)
-				ETW_Frame.questionList.buttons[buttonIndex]:Show()
-				buttonIndex = buttonIndex + 1
 
 				table.insert(categorySorted[value.category], value)
 
@@ -208,6 +202,27 @@ function updateQuestList()
 	end
 
 
+	-- Simply iterate the above table, guaranteeing they will be sorted categorywise
+	local index = 0
+	local buttonIndex = 1
+	for _, categoryList in pairs(categorySorted) do
+		for _, question in pairs(categoryList) do
+			question.buttonIndex = buttonIndex
+			ETW_Frame.questionList.buttons[buttonIndex]:setQuestionToButton(question)
+			ETW_Frame.questionList.buttons[buttonIndex]:Show()
+			ETW_Frame.questionList.buttons[buttonIndex]:deselectButton()
+			ETW_Frame.questionList.buttons[buttonIndex]:SetPoint(ETW_LISTITEM_ALIGN, 1, index * -ETW_LISTITEM_HEIGHT) --question.listItem:SetPoint("TOP", 0, index * -ETW_LISTITEM_HEIGHT)
+			index = index + 1
+			buttonIndex = buttonIndex + 1
+		end
+	end
+	ETW_Frame.questionList.pages[ETW_Frame.questionList.pageIndex].count = index
+
+	-- Hide unused buttons, if any
+	for remainingButtonIndex = index + 1, SymphonymConfig.options.pageLimit, 1 do
+		ETW_Frame.questionList.buttons[remainingButtonIndex]:Hide()
+	end
+
 
 	-- Selection updating, selecting the button that we're currently displaying
 	if(displayedQuestion ~= nil and ETW_Frame.questionFrame.questionIsInList == true) then
@@ -215,22 +230,6 @@ function updateQuestList()
 		button:selectButton()
 	end
 
-	-- Hide unused buttons, if any
-	for remainingButtonIndex = buttonIndex, SymphonymConfig.options.pageLimit, 1 do
-		ETW_Frame.questionList.buttons[remainingButtonIndex]:Hide()
-	end
-
-
-	-- Simply iterate the above table, guaranteeing they will be sorted categorywise
-	local index = 0
-	for _, categoryList in pairs(categorySorted) do
-		for _, question in pairs(categoryList) do
-
-			ETW_Frame.questionList.buttons[question.buttonIndex]:SetPoint(ETW_LISTITEM_ALIGN, 1, index * -ETW_LISTITEM_HEIGHT) --question.listItem:SetPoint("TOP", 0, index * -ETW_LISTITEM_HEIGHT)
-			index = index + 1
-		end
-	end
-	ETW_Frame.questionList.pages[ETW_Frame.questionList.pageIndex].count = index
 
 	updateScrollbarSize()
 	updateButtonSelection()
@@ -274,6 +273,9 @@ end
 
 
 local function displayQuestion(question)
+
+	-- Show frame
+	ETW_Frame:Show()
 
 	local questionFrame = ETW_Frame.questionFrame
 	local defaultQuestion = ETW_LoreQuestions.defaultQuestion
@@ -1367,7 +1369,6 @@ local function linkToQuestion(questionID)
 		return
 	end
 
-	ETW_Frame:Show()
 	changePageIndex(question.pageIndex)
 	displayQuestion(question)
 end
@@ -1746,13 +1747,6 @@ do
 			-- Store plain answer in config file, as it is now known to us anyway
 			self:saveAnswer()
 
-			-- Reduce challenge cooldown, if it's ongoing
-			if (ETW_IsChallengeReady() == false and ETW_IsChallengeQuestion(self.question) == false) then
-				SymphonymConfig.challengeCooldownStarted = SymphonymConfig.challengeCooldownStarted - ETW_CHALLENGE_COMPLETE_REDUCTION
-			end
-			-- Notify the challenge of the completed question, in case it's a challenge question
-			ETW_ChallengeQuestionCompleted(self.question)
-
 			-- Unlock sound
 			PlaySound("igQuestListComplete")
 			self:completeQuestion()
@@ -1761,6 +1755,13 @@ do
 			showUnlockPopup(nil, nil, nil, nil, scanProgress(), scanQuestion(self.question.ID))
 			
 			ETW_Frame.questionList.buttons[self.question.buttonIndex]:highlightGreen()
+
+			-- Reduce challenge cooldown, if it's ongoing
+			if (ETW_IsChallengeReady() == false and ETW_IsChallengeQuestion(self.question) == false) then
+				SymphonymConfig.challengeCooldownStarted = SymphonymConfig.challengeCooldownStarted - ETW_CHALLENGE_COMPLETE_REDUCTION
+			end
+			-- Notify the challenge of the completed question, in case it's a challenge question
+			ETW_ChallengeQuestionCompleted(self.question)
 		else
 			PlaySound("igPlayerInviteDecline")
 			if (zoneRequirement) then
@@ -2092,7 +2093,7 @@ function addETWQuestion(question)
 	end
 
 	changePageIndex(questionList.maxPageIndex)
-	question.buttonIndex = 0
+	question.buttonIndex = 0 -- Just make it non-nil
 
 	questionList.pages[questionList.maxPageIndex].items[question.ID] = question
 	questionList.pages[questionList.maxPageIndex].count = questionList.pages[questionList.maxPageIndex].count + 1
@@ -2103,28 +2104,29 @@ function addETWQuestion(question)
 end
 
 -- Randomly picks and returns question that is already unlocked to be use for challenges
-function ETW_GenerateChallengeQuestion()
+function ETW_GenerateChallengeQuestion(fub)
+
 	local randomPage = ETW_Frame.questionList.pages[random(0, ETW_Frame.questionList.maxPageIndex)]
-	local randomButtonIndex = random(0, randomPage.count)
-
-	if(ETW_isQuestionDone(ETW_Frame.questionList.items[24])) then
-		SymphonymConfig.questions.completed = SymphonymConfig.questions.completed - 1
-		SymphonymConfig.questions[24].answer = nil
-	end
-
-	return ETW_Frame.questionList.items[24]
-
-	-- TODO removing hard code for id 24, should be random
-	--[[ETW_Utility:PrintToChat("TARGET "  .. randomButtonIndex)
+	local randomButtonIndex = random(1, randomPage.count)
 
 	for _, question in pairs(randomPage.items) do
-		ETW_Utility:PrintToChat("LOOP "  .. question.buttonIndex)
 
-		-- Question may NOT be a group question
-		if(question.category ~= ETW_GROUPQUEST_CATEGORY and question.buttonIndex == randomButtonIndex) then
+		-- Question may NOT be a group question and NOT already a challenge question
+		if(question.category ~= ETW_GROUPQUEST_CATEGORY and question.buttonIndex == randomButtonIndex and
+			ETW_IsChallengeQuestion(question) == false) then
+			
+			-- De-complete a question if it's completed
+			if(ETW_isQuestionDone(question)) then
+				SymphonymConfig.questions.completed = SymphonymConfig.questions.completed - 1
+				SymphonymConfig.questions[question.ID].answer = nil
+			end
+
 			return question
 		end
-	end]]
+	end
+
+	return nil
+
 end
 
 -- Randomly unlocks a question meeting certain criterias
@@ -2132,17 +2134,23 @@ function ETW_GrantChallengeReward()
 
 	for _, question in pairs(ETW_LoreQuestions.questions) do
 
-		-- Question may not be in middle of a chain
+		-- Question may not be in middle of a chain and must have zoneUnlocking/progressUnlock since they 
+		-- usually aren't related to an NPC or similar
 		if(question.questionUnlock == nil) then
+			if(question.progressUnlockHash ~= nil or question.zoneUnlockHash ~= nil) then
 
-			-- Make sure question isn't unlocked
-			if(ETW_Frame.questionList.items[question.ID] == nil) then
-				showUnlockPopup(nil, nil, nil, nil, nil, 1)
-				unlockQuestion(question)
-				return question
+				-- Make sure question isn't unlocked
+				if(ETW_Frame.questionList.items[question.ID] == nil) then
+					showUnlockPopup(nil, nil, nil, nil, nil, 1)
+					unlockQuestion(question)
+					return question
+				end
 			end
 		end
 	end
+
+	ETW_Utility:PrintErrorToChat("No questions are available for unlock through challenges. Sorry!")
+	return nil
 
 end
 
