@@ -88,6 +88,25 @@ function ETW_Utility:SplitString(str,sep)
 	return ret
 end
 
+-- My own little table initializer, taking a table of default
+-- values and initializing any nil value at the same location
+-- in the target table with the corresponding default value.
+function ETW_Utility:DefaultingTable(defaultTable, realTable, printInfo)
+	for defKey, defValue in pairs(defaultTable) do
+
+		-- Set default values
+		if(type(defValue) ~= "table") then
+			if (realTable[defKey] == nil) then
+				print("IS |cFFFF3F40" .. tostring(realTable[defKey]) ..  "|r  |cFF00FF00["..defKey.."]|r  SET |cFF00FF00" .. tostring(defValue))
+				realTable[defKey] = defValue
+			end
+
+		-- Recurse into tables
+		else
+			ETW_Utility:DefaultingTable(defValue, realTable[defKey])
+		end
+	end
+end
 
 
 -------------------------------------------------------------------------------------

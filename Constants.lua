@@ -289,4 +289,3 @@ ETW_THANKSTO_STRING = [[
 	}
 
 	SymphonymConfig_Default = ETW_Utility:CopyTable(SymphonymConfig)
-

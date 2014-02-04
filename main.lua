@@ -1030,6 +1030,8 @@ do
 
 		if (event == "PLAYER_LOGIN") then
 
+			ETW_Utility:DefaultingTable(SymphonymConfig_Default, SymphonymConfig)
+
 			-- Pre allocate buttons for list
 			for buttonIndex = 1, SymphonymConfig.options.pageLimit, 1 do
 				ETW_Frame.questionList.buttons[buttonIndex] = createListButton()
