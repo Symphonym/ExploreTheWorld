@@ -60,7 +60,7 @@ do
 			ETW_InspectFrame.container:UpdateSize()
 
 			-- Request data if the inspect frame is visible
-			if(inspectFrame:IsShown()) then
+			if(InspectPaperDollFrame:IsShown()) then
 
 				local targetName, targetRealm = UnitName("target")
 				if(targetRealm == nil) then

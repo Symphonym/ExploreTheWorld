@@ -189,33 +189,37 @@ do
 	challengePointBar:SetPoint("CENTER",0,-50)
 
 	statusFrame.bar:SetScript("OnUpdate", function(self, elapsed)
-		local startedTime = SymphonymConfig.challengeCooldownStarted
-		local secondsPassed = time() - startedTime
-		local percentagePassed = secondsPassed/ETW_CHALLENGE_COOLDOWN
 
-		local timeleft = ETW_CHALLENGE_COOLDOWN - secondsPassed
-		local minValue, maxValue = self:GetMinMaxValues()
+		-- Make sure cooldown is loaded
+		if(SymphonymConfig.challengeCooldownStarted ~= nil) then
+
+			local startedTime = SymphonymConfig.challengeCooldownStarted
+			local secondsPassed = time() - startedTime
+			local percentagePassed = secondsPassed/ETW_CHALLENGE_COOLDOWN
+
+			local timeleft = ETW_CHALLENGE_COOLDOWN - secondsPassed
+			local minValue, maxValue = self:GetMinMaxValues()
 
 
-		-- Cooldown over, challenges ready
-		if(secondsPassed >= ETW_CHALLENGE_COOLDOWN) then
-			self:SetValue(maxValue)
-			self.text:SetText("Challenges ready")
+			-- Cooldown over, challenges ready
+			if(secondsPassed >= ETW_CHALLENGE_COOLDOWN) then
+				self:SetValue(maxValue)
+				self.text:SetText("Challenges ready")
 
-		-- Cooldown still active, challenges not ready
-		else
-			-- Time left, the power of modulo
-			local hours = math.floor(timeleft/3600)
-			local minutes = math.floor((timeleft%3600)/60)
-			local seconds = math.floor(timeleft%60)
+			-- Cooldown still active, challenges not ready
+			else
+				-- Time left, the power of modulo
+				local hours = math.floor(timeleft/3600)
+				local minutes = math.floor((timeleft%3600)/60)
+				local seconds = math.floor(timeleft%60)
 
-			self.text:SetText(hours.."h "..minutes.."m "..seconds.."s")
-			self:SetValue(maxValue*percentagePassed)
+				self.text:SetText(hours.."h "..minutes.."m "..seconds.."s")
+				self:SetValue(maxValue*percentagePassed)
+			end
+
+			challengePointBar.bar:SetValue(SymphonymConfig.challengePoints)
+			challengePointBar.bar.text:SetText(ETW_CHALLENGE_POINTS_REQUIRED-SymphonymConfig.challengePoints.." point(s) to question unlock")
 		end
-
-		challengePointBar.bar:SetValue(SymphonymConfig.challengePoints)
-		challengePointBar.bar.text:SetText(ETW_CHALLENGE_POINTS_REQUIRED-SymphonymConfig.challengePoints.." point(s) to question unlock")
-
 
 	end)
 
@@ -363,7 +367,6 @@ do
 	challenge.button:SetScript("PostClick", function(self, button, down)
 		if(button == "LeftButton" and not down) then
 			ETW_ChallengeFrame:ShowData("SE")
-			SymphonymConfig.challengeCooldownStarted = SymphonymConfig.challengeCooldownStarted - 5
 		end
 	end)
 
@@ -374,7 +377,6 @@ do
 		button2 = "Cancel",
 		OnAccept = function()
 			SymphonymConfig.challengeCooldownStarted = time()
-			ETW_ChallengeFrame:ShowData("Main")
 
 			-- Grab a question for the challenge
 			challengeQuestions = {}
@@ -553,8 +555,6 @@ do
 		button1 = "Setup",
 		button2 = "Cancel",
 		OnAccept = function()
-			ETW_ChallengeFrame:ShowData("Main")
-
 			ETW_ChallengeWindow:ShowChallengeFrame("TE")
 			ETW_ChallengeWindow.frames["TE"]:ShowLeaderFrame()
 
@@ -604,6 +604,8 @@ do
 				challengeQuestions[2] = ETW_GenerateChallengeQuestion()
 				challengeQuestions[2].goalQuestion = true
 
+				self:BroadcastData()
+
 			-- Time question completed
 			elseif(question.timeQuestion) then
 				ETW_ChallengeWindow.startedTime = ETW_ChallengeWindow.startedTime + ET_Data.timeAdd
@@ -619,9 +621,9 @@ do
 					-- Just remove all timeleft
 					ETW_ChallengeWindow.startedTime = time() - ETW_CHALLENGE_TEAM_EXPLORATION_TIME
 				end
+				self:BroadcastData(true)
 			end
 
-			self:BroadcastData()
 
 		-- Players will send score update to leader
 		else
@@ -680,14 +682,18 @@ do
 	frame.goalStatusFrame = goalStatusFrame
 
 
-	function frame:BroadcastData()
+	function frame:BroadcastData(timeRemoval)
+
+		local timeToRemove = 0
+		if(timeRemoval) then timeToRemove = ET_Data.timeAdd end
+
 		if(ET_Data.youAreLeader) then
 			-- Broadcast to party that we're starting
 			for index = 2, GetNumGroupMembers(), 1 do
 				if(ET_Data.players[index] ~= nil) then
 					SendAddonMessage(ETW_ADDONMSG_PREFIX,
 						ETW_ADDONMSG_TE_DATA..","..
-						ETW_ChallengeWindow.startedTime..","..
+						timeToRemove..","..
 						self.goalStatusFrame.bar:GetValue(),
 					"WHISPER",
 					ET_Data.players[index])
@@ -766,8 +772,9 @@ do
 	local function startTE()
 		PlaySound("ReadyCheck")
 
-		ETW_ChallengeFrame:ShowData("Main")
 		ETW_ChallengeWindow:ShowChallengeFrame("TE")
+		ETW_ChallengeWindow.frames["TE"]:ShowChallengeFrame()
+
 		ETW_ChallengeWindow.subTitle:SetText("Good luck " .. UnitName("player"))
 		SymphonymConfig.challengeCooldownStarted = time()
 
@@ -996,7 +1003,7 @@ do
 			if(prefix == ETW_ADDONMSG_PREFIX and sender ~= UnitName("player") and UnitInParty(sender)) then
 
 				-- You received an Team Exploration invite
-				if(messageCount == 1 and messageList[1] == ETW_ADDONMSG_TE_INVITE) then
+				if(messageCount == 1 and messageList[1] == ETW_ADDONMSG_TE_INVITE and ETW_ChallengeWindow.activeChallenge == false) then
 
 					StaticPopupDialogs["ETW_Challenge_TE_Invite"] = {
 						text = "%s has invited you to a Team Exploration challenge, do you wish to join? They may then be able to start the challenge at any time, which will reset your challenge cooldown.",
@@ -1062,13 +1069,13 @@ do
 				-- Player receiving data from leader
 				elseif(messageCount == 3 and messageList[1] == ETW_ADDONMSG_TE_DATA and not ET_Data.youAreLeader and
 					ET_Data.leaderName == sender and ET_Data.isActive == true) then
-					local timeStarted = tonumber(messageList[2])
+					local timeRemoval = tonumber(messageList[2])
 					local goalScore = tonumber(messageList[3])
 
-					if(timeStarted and goalScore) then
-						local min, max = self.goalStatusFrame.bar:GetMinMaxValues()
 
-						ETW_ChallengeWindow.startedTime = timeStarted
+					if(timeRemoval and goalScore) then
+						local min, max = self.goalStatusFrame.bar:GetMinMaxValues()
+						ETW_ChallengeWindow.startedTime = ETW_ChallengeWindow.startedTime + timeRemoval
 						self.goalStatusFrame.bar:SetValue(goalScore)
 						self.goalStatusFrame.bar.text:SetText(goalScore .. " / " .. max)
 
@@ -1091,7 +1098,7 @@ do
 
 					if(playerInGame) then
 						ETW_ChallengeWindow.startedTime = ETW_ChallengeWindow.startedTime + ET_Data.timeAdd
-						self:BroadcastData()
+						self:BroadcastData(true)
 					end
 
 				-- Leader receiving SCORE data

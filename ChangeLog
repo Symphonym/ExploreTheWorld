@@ -74,3 +74,10 @@
 	used from top to bottom instead in a random order.
 	Sunday 3/2-2014
 	- Implemented functional multiplayer challenge
+[ Version 0.2.6b ]
+	Tuesday 4/2-2014
+	- Fixed a typo with the inspect frame, which might've caused bugs.
+	- Attempted to fix a bug with the challenge cooldown being nil.
+	- Removing debugging code
+	- Changed how times are broadcasted with the multiplayer challenge
+	- Fixed various bugs with the multiplayer challenge

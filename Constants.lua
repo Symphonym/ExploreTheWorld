@@ -1,57 +1,6 @@
 
 
 ----------------------------------------------------------------------------------
---       DEFAULT CONFIG DATA
-----------------------------------------------------------------------------------
-
-	SymphonymConfig = 
-	{
-		questions = 
-		{
-			sorting = 
-			{
-				showExplore = true,
-				showInvestigation = true,
-				showTracking = true,
-				showGroupQuest = true,
-				showCompleted = true,
-				showNewQuests = true
-			},
-
-			-- Question specific data is stored in here
-			-- Mapping question ID to it's related data
-
-			completed = 0
-		},
-
-		options =
-		{
-			rotate3DModel = true,
-			scanInCombat = true,
-			showUnlockPopups = true,
-			ignoreLinks = false,
-			pageLimit = 100,
-		},
-
-		uniqueHash = sha2.hash256(tostring(random(0, 1000))),
-
-		 -- Number of total questions in the addon on the last session,
-		 -- can be used to check if more questions has been added with a
-		 -- new addon version.
-		totalQuestionCount = 0,
-
-		-- Cooldown for challenges
-		challengeCooldownStarted = 0,
-		-- Points from challenges that unlocks questions
-		challengePoints = 0
-
-	}
-
-	SymphonymConfig_Default = ETW_Utility:CopyTable(SymphonymConfig)
-
-
-
-----------------------------------------------------------------------------------
 --      USEFULL FUNCTIONS
 ----------------------------------------------------------------------------------
 
@@ -290,3 +239,54 @@ ETW_THANKSTO_STRING = [[
    Kalmisto
 
 ]]
+
+
+----------------------------------------------------------------------------------
+--       DEFAULT CONFIG DATA
+----------------------------------------------------------------------------------
+
+	SymphonymConfig = 
+	{
+		questions = 
+		{
+			sorting = 
+			{
+				showExplore = true,
+				showInvestigation = true,
+				showTracking = true,
+				showGroupQuest = true,
+				showCompleted = true,
+				showNewQuests = true
+			},
+
+			-- Question specific data is stored in here
+			-- Mapping question ID to it's related data
+
+			completed = 0
+		},
+
+		options =
+		{
+			rotate3DModel = true,
+			scanInCombat = true,
+			showUnlockPopups = true,
+			ignoreLinks = false,
+			pageLimit = 100,
+		},
+
+		uniqueHash = sha2.hash256(tostring(random(0, 1000))),
+
+		 -- Number of total questions in the addon on the last session,
+		 -- can be used to check if more questions has been added with a
+		 -- new addon version.
+		totalQuestionCount = 0,
+
+		-- Cooldown for challenges
+		challengeCooldownStarted = time() - ETW_CHALLENGE_COOLDOWN,
+		-- Points from challenges that unlocks questions
+		challengePoints = 0
+
+	}
+
+	SymphonymConfig_Default = ETW_Utility:CopyTable(SymphonymConfig)
+

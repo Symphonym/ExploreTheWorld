@@ -1220,10 +1220,6 @@ do
 			UIDropDownMenu_Initialize(ETW_DropDownMenu, ETW_InitDropDownMenu, "MENU")
 			updatePageIndex()
 
-			-- Reset cooldown the first login
-			if(SymphonymConfig.challengeCooldownStarted == 0) then
-				SymphonymConfig.challengeCooldownStarted = time() - ETW_CHALLENGE_COOLDOWN
-			end
 			-- Limit challenge points
 			if(SymphonymConfig.challengePoints > ETW_CHALLENGE_POINTS_REQUIRED) then
 				SymphonymConfig.challengePoints = ETW_CHALLENGE_POINTS_REQUIRED
@@ -1502,6 +1498,39 @@ do
 	questionFrame.continentFrame.continentIcon = questionFrame.continentFrame:CreateTexture()
 	questionFrame.continentFrame.continentIcon:SetSize(35, 35)
 	questionFrame.continentFrame.continentIcon:SetPoint("CENTER")
+	questionFrame.continentFrame.button = CreateFrame("Button", "ETW_ContinentUnlockButton", questionFrame.continentFrame)
+	questionFrame.continentFrame.button:SetPoint("CENTER",0,-2)
+	questionFrame.continentFrame.button:SetSize(questionFrame.continentFrame:GetWidth()-8, questionFrame.continentFrame:GetHeight()-8)
+
+	questionFrame.continentFrame.button:SetNormalTexture("Interface\\Buttons\\GoldGradiant.blp")
+	questionFrame.continentFrame.button:SetHighlightTexture("Interface\\HELPFRAME\\HelpIcon-KnowledgeBase.blp")
+	questionFrame.continentFrame.button:SetPushedTexture("Interface\\Glues\\Models\\UI_MAINMENU\\GRADIENT.blp")
+	questionFrame.continentFrame.button:GetNormalTexture():SetAlpha(0.0)
+	questionFrame.continentFrame.button:GetHighlightTexture():SetAlpha(0.7)
+	questionFrame.continentFrame.button:GetPushedTexture():SetAlpha(0.7)
+
+	questionFrame.continentFrame.button:HookScript("OnClick", function(self, button, down)
+		if(button == "LeftButton" and not down) then
+			ETW_Utility:PrintToChat("TODO - Continent frame showing unlocks left for each continent")
+		end
+	end)
+
+	--questionFrame.continentFrame.hoverBg:SetDrawLayer("OVERLAY", 6)
+	--[[questionFrame.continentFrame:SetScript("OnEnter", function(self, motion)
+		self.hoverBg:SetTexture(1,1,0,0.3)
+	end)
+	questionFrame.continentFrame:SetScript("OnLeave", function(self, motion)
+		self.hoverBg:SetTexture(0,0,0,0)
+	end)
+	questionFrame.continentFrame:SetScript("OnMouseDown", function(self, button)
+		self.hoverBg:SetTexture(0,0,0,0.3)
+	end)
+		questionFrame.continentFrame:SetScript("OnMouseUp", function(self, button)
+		self.hoverBg:SetTexture(0,0,0,0.3)
+		if(self:IsMouseOver()) then
+			print("PRESS")
+		end
+	end)]]
 
 	-- Author text, i.e the person who created the question
 	questionFrame.authorText = questionFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -2104,16 +2133,29 @@ function addETWQuestion(question)
 end
 
 -- Randomly picks and returns question that is already unlocked to be use for challenges
-function ETW_GenerateChallengeQuestion(fub)
+function ETW_GenerateChallengeQuestion()
 
-	local randomPage = ETW_Frame.questionList.pages[random(0, ETW_Frame.questionList.maxPageIndex)]
-	local randomButtonIndex = random(1, randomPage.count)
+	local randomPageIndex = random(0, ETW_Frame.questionList.maxPageIndex)
+	local randomPage = ETW_Frame.questionList.pages[randomPageIndex]
 
+	-- Filter away invalid questions
+	-- Question may NOT be a group question and NOT already a challenge question
+	local questionsRemoved = 0
+	local filteredList = {}
 	for _, question in pairs(randomPage.items) do
+		if(question.category == ETW_GROUPQUEST_CATEGORY or ETW_IsChallengeQuestion(question)) then
+			questionsRemoved = questionsRemoved + 1
+		else
+			table.insert(filteredList, question)
+		end
+	end
 
-		-- Question may NOT be a group question and NOT already a challenge question
-		if(question.category ~= ETW_GROUPQUEST_CATEGORY and question.buttonIndex == randomButtonIndex and
-			ETW_IsChallengeQuestion(question) == false) then
+	local randomQuestionIndex = random(1, (randomPage.count-questionsRemoved))
+
+	local questionIndex = 1
+	for _, question in pairs(filteredList) do
+
+		if(questionIndex == randomQuestionIndex) then
 			
 			-- De-complete a question if it's completed
 			if(ETW_isQuestionDone(question)) then
@@ -2123,6 +2165,8 @@ function ETW_GenerateChallengeQuestion(fub)
 
 			return question
 		end
+		questionIndex = questionIndex + 1
+
 	end
 
 	return nil
