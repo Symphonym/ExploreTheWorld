@@ -231,12 +231,12 @@ ETW_THANKSTO_STRING = [[
 
 |cFF00FF00Explorers:|r
 
-   Garane
-   Skoop
-   Rayzoor, The Maelstrom
-   Delmatae
-   Tabori,
-   Kalmisto
+   Garane, |cFF00FF00Defias Brotherhood|r
+   Skoop, |cFF00FF00Defias Brotherhood|r
+   Rayzoor, |cFF00FF00The Maelstrom|r
+   Delmatae, |cFF00FF00Defias Brotherhood|r
+   Tabori, |cFF00FF00Defias Brotherhood|r
+   Kalmisto, |cFF00FF00Defias Brotherhood|r
 
 ]]
 

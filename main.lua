@@ -1071,7 +1071,7 @@ do
 					if(question.zoneUnlockHash == nil and
 						question.itemUnlockHash == nil and
 						question.npcUnlockHash == nil and
-						question.worldObjectHash == nil and
+						question.worldObjectUnlockHash == nil and
 						question.progressUnlockHash == nil and
 						question.questionUnlock == nil) then
 						printAttributeMissing("ID " .. question.ID, "any unlock attribute")

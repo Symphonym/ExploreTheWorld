@@ -1282,6 +1282,66 @@ ETW_LoreQuestions = {
 			{
 				"635dc44019a65e2bb8de984aa802eef26622ed5a0d45741831289b536cb7cfcd"
 			}
+		},
+		{
+			ID = 52,
+			name = "A tale of roommates",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDA5MTY=",
+			description = "A tale of two involuntary roomates, betting gold on whether or not they could answer eachothers riddles. The profitable of the two is likely to have come from the marketplace, where people of his trade tend to be.",
+			answer =
+			{
+				"4ac54ffa1b32cbb679d62160fd91d374e0590f74cba95b02f445cbeb810ef69b",
+			},
+			zoneRequirementHash =
+			{
+				{ zone="848ed985145172cdf974a390a8b865911c60bdada052cf4e5e971ff46fe2fe11", subZone="4ac54ffa1b32cbb679d62160fd91d374e0590f74cba95b02f445cbeb810ef69b"}
+			},
+			worldObjectUnlockHash = 
+			{
+				"b1964fd7c2a9ffc53560eaeabb9547366140676679b76188c11f8f98928e0736"
+			}
+		},
+		{
+			ID = 53,
+			name = "Design choices",
+			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "Mzk2ODU=",
+			description = "In the village of tailors he watches over his many looms, probably since he's an expert in using them. Adventurers looking for advice usually get the remark that their clothing looks functional while lacking something he appear to value more, which is what?",
+			answer =
+			{
+				"8c42df8ce7c0ce077e2b414f732be67895a2cf7d398c1dc7dbc0968aad481599",
+			},
+			zoneRequirementHash =
+			{
+				{ zone="848ed985145172cdf974a390a8b865911c60bdada052cf4e5e971ff46fe2fe11", subZone="ee29e0a779ce26a0e522c6d0f0e81850446e14e8439f95deb1f4874946073a3b"}
+			},
+			zoneUnlockHash = 
+			{
+				{ zone="848ed985145172cdf974a390a8b865911c60bdada052cf4e5e971ff46fe2fe11"}
+			}
+		},
+		{
+			ID = 54,
+			name = "Behind filthy bars",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_NORTHREND,
+			modelId = "MjgwMDY=",
+			description = "One might wonder how a mage of the Kirin Tor ends up at such a peculiar place. Sleeping right in the river of the sewer water pouring down from the city above.",
+			answer =
+			{
+				"8a12f784c39de0f75a2877d1b32a9e7a7abfcefa63ed074cbae0a2a201688883"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="1258cc3e7925d569f088d55c16ce09593c0312971d49730854910ac4c1c4cb98", subZone="27274656d9cd545d2b5bce0f71edc2e5f65ec72107b27d6fc8adb781c3a694c4"}
+			},
+			zoneUnlockHash =
+			{
+				{ zone="1258cc3e7925d569f088d55c16ce09593c0312971d49730854910ac4c1c4cb98"}
+			}
 		}
 
 	}
