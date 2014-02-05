@@ -60,7 +60,9 @@ do
 			ETW_InspectFrame.container:UpdateSize()
 
 			-- Request data if the inspect frame is visible
-			if(InspectPaperDollFrame:IsShown()) then
+			if(InspectPaperDollFrame:IsShown() and SymphonymConfig.options.hideInspectFrame == false) then
+
+				ETW_InspectFrame.container:Show()
 
 				local targetName, targetRealm = UnitName("target")
 				if(targetRealm == nil) then
@@ -76,6 +78,9 @@ do
 					"WHISPER",
 					targetName.."-"..targetRealm)
 				end
+
+			elseif(SymphonymConfig.options.hideInspectFrame == true) then
+				ETW_InspectFrame.container:Hide()
 			end
 
 		elseif(event == "CHAT_MSG_ADDON") then

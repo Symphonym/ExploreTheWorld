@@ -234,6 +234,7 @@ do
 	local challenge = CreateFrame("Frame", "ETW_ChallengeWindow", UIParent, "InsetFrameTemplate3")
 	challenge:SetPoint("TOPLEFT")
 	challenge:SetSize(300, 150)
+	challenge:SetToplevel(true)
 	ETW_Templates:MakeFrameDraggable(challenge, true)
 	challenge:Hide()
 

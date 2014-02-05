@@ -271,6 +271,7 @@ ETW_THANKSTO_STRING = [[
 			scanInCombat = true,
 			showUnlockPopups = true,
 			ignoreLinks = false,
+			hideInspectFrame = false,
 			pageLimit = 100,
 		},
 

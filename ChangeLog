@@ -81,8 +81,9 @@
 	- Removing debugging code
 	- Changed how times are broadcasted with the multiplayer challenge
 	- Fixed various bugs with the multiplayer challenge
-	- Started working on continent hint frame
 [ Version 0.2.7b ]
 	Tuesday 4/2-2014
 	- Added table initialization function, used to initialize config
 	values in a better way
+	Wednesday 5/2-2014
+	- Added option for hiding inspection frame

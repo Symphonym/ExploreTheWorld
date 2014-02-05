@@ -1030,7 +1030,10 @@ do
 
 		if (event == "PLAYER_LOGIN") then
 
+			-- Initialize config values
 			ETW_Utility:DefaultingTable(SymphonymConfig_Default, SymphonymConfig)
+			ETW_OptionFrame:Initialize()
+			ETW_Frame.initialized = true
 
 			-- Pre allocate buttons for list
 			for buttonIndex = 1, SymphonymConfig.options.pageLimit, 1 do
@@ -1500,7 +1503,7 @@ do
 	questionFrame.continentFrame.continentIcon = questionFrame.continentFrame:CreateTexture()
 	questionFrame.continentFrame.continentIcon:SetSize(35, 35)
 	questionFrame.continentFrame.continentIcon:SetPoint("CENTER")
-	questionFrame.continentFrame.button = CreateFrame("Button", "ETW_ContinentUnlockButton", questionFrame.continentFrame)
+	--[[questionFrame.continentFrame.button = CreateFrame("Button", "ETW_ContinentUnlockButton", questionFrame.continentFrame)
 	questionFrame.continentFrame.button:SetPoint("CENTER",0,-2)
 	questionFrame.continentFrame.button:SetSize(questionFrame.continentFrame:GetWidth()-8, questionFrame.continentFrame:GetHeight()-8)
 
@@ -1513,24 +1516,7 @@ do
 
 	questionFrame.continentFrame.button:HookScript("OnClick", function(self, button, down)
 		if(button == "LeftButton" and not down) then
-			ETW_Utility:PrintToChat("TODO - Continent frame showing unlocks left for each continent")
-		end
-	end)
-
-	--questionFrame.continentFrame.hoverBg:SetDrawLayer("OVERLAY", 6)
-	--[[questionFrame.continentFrame:SetScript("OnEnter", function(self, motion)
-		self.hoverBg:SetTexture(1,1,0,0.3)
-	end)
-	questionFrame.continentFrame:SetScript("OnLeave", function(self, motion)
-		self.hoverBg:SetTexture(0,0,0,0)
-	end)
-	questionFrame.continentFrame:SetScript("OnMouseDown", function(self, button)
-		self.hoverBg:SetTexture(0,0,0,0.3)
-	end)
-		questionFrame.continentFrame:SetScript("OnMouseUp", function(self, button)
-		self.hoverBg:SetTexture(0,0,0,0.3)
-		if(self:IsMouseOver()) then
-			print("PRESS")
+			ETW_ContinentInfoFrame:ShowFrame()
 		end
 	end)]]
 
@@ -2041,34 +2027,36 @@ do
 	unlockScanner:RegisterEvent("PLAYER_TARGET_CHANGED")
 	unlockScanner:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	unlockScanner:RegisterEvent("ITEM_TEXT_BEGIN")
-	unlockScanner:RegisterEvent("PLAYER_LOGIN")
 	unlockScanner:SetScript("OnEvent", function(self, event, ...)
 
-		local inCombat = UnitAffectingCombat("player")
+		if(ETW_Frame.initialized == true) then
 
-		if(inCombat == nil or (inCombat and SymphonymConfig.options.scanInCombat)) then
+			local inCombat = UnitAffectingCombat("player")
 
-			local itemsUnlocked = 0
-			local zonesUnlocked = 0
-			local npcsUnlocked = 0
-			local worldObjectsUnlocked = 0
+			if(inCombat == nil or (inCombat and SymphonymConfig.options.scanInCombat)) then
 
-			if(event == "BAG_UPDATE" or event == "ITEM_PUSH") then
-				local bagID = ...
-				itemsUnlocked = scanInventory(bagID)
+				local itemsUnlocked = nil
+				local zonesUnlocked = nil
+				local npcsUnlocked = nil
+				local worldObjectsUnlocked = nil
+
+				if(event == "BAG_UPDATE" or event == "ITEM_PUSH") then
+					local bagID = ...
+					itemsUnlocked = scanInventory(bagID)
+				end
+				if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA") then
+					zonesUnlocked = scanZone()
+				end
+				if (event == "PLAYER_TARGET_CHANGED") then
+					npcsUnlocked = scanNpc()
+				end
+				if (event == "ITEM_TEXT_BEGIN") then
+					worldObjectsUnlocked = scanWorldObjects()
+				end
+
+				showUnlockPopup(itemsUnlocked, zonesUnlocked, npcsUnlocked, worldObjectsUnlocked)
+
 			end
-			if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA") then
-				zonesUnlocked = scanZone()
-			end
-			if (event == "PLAYER_TARGET_CHANGED") then
-				npcsUnlocked = scanNpc()
-			end
-			if (event == "ITEM_TEXT_BEGIN") then
-				worldObjectsUnlocked = scanWorldObjects()
-			end
-
-			showUnlockPopup(itemsUnlocked, zonesUnlocked, npcsUnlocked, worldObjectsUnlocked)
-
 		end
 	end)
 

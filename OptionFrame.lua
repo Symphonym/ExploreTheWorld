@@ -7,7 +7,7 @@
 do 
 	local options = ETW_Templates:CreatePortraitFrame("ETW_OptionFrame", UIParent, "ETW Options", ETW_OPTIONICON)
 	options:SetPoint("CENTER")
-	options:SetSize(250, 300)
+	options:SetSize(250, 330)
 
 	-- Extra tweaking because optionicon not same size
 	options.portraitIcon:SetPoint("TOPLEFT", -3, 5)
@@ -66,6 +66,25 @@ do
 	ETW_OptionFrame.checkIgnoreLinks = button
 end
 
+-- Hide ETW inspect frame
+do
+	local button = ETW_Templates:CreateCheckButton("ETW_Options_HideInspect", ETW_OptionFrame, "Hide ETW inspection frame")
+	button:SetPoint("TOPLEFT", 10, -190)
+	button:HookScript("OnClick", function(self,event,arg1) 
+		SymphonymConfig.options.hideInspectFrame = self:GetChecked()
+
+		if(ETW_InspectFrame ~= nil and ETW_InspectFrame.container ~= nil) then
+			if(self:GetChecked()) then
+				ETW_InspectFrame.container:Hide()
+			else
+				ETW_InspectFrame.container:Show()
+			end
+		end
+	end)
+
+	ETW_OptionFrame.checkHideInspect = button
+end
+
 
 ----------------------------------------------------------------------------------
 --       SLIDERS
@@ -74,7 +93,7 @@ end
 do
 
 	local slider = ETW_Templates:CreateSlider("ETW_Options_PageLimit", ETW_OptionFrame, "Question page limit", 1, 10, 300)
-	slider:SetPoint("CENTER",0,-75)
+	slider:SetPoint("CENTER",0,-80)
 	slider.description:SetText("Changing the page limit requires you to reload the UI or else errors might arise.")
 
 
@@ -131,10 +150,7 @@ end
 --       VALUE INITIALIZATION
 ----------------------------------------------------------------------------------
 
-
-ETW_OptionFrame:RegisterEvent("PLAYER_LOGIN")
-ETW_OptionFrame:SetScript("OnEvent", function(self, event, ...)
-	if(event == "PLAYER_LOGIN") then
+function ETW_OptionFrame:Initialize()
 
 		-- CheckButtons
 		self.checkModelRotation:SetChecked(SymphonymConfig.options.rotate3DModel)
@@ -144,5 +160,4 @@ ETW_OptionFrame:SetScript("OnEvent", function(self, event, ...)
 
 		-- Sliders
 		self.sliderPageLimit:SetValue(SymphonymConfig.options.pageLimit)
-	end
-end)
+end

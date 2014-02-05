@@ -77,19 +77,7 @@ do
 	help:SetPoint("CENTER")
 	help:SetSize(300, 280)
 
-	help:RegisterEvent("PLAYER_LOGIN")
-	help:SetScript("OnEvent", function(self, event, ...)
-		if(event == "PLAYER_LOGIN") then
-
-
-
-		end
-	end)
-
 	help.pages = {}
-
-	-- Extra tweaking because optionicon not same size
-	--options.portraitIcon:SetPoint("TOPLEFT", -2, 5)
 
 	ETW_Templates:MakeFrameDraggable(help)
 	help:Hide()

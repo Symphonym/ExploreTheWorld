@@ -97,13 +97,23 @@ function ETW_Utility:DefaultingTable(defaultTable, realTable, printInfo)
 		-- Set default values
 		if(type(defValue) ~= "table") then
 			if (realTable[defKey] == nil) then
-				print("IS |cFFFF3F40" .. tostring(realTable[defKey]) ..  "|r  |cFF00FF00["..defKey.."]|r  SET |cFF00FF00" .. tostring(defValue))
+				if(printInfo) then
+					print("IS |cFFFF3F40nil" ..  "|r  |cFF00FF00["..defKey.."]|r  SET |cFF00FF00" .. tostring(defValue))
+				end
 				realTable[defKey] = defValue
 			end
 
 		-- Recurse into tables
 		else
-			ETW_Utility:DefaultingTable(defValue, realTable[defKey])
+
+			if(realTable[defKey] == nil) then
+				realTable[defKey] = defValue
+				if(printInfo) then
+					print("IS |cFFFF3F40nil" ..  "|r  |cFF00FF00["..defKey.."]|r  SET |cFF00FF00" .. tostring(defValue))
+				end
+			end
+
+			ETW_Utility:DefaultingTable(defValue, realTable[defKey], printInfo)
 		end
 	end
 end
