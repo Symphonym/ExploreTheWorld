@@ -711,7 +711,7 @@ ETW_LoreQuestions = {
 			},
 			zoneRequirementHash =
 			{
-				{ zone="c1d87ff59f026782923d2b0fdffa6feb989573946299cf1684399c8b68852665"},
+				{ zone="c0476a2e7e6c771702dc5f0a5214bf2ebdbfe6fab374a9245677b149c710b4d9"},
 				{ zone="35bb898a5832f324fc595ad6c6200a126ffe49b60119be38170da1e6f1245aaa"}
 			},
 			progressUnlockHash = "54bd0eb8cfde399f0436509703411a3ec29744b6b98b54b148bdc6c485a2d5fc"
@@ -814,7 +814,7 @@ ETW_LoreQuestions = {
 			ID = 31,
 			name = "Along for the ride",
 			category = ETW_TRACKING_CATEGORY,
-			continent = ETW_CONTINENT_KALIMDOR,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "MzExNzQ=",
 			description = "Getting pulled around, eagerly awaiting to have a ride down the mountain. But he'll have to satisfy with watching the others have fun. Afterall, if he misses the pile at the bottom of the hill then the large hangar behind isn't going to give a comfortable stop to the ride.",
 			answer =
@@ -1025,7 +1025,7 @@ ETW_LoreQuestions = {
 			ID = 41,
 			name = "Distant colleagues",
 			category = ETW_TRACKING_CATEGORY,
-			continent = ETW_CONTINENT_KALIMDOR,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "Nzk1Mg==",
 			description = "Working at remote locations doesn't seem to be exclusive to only one engineer. These two gnome brothers make a living selling engineering supplies, in the jungle. Although there's not many possible customers around other than the Venture Co. to the northwest.",
 			answer =
@@ -1046,7 +1046,7 @@ ETW_LoreQuestions = {
 			ID = 42,
 			name = "Junior hunter",
 			category = ETW_TRACKING_CATEGORY,
-			continent = ETW_CONTINENT_KALIMDOR,
+			continent = ETW_CONTINENT_EASTERN,
 			modelId = "MTQxMA==",
 			description = "When his father left to find more exotic places and bigger preys, he left his son in charge of the hunting camp. The core base of all hunting operations happening in the jungle, perfectly located by the river.",
 			answer =
@@ -1329,7 +1329,7 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			continent = ETW_CONTINENT_NORTHREND,
 			modelId = "MjgwMDY=",
-			description = "One might wonder how a mage of the Kirin Tor ends up at such a peculiar place. Sleeping right in the river of the sewer water pouring down from the city above.",
+			description = "One might wonder how a mage of the Kirin Tor, the most powerful mages of Azeorth and rulers of the floating city, ends up at such a peculiar place. Sleeping right in the river of the sewer water pouring down from the city above.",
 			answer =
 			{
 				"8a12f784c39de0f75a2877d1b32a9e7a7abfcefa63ed074cbae0a2a201688883"
@@ -1341,6 +1341,50 @@ ETW_LoreQuestions = {
 			zoneUnlockHash =
 			{
 				{ zone="1258cc3e7925d569f088d55c16ce09593c0312971d49730854910ac4c1c4cb98"}
+			}
+		},
+		{
+			ID = 55,
+			name = "He's got a name!",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDYzMjU=",
+			description = "Turns out he was an unfortunate potion addict. Fortunately he got into a rehab program, being motived by the powerful shards he found washed down in the sewers. He now enjoys a simpler life with the pandaren farmers, occasionally visiting the marketplace to sell his shards.",
+			answer =
+			{
+				"a3789915aecfc820cbb11eceb75d8233798858c95777d98406c3679effe12628"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="848ed985145172cdf974a390a8b865911c60bdada052cf4e5e971ff46fe2fe11", subZone="4ac54ffa1b32cbb679d62160fd91d374e0590f74cba95b02f445cbeb810ef69b"}
+			},
+			questionUnlock =
+			{
+				"NTQ="
+			}
+		},
+		{
+			ID = 56,
+			name = "A proud mother",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "Mzk0Nzg=",
+			description = "A son with a very proud, loving mother, who spends his time working hard on the field, herding yaks all day. Found amongst the many other herders surrounding the large farmlands.",
+			answer =
+			{
+				"28d630993c236aab047615e4edd003d58666d48932d209abedde48c9aa9ca42c"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="848ed985145172cdf974a390a8b865911c60bdada052cf4e5e971ff46fe2fe11", subZone="74e45904b36cd7a97ed15f4c5ecddfc25eacddac256d342a9be6790abde04903"}
+			},
+			npcUnlockHash =
+			{
+				"402158035c107a28ea94da4e4a1eb80099d43f44ce26d66143fbd0b4da39ddb4"
+			},
+			zoneRequirementUnlockHash =
+			{
+				{ zone="848ed985145172cdf974a390a8b865911c60bdada052cf4e5e971ff46fe2fe11"}
 			}
 		}
 

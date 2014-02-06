@@ -173,6 +173,15 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 		end
 	end
 
+	-- Make sure each answer has been used by a player
+	local allAnswersUsed = true
+	for _, value in pairs(questsAnswers) do
+		if(value.taken ~= true) then
+			allAnswersUsed = false
+		end
+	end
+	if(allAnswersUsed == false) then correctAnswer = false end
+
 	return correctAnswer, inTheRequiredZone
 end
 

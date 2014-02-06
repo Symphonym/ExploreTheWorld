@@ -90,3 +90,11 @@
 [ Version 0.2.8b ]
 	Wednesday 5/2-2014
 	- Added questions 52-54
+	Thursday 6/2-2014
+	- Fixed various minor bugs with multiple questions
+	- Fixed bugs with the challenges not giving challenge points
+	- Attempted to fix bug with the completition check giving errors
+	on group questions.
+	- Attempted to fix a bug with group questions being do-able with
+	any amount of players.
+	- Added questions 55-56

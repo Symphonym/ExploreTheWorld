@@ -12,6 +12,11 @@ function ETW_isQuestionDone(question)
 	if(SymphonymConfig.questions[question.ID] and SymphonymConfig.questions[question.ID].answer) then
 		
 		if(question.category == ETW_GROUPQUEST_CATEGORY and question.groupQuest ~= nil) then
+
+			if(type(SymphonymConfig.questions[question.ID].answer) ~= "table") then
+				return false
+			end
+
 			local questAnswers = {}
 			for index = 1, question.groupQuest.limit, 1 do
 				questAnswers[index] = {}
@@ -62,6 +67,7 @@ function ETW_isQuestionDone(question)
 		else
 			local storedHash = ETW_Utility:CreateSha2Hash(SymphonymConfig.questions[question.ID].answer)
 
+			-- Iterate answers for question and check with our stored one
 			for _, answer in pairs(question.answer) do
 				if(storedHash == answer) then
 					isDone = true

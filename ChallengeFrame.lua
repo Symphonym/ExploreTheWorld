@@ -430,7 +430,7 @@ do
 
 		if(minutes >= 4) then
 			addChallengePoints(2)
-		elseif(minutes >= 3) then
+		elseif(minutes <= 3) then
 			addChallengePoints(1)
 		end
 	end
@@ -717,10 +717,27 @@ do
 		local timeleft = ETW_CHALLENGE_TEAM_EXPLORATION_TIME - secondsPassed
 		local minutes = math.floor(timeleft/60)
 
+		-- Get player count
+		local count = 1 -- Include yourself
+		for index = 2, GetNumGroupMembers(), 1 do
+			if(ET_Data.players[index] ~= nil) then
+				count = count + 1
+			end
+		end
+
+		local scoreBonus = 0
+		if(count == 4) then scoreBonus = 1
+		elseif(count == 5) then scoreBonus = 2 end
+
+
 		if(minutes >= 4) then
-			addChallengePoints(3)
-		elseif(minutes >= 3) then
-			addChallengePoints(1)
+			addChallengePoints(3 + scoreBonus)
+		elseif(minutes <= 3) then
+			addChallengePoints(1 + scoreBonus)
+		end
+
+		if(scoreBonus > 0) then
+			ETW_Utility:PrintToChat(" Score bonus of |cFF00FF00" .. scoreBonus .. "|r because you were |cFF00FF00" .. count .. "|r participants.")
 		end
 
 		resetData()
