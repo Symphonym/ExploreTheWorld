@@ -1386,7 +1386,108 @@ ETW_LoreQuestions = {
 			{
 				{ zone="848ed985145172cdf974a390a8b865911c60bdada052cf4e5e971ff46fe2fe11"}
 			}
-		}
+		},
+		{
+			ID = 57,
+			name = "The old \"friend\"",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "MTE3NTc=",
+			description = "The evil of Weavil might actually be because of an old gnome friend of his. Sabotage caused by this \"friend\" at the institute they both studied at caused Weavil to fail and get kicked out. The old friend is now a fortune-teller at a desert outpost, where they try to make a profit of the silithid.",
+			answer =
+			{
+				"08e8049b93398a6da5cb75b0393c064840fab58d6a87d93c4dfa5ee3004d23b0"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53", subZone="42892b30f47ed9887aef96c8cabc827b00dea02fe065f9528c71b325359e7437"}
+			},
+			questionUnlock =
+			{
+				"MjU="
+			}
+		},
+		{
+			ID = 58,
+			name = "Yes little owl, really",
+			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "MTU1MzQ=",
+			description = "Fortunately his old house was on a hill as the rest of the port was flooded. His abandoned pet is still found circling around the house, where a book of his is located. While the pages of it are now destroyed, one used to be able to change specializations with it. What is its name?",
+			answer =
+			{
+				"6e4e6d7f14ac0708465053f3c64193b48ce9c9ecfd982ce5fb3e95e789d9f0e0"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53", subZone="b49d0d5f694a97c2811dab31c44212d50803721e1de91ee5f023f65652a8c0c9"}
+			},
+			npcUnlockHash =
+			{
+				"08e8049b93398a6da5cb75b0393c064840fab58d6a87d93c4dfa5ee3004d23b0"
+			},
+			zoneRequirementUnlockHash =
+			{
+				{ zone="4405b6709391f7bc2833d5f4d1432c6e13a0613f98bf794280833afa1f7e3c53"}
+			}
+		},
+		{
+			ID = 59,
+			name = "Cloud serpent origin",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "NDE5OTc=",
+			description = "Jiang became famous alongside her cloud serpent Lo for being the first cloud serpent rider and proving to the other pandaren that they are not to be seen as dangerous monsters. The cloud serpent order now trains new riders at the very same place where Jiang found Lo.",
+			answer =
+			{
+				"41f8604bb4ebfc58d3e25cc60e35bf2822aebd6d62bc767ebed76d070ea88a07"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="41f8604bb4ebfc58d3e25cc60e35bf2822aebd6d62bc767ebed76d070ea88a07"}
+			},
+			worldObjectUnlockHash =
+			{
+				"f615c8d1c5c7a5f603a4e15c356849ec9ee6d5e2d8ef75633475faf8b0c53430"
+			}
+		},
+		{
+			ID = 60,
+			name = "Bell caretaker",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "Mzk2MjE=",
+			description = "Stuck with only being able to eat his own conjured food instead of the fine bamboo below, as he can't leave his post by the bell. It was originally a gong, but apparently its small size infused too little hope.",
+			answer =
+			{
+				"9d2f6813de6fc39a854cb39c60b11048d4467b12d5a564466da36250e77b60bb"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="9834b7d8d283dd7314c6c0a226f1e3b831029fbbcb8e422fb40b19d7dcea3d9b"}
+			},
+			zoneUnlockHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c"}
+			}
+		},
+		{
+			ID = 61,
+			name = "Going up!",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDM1MzE=",
+			description = "With the use of baloons he's going on an adventure, as a reference to a character wanting very much the same thing. Found at a very hard to reach location, overlooking the fishing village beneath the cliffside.",
+			answer =
+			{
+				"9c46e49dad42045e74853ffc161578fc7afe0c601de7cd44d96afdcda22bace9"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c"}
+			},
+			progressUnlockHash = "546e25dc27cc37fd808f551548d97a294c738bae01988c4ea6d8f6a106a8b923"
+		},
 
 	}
 

@@ -74,6 +74,7 @@
 	used from top to bottom instead in a random order.
 	Sunday 3/2-2014
 	- Implemented functional multiplayer challenge
+
 [ Version 0.2.6b ]
 	Tuesday 4/2-2014
 	- Fixed a typo with the inspect frame, which might've caused bugs.
@@ -81,12 +82,14 @@
 	- Removing debugging code
 	- Changed how times are broadcasted with the multiplayer challenge
 	- Fixed various bugs with the multiplayer challenge
+
 [ Version 0.2.7b ]
 	Tuesday 4/2-2014
 	- Added table initialization function, used to initialize config
 	values in a better way
 	Wednesday 5/2-2014
 	- Added option for hiding inspection frame
+
 [ Version 0.2.8b ]
 	Wednesday 5/2-2014
 	- Added questions 52-54
@@ -98,3 +101,7 @@
 	- Attempted to fix a bug with group questions being do-able with
 	any amount of players.
 	- Added questions 55-56
+
+[ Version 0.3.0b ]
+	Friday 7/2-2014
+	- Added questions 57-61
