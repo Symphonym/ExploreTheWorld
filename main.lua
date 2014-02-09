@@ -960,7 +960,7 @@ do
 	scrollFrame.contentFrame.creditText = scrollFrame.contentFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	scrollFrame.contentFrame.creditText:SetTextHeight(10)
 	scrollFrame.contentFrame.creditText:SetJustifyH("LEFT")
-	scrollFrame.contentFrame.creditText:SetPoint("TOP", 35, -5)
+	scrollFrame.contentFrame.creditText:SetPoint("TOP", 45, -5)
 	scrollFrame.contentFrame.creditText:SetText(ETW_THANKSTO_STRING)
 
 	scrollFrame:SetScrollChild(scrollFrame.contentFrame)
@@ -1196,7 +1196,7 @@ do
 
 					if(question.groupQuest.limit < 2 or question.groupQuest.limit > 5) then
 						ETW_Utility:PrintErrorToChat("Invalid question: ID" .. question.ID)
-						ETW_Utility:PrintErrorToChat("Group questions can't have " .. question.groupQuest.limit .. " answers")
+						ETW_Utility:PrintErrorToChat("Group questions can't have " .. question.groupQuest.limit .. " players")
 					end
 				end
 

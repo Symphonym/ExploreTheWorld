@@ -1488,7 +1488,230 @@ ETW_LoreQuestions = {
 			},
 			progressUnlockHash = "546e25dc27cc37fd808f551548d97a294c738bae01988c4ea6d8f6a106a8b923"
 		},
-
+		{
+			ID = 62,
+			name = "Sanctum of wisdom",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelPath = "V29ybGRcXEV4cGFuc2lvbjA0XFxkb29kYWRzXFxwYW5kYXJlblxcc2hyaW5lX3Byb3BzXFxwYV9zaHJpbmVfcHJvcHNfc2Nyb2xsX2xvbmdfMDEubWR4",
+			modelZoom = 0.7,
+			modelYOffset = -0.5,
+			description = "A library holding history and lore from thousands of years ago, where many of the old tales lies scattered on the floor. With all this history threathened by the sha corruption closing in as the adepts tirelessly tries to fight them back.",
+			answer =
+			{
+				"b7844f57b5152b38bfd70b68c76ca0759bc7b51282f7d91855f1e49d7afcd4f2"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="b7844f57b5152b38bfd70b68c76ca0759bc7b51282f7d91855f1e49d7afcd4f2"}
+			},
+			zoneUnlockHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c"}
+			}
+		},
+		{
+			ID = 63,
+			name = "Making your luck",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDA5NjY=",
+			description = "The general in the tale made sure to make his own luck. Which is something that a pandaren, also in the couple of a grummle, could make use of. With the grummles outside preparing to travel, he's at the snow-covered tavern blaming his unfortunate gambling on the luckydos of the grummle.",
+			answer =
+			{
+				"fd0a690a4e7b4bf31bef2dbac8e0dce4dd33142e15470a88fe2da97095d16b89"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0", subZone="e833673f8e5cd4a77b718e8545cc5fa961e7e2e9357759d1dec40c42a32e2107"}
+			},
+			worldObjectUnlockHash =
+			{
+				"23152d12d6d901fc9d675380c5db5bd0d1c1a644bf4670bcecd8c25e58f9ef6c"
+			}
+		},
+		{
+			ID = 64,
+			name = "Our own luckydo",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelPath = "V29ybGRcXEdlbmVyaWNcXGh1bWFuXFxwYXNzaXZlX2Rvb2RhZHNcXGRvbGxzXFxyYWdkb2xsXzA0Lm1keA==",
+			modelZoom = 0.7,
+			description = "The gambler at the tavern wanted multiple luckydos of his own, so why not find yourself one as well. Although being exclusively kept by the grummles, you might find one amongst the hozen, assuming they have stolen any.",
+			answer =
+			{
+				"ed17b03438cd3a14ddc35c3142e94885b50e00b3c1f86c6bfb7c8c674b62c53a"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0", subZone="0555c10969182852f97fae926a4b7571562b2af8a50230d9c7f6ceb2636e9f97"},
+				{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0", subZone="97a163797fd0f9e81a5b53ae078f998d93d1b31dd672b0e65c19b7481d7064c5"},
+				{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0", subZone="b07ff53cb002fd55bde9e8a2e39bb619f048b4521d4ca1033df06fcb8a417bd7"},
+				{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0", subZone="e070c635eff0516577ae1f46ed5c5899f9f4dc46ecbd9a3a763768dcaf2d14aa"}
+			},
+			questionUnlock =
+			{
+				"NjI="
+			}
+		},
+		{
+			ID = 65,
+			name = "Trail center",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDA4ODk=",
+			description = "It was indeed the mogu that created the grummles, transforming regular troggs with the waters of the vale. Now they're the best guides of Kun-Lai, transporting supplies in caravans. With only a single stop at the halfway point, solely to refresh their travel inscense.",
+			answer =
+			{
+				"b015034262d4912e9dff72635de50c8cf1d1dfa61a7437608798dc899e13998e"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0", subZone="b015034262d4912e9dff72635de50c8cf1d1dfa61a7437608798dc899e13998e"},
+			},
+			worldObjectUnlockHash =
+			{
+				"a892eb9149d0783d66d0a8660c4a086bde0aa66a56cfafc28948b733fafbebea"
+			}
+		},
+		{
+			ID = 66,
+			name = "Squeaky clean",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDA2OTQ=",
+			description = "A one of a kind father & son cleaning business. Opening up for many business opportunities with the grummles, or adventurers meeting the prerequisites for that matter.",
+			answer =
+			{
+				"241d2658c0792289fe77c76ca70831e557a5e5c7a05ff6c5bed5d60e84ffa30f"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0", subZone="241d2658c0792289fe77c76ca70831e557a5e5c7a05ff6c5bed5d60e84ffa30f"},
+			},
+			zoneUnlockHash =
+			{
+				{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0"},
+			},
+		},
+		{
+			ID = 67,
+			name = "Stonemason at work",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDIyODg=",
+			description = "A stonemason during the inspection of some work at the tower of the town. A crossroad for travellers where not only the mayor is a master, but also the stonemason himself.",
+			answer =
+			{
+				"3dc232179bafe6ad0b39af3764760777b6479983a8e80b5f78aaa7e446914d88"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="c06cf2f3d845aa57769c7d3eaa1ef4cdf2c99309f3fd873271d24e14c78e28e9"},
+			},
+			zoneUnlockHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="c06cf2f3d845aa57769c7d3eaa1ef4cdf2c99309f3fd873271d24e14c78e28e9"},
+			},
+		},
+		{
+			ID = 68,
+			name = "Stormstout punch",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "Mzk2MzE=",
+			description = "Bending, mending and finding, the three friends all have some form of beer related talent at the local tavern. Luckily enough in a town with two local breweries. Unfortunately the mender couldn't mend his defense when Chen Stormstout punched him in the eye earlier. ",
+			answer =
+			{
+				"11f6d4f60cbf81d550d4da8baf4d24583a0c287956addf95126d1eb3513e6918"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="c06cf2f3d845aa57769c7d3eaa1ef4cdf2c99309f3fd873271d24e14c78e28e9"},
+			},
+			zoneUnlockHash =
+			{
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c" },
+			},
+		},
+		{
+			ID = 69,
+			name = "Celestial watchers",
+			category = ETW_GROUPQUEST_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDkyMzQ=",
+			description = "From the seats made in their honor, the celestials each watch over a separate region in the lands of Pandaria. Follow in their footsteps and find each of their seats.",
+			groupQuestCategory = ETW_EXPLORE_CATEGORY,
+			groupQuest = 
+			{
+				[1] =
+				{
+					answer =
+					{
+						"a3c39a63bfb37690849c227b4de08007ede0241e851b4fb43067b1265e6f7b4d"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="137efe697545d5091d30d2d483c770401f05a32d7575b7d2def0e11a397384e0", subZone="a3c39a63bfb37690849c227b4de08007ede0241e851b4fb43067b1265e6f7b4d"},
+					}
+				},
+				[2] =
+				{
+					answer = 
+					{
+						"300999fc0c9a85afed3bf70a2edb4b03619824f57cc9cba125bfb355420c1e0d"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="300999fc0c9a85afed3bf70a2edb4b03619824f57cc9cba125bfb355420c1e0d"},
+					}
+				},
+				[3] =
+				{
+					answer = 
+					{
+						"7a3beee4189c5f470b12e72e57f7211eb493baec06f8b4a5449d2deb0eb8e4ce"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="cc1655fed802ae69dfcc4441ca5d7b11573f3fff41733d66fe292ac13862619c", subZone="7a3beee4189c5f470b12e72e57f7211eb493baec06f8b4a5449d2deb0eb8e4ce"}
+					}
+				},
+				[4] =
+				{
+					answer = 
+					{
+						"8b5dea7e4f51e989d28d4bfda1169b421500da12def46cd053d073f7a086ca16"
+					},
+					zoneRequirementHash =
+					{
+						{ zone="95c1a16cb29c0f490518aa160972c67ced3028890fb7e3861988e9acf4639321", subZone="8b5dea7e4f51e989d28d4bfda1169b421500da12def46cd053d073f7a086ca16"}
+					}
+				}
+			},
+			progressUnlockHash = "546e25dc27cc37fd808f551548d97a294c738bae01988c4ea6d8f6a106a8b923"
+		},
+		{
+			ID = 70,
+			name = "Paying the toll",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_PANDARIA,
+			modelId = "NDcwMjQ=",
+			description = "A reference to a player with the same name, who became infamous for exorting gold from players by mind controlling them, as mind control could be used repeatedly at the time. As the true pirate he was, he now even has his own ship.",
+			answer =
+			{
+				"7b0f611bfb67db40bb0fc418c5a94d28f8d70e2595d8a99363356a0fb0e176dc"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="95c1a16cb29c0f490518aa160972c67ced3028890fb7e3861988e9acf4639321", subZone="54230d49ff7e9dc2bd8b737bd90c3789ff416d68bcdaa13df0cbe41cdbb67eb2"},
+				{ zone="95c1a16cb29c0f490518aa160972c67ced3028890fb7e3861988e9acf4639321", subZone="ef2d715477ebb573e582bc07f46c2fea4f50cc7715212cf284806555877b053e"},
+			},
+			zoneUnlockHash =
+			{
+				{ zone="95c1a16cb29c0f490518aa160972c67ced3028890fb7e3861988e9acf4639321" },
+			},
+		},
 	}
 
 }

@@ -112,10 +112,6 @@ end)
 ETW_PopupFrame:SetScript("OnUpdate", function(self, elapsed) 
 	if(self.fading) then
 
-		if(elapsed >= 0.1) then
-			elapsed = 0.1
-		end
-
 		local fadeDuration, valueMax = 3, POPUP_ALPHA
 
 		self.elapsedTime = self.elapsedTime + elapsed

@@ -52,11 +52,8 @@ local groupQuest =
 
 function ETW_StartGroupQuest(question)
 
-	if(groupQuest.activeQuest == false) then
-		ETW_GroupFrame:ShowGroupFrame(question)
-		groupQuest.activeQuest = true
-	end
-
+	ETW_GroupFrame:ShowGroupFrame(question)
+	groupQuest.activeQuest = true
 
 end
 
@@ -93,7 +90,7 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 	local correctAnswer = true
 
 	local questsAnswers = {}
-	for index = 1, groupQuest.playerReq, 1 do
+	for index = 1, groupQuest.playerReq + 1, 1 do -- Include all answers
 		questsAnswers[index] = {}
 		questsAnswers[index].answer = groupQuest.question.groupQuest[index].answer
 		questsAnswers[index].zoneReq = groupQuest.question.groupQuest[index].zoneRequirementHash
@@ -114,7 +111,6 @@ function ETW_CheckGroupQuestAnswer(yourAnswer)
 			if(zoneData.subZone ~= nil and ETW_Utility:CreateSha2Hash(subZone) ~= zoneData.subZone) then
 				subZoneReq = false
 			end
-
 
 			if(zoneReq == true and subZoneReq == true) then
 				return true
@@ -360,7 +356,7 @@ do
 
 							-- Load group question data
 							groupQuest.question = ETW_Frame.questionList.items[questionID]
-							groupQuest.playerReq = ETW_Frame.questionList.items[questionID].groupQuest.limit
+							groupQuest.playerReq = ETW_Frame.questionList.items[questionID].groupQuest.limit - 1 -- (Exclude ourselves)
 
 							for index = 1, groupQuest.playerReq, 1 do
 								if(groupQuest[index].name == senderName and groupQuest[index].realm == senderRealm or

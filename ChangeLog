@@ -105,3 +105,8 @@
 [ Version 0.3.0b ]
 	Friday 7/2-2014
 	- Added questions 57-61
+	Saturday 8/2-2014
+	- Fixed bug causing not all group question answers to be used.
+	- Fixed bug causing group question frame size to not get updated.
+	- Fixed various bugs with the group questions
+	- Added questions 62-70

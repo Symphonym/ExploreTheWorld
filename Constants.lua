@@ -227,13 +227,13 @@ ETW_THANKSTO_STRING = [[
 
 |cFF00FF00Testers:|r
 
-   |cFFF58CBAArgathom|r
-   |cFF0070DETezlo|r
-   |cFFC79C6EStahli|r
+   Argathom, |cFF00FF00Defias Brotherhood|r
+   Tezlo, |cFF00FF00Defias Brotherhood|r
+   Stahli, |cFF00FF00Defias Brotherhood|r
 
 |cFF00FF00Question creators:|r
 
-   |cFFF58CBAArgathom|r
+   Argathom, |cFF00FF00Defias Brotherhood|r
 
 |cFF00FF00Explorers:|r
 
