@@ -1779,6 +1779,9 @@ do
 			end
 			-- Notify the challenge of the completed question, in case it's a challenge question
 			ETW_ChallengeQuestionCompleted(self.question)
+
+			-- Update question list
+			updateQuestList()
 		else
 			PlaySound("igPlayerInviteDecline")
 			if (zoneRequirement) then

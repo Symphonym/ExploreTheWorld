@@ -210,7 +210,7 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "Mzc2NDU=",
-			description = "A reference to a famous TV chef, most notably known for his hosting of various competitive cooking shows, often in quite the angry mood. Although here we have him relaxing at qutie the resort, with hot springs and steamy food just around the corner.",
+			description = "A reference to a famous TV chef, most notably known for his hosting of various competitive cooking shows, often in quite the angry mood. Although here we have him relaxing at quite the resort, with hot springs and steamy food just around the corner.",
 			answer =
 			{
 				"f58b1a0e27867ef20567fd832481aed54e152c46a1c07ed4f9c3aeef8b27e790"
@@ -226,7 +226,7 @@ ETW_LoreQuestions = {
 			category = ETW_TRACKING_CATEGORY,
 			continent = ETW_CONTINENT_KALIMDOR,
 			modelId = "Mzg1NQ==",
-			description = "Living in a barren land of the north, this poor orc had his wife killed by the quilboar. Seeking revenge on them through helpfull heroes of the Horde. Not too far from the watch post he resides, consumed by his hatred against the quilboar.",
+			description = "Living in a barren land of the north, this poor orc had his wife killed by the quilboar. Seeking revenge on them through helpful heroes of the Horde. Not too far from the watch post he resides, consumed by his hatred against the quilboar.",
 			answer =
 			{
 				"3007b3f7b3762071034b5525693b2be41c01a210b5725669975dabc5be855e4f"
@@ -1628,6 +1628,7 @@ ETW_LoreQuestions = {
 			zoneRequirementHash =
 			{
 				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="c06cf2f3d845aa57769c7d3eaa1ef4cdf2c99309f3fd873271d24e14c78e28e9"},
+				{ zone="fad3ca4dd79ea23d6f0bc3d698ce2a935678bc82d1a9a3016de2d4348bfa7b5c", subZone="ca4043598ec0ac14072f644f8ab4dbe25384fedc8abb3f5fa3dc05f6507550aa"},
 			},
 			zoneUnlockHash =
 			{
@@ -1711,6 +1712,110 @@ ETW_LoreQuestions = {
 			{
 				{ zone="95c1a16cb29c0f490518aa160972c67ced3028890fb7e3861988e9acf4639321" },
 			},
+		},
+		{
+			ID = 71,
+			name = "The cliff is near",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "MTA3Mg==",
+			modelYOffset = 0.07,
+			description = "In the world of WoW we do not know much about this one of a kind critter other than its location, overlooking the frost giants. However, outside of WoW they are known to throw themselves off cliffs, and even in WoW the cliff is dangerously close.",
+			answer =
+			{
+				"b4fd681346934422c3a7d5f9ceb235e037564e56fe78de99689c088ea75795a6"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="4fee48318e57aaf59cef8c6ed17f726d4177668c0e31a7c2528d857a653e03d8", subZone="513674488f6122d6aae2b784effc9a65bc307b910264bf0dbbcd164115bd58aa"},
+			},
+			zoneUnlockHash =
+			{
+				{ zone="4fee48318e57aaf59cef8c6ed17f726d4177668c0e31a7c2528d857a653e03d8" },
+			},
+		},
+		{
+			ID = 72,
+			name = "Nesingwary competition",
+			category = ETW_EXPLORE_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "MzY0NTY=",
+			description = "The camp of a goblin hunter that appears to be moving in on Hemet Nesingwarys hunting territory with repetetive killing of different animals. Unlike Hemet, the camp requires a large fire, also used for smoking meat. As the camp is far from anything, non-hidden anyway.",
+			answer =
+			{
+				"e809ae3fa9a6cc1e7634b890fe593bb0b8c3a6c3d1c5303de61e46050b1f879c"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="4fee48318e57aaf59cef8c6ed17f726d4177668c0e31a7c2528d857a653e03d8", subZone="e809ae3fa9a6cc1e7634b890fe593bb0b8c3a6c3d1c5303de61e46050b1f879c"},
+			},
+			zoneUnlockHash =
+			{
+				{ zone="4fee48318e57aaf59cef8c6ed17f726d4177668c0e31a7c2528d857a653e03d8" },
+			},
+		},
+		{
+			ID = 73,
+			name = "Demonic speaker",
+			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_KALIMDOR,
+			modelId = "MTE1MTM=",
+			description = "In the snowy lands below the world tree, two demons can be found amongst the elementals. One of which speaks in demonic to adventurers, translated to our language, what does he say?",
+			answer =
+			{
+				"c1265812fbac867a50be435090e28df8f8ec3a7e9680b6ea88bcbdf62d0b5710",
+				"2adaad15d5f6103ea784ef53e17c43449756df7bde5c944686cc2061d922518f"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="4fee48318e57aaf59cef8c6ed17f726d4177668c0e31a7c2528d857a653e03d8", subZone="513674488f6122d6aae2b784effc9a65bc307b910264bf0dbbcd164115bd58aa"},
+			},
+			questionUnlock =
+			{
+				"MjM="
+			}
+		},
+		{
+			ID = 74,
+			name = "Groove of the bog",
+			category = ETW_INVESTIGATION_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
+			modelId = "MzQ5NzI=",
+			description = "A goblin of groove looking for help after the baron's drink of choice were stolen by some thieving creatures. All whilst he was having fun with his friends and \"bros\" , but what kind of activity are they having?",
+			answer =
+			{
+				"ac7bddb72b5e7f6e6f9db40ae08c1a798faae0bf036bb9f45494bdea9538780a",
+				"7a4d831dde8b7448c38cd955924cab76bdb4cc1dc0b1a8b3c0659aa5e62c4182",
+				"435c4f4fd432782d1ed8d3b9a0c16798d428fa433f4f0a562d196d82e852ff7b"
+			},
+			zoneRequirementHash =
+			{
+				{ zone="71c5545d391429a108c402f10adde15425515987c1321f3d7d50509974f02ee7", subZone="3785c2d21e5ddba0e60aedc1fbcd6a9deb8b969a5533e904e70832c24e599d58"},
+				{ zone="71c5545d391429a108c402f10adde15425515987c1321f3d7d50509974f02ee7", subZone="b013adf9f59863a622c311eda5627da3acc2332da76056c450f0640ee70fd149"}
+			},
+			zoneUnlockHash =
+			{
+				{ zone="71c5545d391429a108c402f10adde15425515987c1321f3d7d50509974f02ee7" },
+			},
+		},
+		{
+			ID = 75,
+			name = "Too smart for Azeroth",
+			category = ETW_TRACKING_CATEGORY,
+			continent = ETW_CONTINENT_EASTERN,
+			modelPath = "V29ybGRcXEdlbmVyaWNcXGdvYmxpblxccGFzc2l2ZWRvb2RhZHNcXHJvY2tldHNcXGdvYmxpbl9yb2NrZXRfc3RhbmRpbmcubWR4",
+			modelYOffset = 0.5,
+			modelZoom = 0.7,
+			description = "The vessel used to launch a mother and her offsprings into space, in order to repopulate a new planet fit for their intelligence. In a land that is already riddled with feats of engineering, at a place which, to you, does not exist.",
+			answer =
+			{
+				"9123f64e5729b7d6d3db8691fff3092841008d9328ddd0fd7c512c2d28d3b9de",
+			},
+			zoneRequirementHash =
+			{
+				{ zone="e5fe4f3372ed35b4f76c83df897e4d0e9372f9d50b498f5893b468e3bfae89a8", subZone="a3d8f9c9c0ad9588e708fac9dab7da3cb8e7a7eaa5731cea7a6d1bc4f0d14cf8"},
+			},
+			progressUnlockHash = "98272275c6f1e0ec6a344a26e64939b317d71ca47ef48e2d1af03366edb1f095"
 		},
 	}
 
