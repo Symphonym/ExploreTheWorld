@@ -112,7 +112,12 @@
 	- Added questions 62-70
 
 [ Version 0.3.1b ]
-	Monday 11/2-2014
+	Tuesday 11/2-2014
 	- Fixed bug causing filter not to update after completing questions.
 	- Tweaked some questions, fixing grammar and whatnot
 	- Added questions 71-75
+
+[ Version 0.3.2b ]
+	Wednesday 11/2-2014
+	- Fixed minor bugs within questions.
+	- Changed question #73

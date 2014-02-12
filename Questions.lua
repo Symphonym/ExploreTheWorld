@@ -1756,15 +1756,17 @@ ETW_LoreQuestions = {
 		},
 		{
 			ID = 73,
-			name = "Demonic speaker",
+			name = "Mixing tastes",
 			category = ETW_INVESTIGATION_CATEGORY,
 			continent = ETW_CONTINENT_KALIMDOR,
-			modelId = "MTE1MTM=",
-			description = "In the snowy lands below the world tree, two demons can be found amongst the elementals. One of which speaks in demonic to adventurers, translated to our language, what does he say?",
+			modelId = "MTA4MTU=",
+			description = "In the snowy lands below the world tree, two demons can be found amongst the elementals. One of which sells an item, previously used for a quest, but now for nothing. According to this item, what two tastes goes great together?",
 			answer =
 			{
-				"c1265812fbac867a50be435090e28df8f8ec3a7e9680b6ea88bcbdf62d0b5710",
-				"2adaad15d5f6103ea784ef53e17c43449756df7bde5c944686cc2061d922518f"
+				"3941d93c9cd7b094e2bcb5960537461941f1e1599a125c3af3a2d48e111f7680",
+				"c956fa56cab1f9059a028a238b0b82ebeeb57fbab7ee33fc64fd326dfd866849",
+				"53ac9816a0a8582586d74a76071c0c8370ccb70df28c8a1dbeacde8bedc66b43",
+				"6442575bcf8d4c81fa6fac2191ba85957fb9606285a129fd0c3a892fe567ccfb"
 			},
 			zoneRequirementHash =
 			{
@@ -1802,7 +1804,7 @@ ETW_LoreQuestions = {
 			ID = 75,
 			name = "Too smart for Azeroth",
 			category = ETW_TRACKING_CATEGORY,
-			continent = ETW_CONTINENT_EASTERN,
+			continent = ETW_CONTINENT_KALIMDOR,
 			modelPath = "V29ybGRcXEdlbmVyaWNcXGdvYmxpblxccGFzc2l2ZWRvb2RhZHNcXHJvY2tldHNcXGdvYmxpbl9yb2NrZXRfc3RhbmRpbmcubWR4",
 			modelYOffset = 0.5,
 			modelZoom = 0.7,
